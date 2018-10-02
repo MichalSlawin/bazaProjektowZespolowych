@@ -1,0 +1,22 @@
+Baza danych projektów zespołowych studentów
+
+1) Krótki opis projektu: 
+Aplikacja webowa obsługująca bazę danych projektów zespołowych studentów. Przeznaczona dla pracowników oraz studentów UG. 
+
+2) Przewidywani aktorzy:
+- student
+- pracownik
+- niezalogowany użytkownik (firma)
+
+Przewidywane role:
+- dyrektor instytutu
+- opiekun
+- lider zespołu
+- członek zespołu
+
+3) Używane technologie:
+- Lumen
+- Angular6
+
+Repozytorium: Github
+
