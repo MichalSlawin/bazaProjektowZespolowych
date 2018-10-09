@@ -20,3 +20,22 @@ Przewidywane role:
 
 Repozytorium: Github
 
+4) Spis funckjonalności:
+
+a) Student: 
+- założenie nowego projektu (założyciel staje się jego liderem), 
+- wprowadzenie opisu projektu (technologia, link do repozytorium, czy pod mentoringiem firmy), późniejsza edycja, 
+- wybór opiekuna.
+
+b) Opiekun: 
+- zatwierdzanie projektu przypisanego od studenta, możliwość cofnięcia potwierdzenia, 
+- odrzucenie projektu, wraz z tekstowym powodem
+
+c) Dyrektor instytutu:
+- wyróżnianie projektów
+
+Użytkownicy zalogowani:
+- przeglądanie wszystkich projektów
+
+d) Użytkownik niezalogowany:
+- przeglądanie projektów publicznych
