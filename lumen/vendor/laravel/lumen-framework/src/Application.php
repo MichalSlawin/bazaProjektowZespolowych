@@ -2,13 +2,15 @@
 
 namespace Laravel\Lumen;
 
+use Monolog\Logger;
 use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Log\LogManager;
 use Illuminate\Support\Composer;
 use Laravel\Lumen\Routing\Router;
+use Monolog\Handler\StreamHandler;
 use Illuminate\Container\Container;
+use Monolog\Formatter\LineFormatter;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
@@ -44,13 +46,6 @@ class Application extends Container
     protected $loadedConfigurations = [];
 
     /**
-     * Indicates if the application has "booted".
-     *
-     * @var bool
-     */
-    protected $booted = false;
-
-    /**
      * The loaded service providers.
      *
      * @var array
@@ -63,6 +58,13 @@ class Application extends Container
      * @var array
      */
     protected $ranServiceBinders = [];
+
+    /**
+     * A custom callback used to configure Monolog.
+     *
+     * @var callable|null
+     */
+    protected $monologConfigurator;
 
     /**
      * The application namespace.
@@ -111,8 +113,6 @@ class Application extends Container
 
         $this->instance('path', $this->path());
 
-        $this->instance('env', $this->environment());
-
         $this->registerContainerAliases();
     }
 
@@ -133,7 +133,7 @@ class Application extends Container
      */
     public function version()
     {
-        return 'Lumen (5.7.1) (Laravel Components 5.7.*)';
+        return 'Lumen (5.5.2) (Laravel Components 5.5.*)';
     }
 
     /**
@@ -187,14 +187,14 @@ class Application extends Container
             return;
         }
 
-        $this->loadedProviders[$providerName] = $provider;
+        $this->loadedProviders[$providerName] = true;
 
         if (method_exists($provider, 'register')) {
             $provider->register();
         }
 
-        if ($this->booted) {
-            $this->bootProvider($provider);
+        if (method_exists($provider, 'boot')) {
+            return $this->call([$provider, 'boot']);
         }
     }
 
@@ -207,35 +207,6 @@ class Application extends Container
     public function registerDeferredProvider($provider)
     {
         return $this->register($provider);
-    }
-
-    /**
-     * Boots the registered providers.
-     */
-    public function boot()
-    {
-        if ($this->booted) {
-            return;
-        }
-
-        array_walk($this->loadedProviders, function ($p) {
-            $this->bootProvider($p);
-        });
-
-        $this->booted = true;
-    }
-
-    /**
-     * Boot the given service provider.
-     *
-     * @param  \Illuminate\Support\ServiceProvider  $provider
-     * @return mixed
-     */
-    protected function bootProvider(ServiceProvider $provider)
-    {
-        if (method_exists($provider, 'boot')) {
-            return $this->call([$provider, 'boot']);
-        }
     }
 
     /**
@@ -425,10 +396,25 @@ class Application extends Container
     protected function registerLogBindings()
     {
         $this->singleton('Psr\Log\LoggerInterface', function () {
-            $this->configure('logging');
-
-            return new LogManager($this);
+            if ($this->monologConfigurator) {
+                return call_user_func($this->monologConfigurator, new Logger('lumen'));
+            } else {
+                return new Logger('lumen', [$this->getMonologHandler()]);
+            }
         });
+    }
+
+    /**
+     * Define a callback to be used to configure Monolog.
+     *
+     * @param  callable  $callback
+     * @return $this
+     */
+    public function configureMonologUsing(callable $callback)
+    {
+        $this->monologConfigurator = $callback;
+
+        return $this;
     }
 
     /**
@@ -456,6 +442,17 @@ class Application extends Container
         $this->singleton('router', function () {
             return $this->router;
         });
+    }
+
+    /**
+     * Get the Monolog handler for the application.
+     *
+     * @return \Monolog\Handler\AbstractHandler
+     */
+    protected function getMonologHandler()
+    {
+        return (new StreamHandler(storage_path('logs/lumen.log'), Logger::DEBUG))
+                            ->setFormatter(new LineFormatter(null, null, true, true));
     }
 
     /**
@@ -766,23 +763,13 @@ class Application extends Container
     }
 
     /**
-     * Determine if the application routes are cached.
-     *
-     * @return bool
-     */
-    public function routesAreCached()
-    {
-        return false;
-    }
-
-    /**
      * Determine if the application is running in the console.
      *
      * @return bool
      */
     public function runningInConsole()
     {
-        return php_sapi_name() === 'cli' || php_sapi_name() === 'phpdbg';
+        return php_sapi_name() == 'cli';
     }
 
     /**
@@ -841,31 +828,6 @@ class Application extends Container
     }
 
     /**
-     * Flush the container of all bindings and resolved instances.
-     *
-     * @return void
-     */
-    public function flush()
-    {
-        parent::flush();
-
-        $this->middleware = [];
-        $this->currentRoute = [];
-        $this->loadedProviders = [];
-        $this->routeMiddleware = [];
-        $this->reboundCallbacks = [];
-        $this->resolvingCallbacks = [];
-        $this->availableBindings = [];
-        $this->ranServiceBinders = [];
-        $this->loadedConfigurations = [];
-        $this->afterResolvingCallbacks = [];
-
-        $this->router = null;
-        $this->dispatcher = null;
-        static::$instance = null;
-    }
-
-    /**
      * Register the core container aliases.
      *
      * @return void
@@ -891,7 +853,6 @@ class Application extends Container
             'Illuminate\Contracts\Queue\Queue' => 'queue.connection',
             'request' => 'Illuminate\Http\Request',
             'Laravel\Lumen\Routing\Router' => 'router',
-            'Illuminate\Contracts\Translation\Translator' => 'translator',
             'Laravel\Lumen\Routing\UrlGenerator' => 'url',
             'Illuminate\Contracts\Validation\Factory' => 'validator',
             'Illuminate\Contracts\View\Factory' => 'view',

@@ -237,7 +237,7 @@ trait MakesHttpRequests
             return $this->seeJson();
         }
 
-        if (! is_array($responseData)) {
+        if (! $responseData) {
             $responseData = json_decode($this->response->getContent(), true);
         }
 
@@ -335,10 +335,8 @@ trait MakesHttpRequests
             $cookies, $files, $server, $content
         );
 
-        $this->app['request'] = Request::createFromBase($symfonyRequest);
-
         return $this->response = $this->app->prepareResponse(
-            $this->app->handle($this->app['request'])
+            $this->app->handle(Request::createFromBase($symfonyRequest))
         );
     }
 

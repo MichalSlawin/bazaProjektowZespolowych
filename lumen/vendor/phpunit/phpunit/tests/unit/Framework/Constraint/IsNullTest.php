@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
@@ -14,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 
 class IsNullTest extends ConstraintTestCase
 {
-    public function testConstraintIsNull(): void
+    public function testConstraintIsNull()
     {
         $constraint = new IsNull();
 
@@ -41,7 +42,7 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintIsNull2(): void
+    public function testConstraintIsNull2()
     {
         $constraint = new IsNull();
 

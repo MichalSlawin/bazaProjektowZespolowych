@@ -5,25 +5,14 @@ namespace Illuminate\Hashing;
 use RuntimeException;
 use Illuminate\Contracts\Hashing\Hasher as HasherContract;
 
-class BcryptHasher extends AbstractHasher implements HasherContract
+class BcryptHasher implements HasherContract
 {
     /**
-     * The default cost factor.
+     * Default crypt cost factor.
      *
      * @var int
      */
     protected $rounds = 10;
-
-    /**
-     * Create a new hasher instance.
-     *
-     * @param  array  $options
-     * @return void
-     */
-    public function __construct(array $options = [])
-    {
-        $this->rounds = $options['rounds'] ?? $this->rounds;
-    }
 
     /**
      * Hash the given value.
@@ -52,16 +41,16 @@ class BcryptHasher extends AbstractHasher implements HasherContract
      *
      * @param  string  $value
      * @param  string  $hashedValue
-     * @param  array  $options
+     * @param  array   $options
      * @return bool
      */
     public function check($value, $hashedValue, array $options = [])
     {
-        if ($this->info($hashedValue)['algoName'] !== 'bcrypt') {
-            throw new RuntimeException('This password does not use the Bcrypt algorithm.');
+        if (strlen($hashedValue) === 0) {
+            return false;
         }
 
-        return parent::check($value, $hashedValue, $options);
+        return password_verify($value, $hashedValue);
     }
 
     /**

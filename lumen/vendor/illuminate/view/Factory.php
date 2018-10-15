@@ -101,7 +101,7 @@ class Factory implements FactoryContract
      * Get the evaluated view contents for the given view.
      *
      * @param  string  $path
-     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
+     * @param  array   $data
      * @param  array   $mergeData
      * @return \Illuminate\Contracts\View\View
      */
@@ -118,7 +118,7 @@ class Factory implements FactoryContract
      * Get the evaluated view contents for the given view.
      *
      * @param  string  $view
-     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
+     * @param  array   $data
      * @param  array   $mergeData
      * @return \Illuminate\Contracts\View\View
      */
@@ -142,15 +142,13 @@ class Factory implements FactoryContract
      * Get the first view that actually exists from the given list.
      *
      * @param  array  $views
-     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
+     * @param  array   $data
      * @param  array   $mergeData
      * @return \Illuminate\Contracts\View\View
-     *
-     * @throws \InvalidArgumentException
      */
     public function first(array $views, $data = [], $mergeData = [])
     {
-        $view = Arr::first($views, function ($view) {
+        $view = collect($views)->first(function ($view) {
             return $this->exists($view);
         });
 
@@ -166,7 +164,7 @@ class Factory implements FactoryContract
      *
      * @param  bool  $condition
      * @param  string  $view
-     * @param  \Illuminate\Contracts\Support\Arrayable|array   $data
+     * @param  array   $data
      * @param  array   $mergeData
      * @return string
      */
@@ -242,7 +240,7 @@ class Factory implements FactoryContract
      *
      * @param  string  $view
      * @param  string  $path
-     * @param  \Illuminate\Contracts\Support\Arrayable|array  $data
+     * @param  array  $data
      * @return \Illuminate\Contracts\View\View
      */
     protected function viewInstance($view, $path, $data)
@@ -278,7 +276,7 @@ class Factory implements FactoryContract
     public function getEngineFromPath($path)
     {
         if (! $extension = $this->getExtension($path)) {
-            throw new InvalidArgumentException("Unrecognized extension in file: {$path}");
+            throw new InvalidArgumentException("Unrecognized extension in file: $path");
         }
 
         $engine = $this->extensions[$extension];

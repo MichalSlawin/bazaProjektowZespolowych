@@ -3,11 +3,9 @@
 namespace Illuminate\Database\Eloquent\Concerns;
 
 use Closure;
-use RuntimeException;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
@@ -30,10 +28,6 @@ trait QueriesRelationships
         }
 
         $relation = $this->getRelationWithoutConstraints($relation);
-
-        if ($relation instanceof MorphTo) {
-            throw new RuntimeException('has() and whereHas() do not support MorphTo relationships.');
-        }
 
         // If we only need to check for the existence of the relation, then we can optimize
         // the subquery to only run a "where exists" clause instead of this full "count"
@@ -216,18 +210,14 @@ trait QueriesRelationships
 
             $query->callScope($constraints);
 
-            $query = $query->mergeConstraintsFrom($relation->getQuery())->toBase();
-
-            if (count($query->columns) > 1) {
-                $query->columns = [$query->columns[0]];
-            }
+            $query->mergeConstraintsFrom($relation->getQuery());
 
             // Finally we will add the proper result column alias to the query and run the subselect
             // statement against the query builder. Then we will return the builder instance back
             // to the developer for further constraint chaining that needs to take place on it.
             $column = $alias ?? Str::snake($name.'_count');
 
-            $this->selectSub($query, $column);
+            $this->selectSub($query->toBase(), $column);
         }
 
         return $this;

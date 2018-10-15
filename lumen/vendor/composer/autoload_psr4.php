@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
+    'Symfony\\Polyfill\\Php70\\' => array($vendorDir . '/symfony/polyfill-php70'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
@@ -31,7 +32,6 @@ return array(
     'Illuminate\\Queue\\' => array($vendorDir . '/illuminate/queue'),
     'Illuminate\\Pipeline\\' => array($vendorDir . '/illuminate/pipeline'),
     'Illuminate\\Pagination\\' => array($vendorDir . '/illuminate/pagination'),
-    'Illuminate\\Log\\' => array($vendorDir . '/illuminate/log'),
     'Illuminate\\Http\\' => array($vendorDir . '/illuminate/http'),
     'Illuminate\\Hashing\\' => array($vendorDir . '/illuminate/hashing'),
     'Illuminate\\Filesystem\\' => array($vendorDir . '/illuminate/filesystem'),
@@ -52,7 +52,7 @@ return array(
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
     'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib/Doctrine/Common/Inflector'),
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
-    'Cron\\' => array($vendorDir . '/dragonmantank/cron-expression/src/Cron'),
+    'Cron\\' => array($vendorDir . '/mtdowling/cron-expression/src/Cron'),
     'App\\' => array($baseDir . '/app'),
     '' => array($vendorDir . '/nesbot/carbon/src'),
 );

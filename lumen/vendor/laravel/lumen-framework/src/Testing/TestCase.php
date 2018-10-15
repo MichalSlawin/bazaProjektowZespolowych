@@ -54,8 +54,6 @@ abstract class TestCase extends BaseTestCase
         Facade::clearResolvedInstances();
 
         $this->app = $this->createApplication();
-
-        $this->app->boot();
     }
 
     /**
@@ -188,7 +186,7 @@ abstract class TestCase extends BaseTestCase
 
         $mock = Mockery::spy('Illuminate\Contracts\Events\Dispatcher');
 
-        $mock->shouldReceive('fire', 'dispatch')->andReturnUsing(function ($called) use (&$events) {
+        $mock->shouldReceive('fire')->andReturnUsing(function ($called) use (&$events) {
             foreach ($events as $key => $event) {
                 if ((is_string($called) && $called === $event) ||
                     (is_string($called) && is_subclass_of($called, $event)) ||
@@ -220,7 +218,7 @@ abstract class TestCase extends BaseTestCase
     {
         $mock = Mockery::mock('Illuminate\Contracts\Events\Dispatcher');
 
-        $mock->shouldReceive('fire', 'dispatch');
+        $mock->shouldReceive('fire');
 
         $this->app->instance('events', $mock);
 

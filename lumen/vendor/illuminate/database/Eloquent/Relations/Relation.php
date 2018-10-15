@@ -9,14 +9,13 @@ use Illuminate\Support\Traits\Macroable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Traits\ForwardsCalls;
 
 /**
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 abstract class Relation
 {
-    use ForwardsCalls, Macroable {
+    use Macroable {
         __call as macroCall;
     }
 
@@ -162,13 +161,9 @@ abstract class Relation
      */
     public function touch()
     {
-        $model = $this->getRelated();
+        $column = $this->getRelated()->getUpdatedAtColumn();
 
-        if (! $model::isIgnoringTouch()) {
-            $this->rawUpdate([
-                $model->getUpdatedAtColumn() => $model->freshTimestampString(),
-            ]);
-        }
+        $this->rawUpdate([$column => $this->getRelated()->freshTimestampString()]);
     }
 
     /**
@@ -224,7 +219,7 @@ abstract class Relation
     {
         return collect($models)->map(function ($value) use ($key) {
             return $key ? $value->getAttribute($key) : $value->getKey();
-        })->values()->unique(null, true)->sort()->all();
+        })->values()->unique()->sort()->all();
     }
 
     /**
@@ -351,7 +346,9 @@ abstract class Relation
      */
     public static function getMorphedModel($alias)
     {
-        return self::$morphMap[$alias] ?? null;
+        return array_key_exists($alias, self::$morphMap)
+                        ? self::$morphMap[$alias]
+                        : null;
     }
 
     /**
@@ -367,7 +364,7 @@ abstract class Relation
             return $this->macroCall($method, $parameters);
         }
 
-        $result = $this->forwardCallTo($this->query, $method, $parameters);
+        $result = $this->query->{$method}(...$parameters);
 
         if ($result === $this->query) {
             return $this;

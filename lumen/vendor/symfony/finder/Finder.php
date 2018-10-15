@@ -638,7 +638,12 @@ class Finder implements \IteratorAggregate, \Countable
         return iterator_count($this->getIterator());
     }
 
-    private function searchInDirectory(string $dir): \Iterator
+    /**
+     * @param string $dir
+     *
+     * @return \Iterator
+     */
+    private function searchInDirectory($dir)
     {
         if (static::IGNORE_VCS_FILES === (static::IGNORE_VCS_FILES & $this->ignore)) {
             $this->exclude = array_merge($this->exclude, self::$vcsPatterns);
@@ -727,12 +732,20 @@ class Finder implements \IteratorAggregate, \Countable
     /**
      * Normalizes given directory names by removing trailing slashes.
      *
+     * Excluding: (s)ftp:// wrapper
+     *
      * @param string $dir
      *
      * @return string
      */
     private function normalizeDir($dir)
     {
-        return rtrim($dir, '/'.\DIRECTORY_SEPARATOR);
+        $dir = rtrim($dir, '/'.\DIRECTORY_SEPARATOR);
+
+        if (preg_match('#^s?ftp://#', $dir)) {
+            $dir .= '/';
+        }
+
+        return $dir;
     }
 }
