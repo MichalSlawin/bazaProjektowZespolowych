@@ -22,10 +22,10 @@
       </button>
       <span>Projekty zespołowe</span>
       <span class="fill-space"></span>
-      <button type="button" mat-icon-button routerLink="/login">
+      <button type="button" mat-icon-button (click)="showLogin()">
         <mat-icon>input</mat-icon>
       </button>
-      <span class="span-button" *ngIf="!(isHandset$ | async)" routerLink="/login">Zaloguj</span>
+      <span class="span-button" *ngIf="!(isHandset$ | async)" (click)="showLogin()">Zaloguj</span>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

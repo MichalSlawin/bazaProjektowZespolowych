@@ -12,25 +12,27 @@ import {
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatCardModule
+    MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatCardModule, MatGridListModule, MatDialogModule
 } from '@angular/material';
 import { TestowyComponent } from './components/testowy/testowy.component';
-import {LayoutsModule} from './layouts/layouts.module';
 import { LoginComponent } from './components/login/login.component';
+import {FormsModule} from "@angular/forms";
+import {NavigatorComponent} from "./components/navigator/navigator.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     TestowyComponent,
-    LoginComponent
+    LoginComponent,
+    NavigatorComponent
   ],
   imports: [
     BrowserModule,
+      FormsModule,
     AppRoutingModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule,
     LayoutModule,
-    LayoutsModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
@@ -39,7 +41,9 @@ import { LoginComponent } from './components/login/login.component';
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,
+      MatGridListModule,
+      MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

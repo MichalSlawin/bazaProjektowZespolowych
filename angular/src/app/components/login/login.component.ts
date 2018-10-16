@@ -7,9 +7,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+    username: string;
+    password: string;
+
   constructor() { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
+    login() : void {
+        if(this.username == 'admin' && this.password == 'admin') {
+            alert("Git");
+            // this.router.navigate(["user"]);
+        } else {
+            alert("Invalid credentials");
+        }
+    }
 }

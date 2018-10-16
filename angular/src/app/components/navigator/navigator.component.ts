@@ -16,5 +16,9 @@ export class NavigatorComponent {
     );
     
   constructor(private breakpointObserver: BreakpointObserver) {}
-  
+
+  showLogin() {
+    alert("Strona logowania");
+  }
+
   }
