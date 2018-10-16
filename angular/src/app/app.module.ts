@@ -46,6 +46,7 @@ import {NavigatorComponent} from "./components/navigator/navigator.component";
       MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+    entryComponents: [LoginComponent]
 })
 export class AppModule { }

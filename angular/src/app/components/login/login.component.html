@@ -1,13 +1,18 @@
-<div class="main-div">
-    <mat-card class="z-depth center" flex="50" >
-        <form class="container">
-            <mat-form-field>
-                <input matInput placeholder="Login">
-            </mat-form-field>
-            <mat-form-field>
-                <input matInput placeholder="Hasło" type="password">
-            </mat-form-field>
-        </form>
-        <button mat-button routerLink="/">Cofnij</button>
-    </mat-card>
+<mat-toolbar class="tytul">
+    <mat-toolbar-row>
+        Wydanie karty
+    </mat-toolbar-row>
+</mat-toolbar>
+<div mat-dialog-content>
+    <form class="container">
+        <mat-form-field>
+            <input matInput placeholder="Login">
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Hasło" type="password">
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="close()">Cofnij</button>
 </div>
