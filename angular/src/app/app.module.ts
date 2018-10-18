@@ -12,19 +12,27 @@ import {
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatCardModule, MatGridListModule, MatDialogModule
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatGridListModule,
+    MatDialogModule,
+    MatChipsModule, MatAutocompleteModule, MatSelectModule, MatOptionModule, MatCheckboxModule
 } from '@angular/material';
 import { TestowyComponent } from './components/testowy/testowy.component';
 import { LoginComponent } from './components/login/login.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NavigatorComponent} from "./components/navigator/navigator.component";
+import {NewProjectComponent} from "./components/new-project/new-project.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     TestowyComponent,
     LoginComponent,
-    NavigatorComponent
+    NavigatorComponent,
+    NewProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +51,13 @@ import {NavigatorComponent} from "./components/navigator/navigator.component";
     MatInputModule,
     MatCardModule,
       MatGridListModule,
-      MatDialogModule
+      MatDialogModule,
+      MatChipsModule,
+      MatAutocompleteModule,
+      MatSelectModule,
+      MatOptionModule,
+      ReactiveFormsModule,
+      MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -10,6 +10,7 @@ export class LoginComponent implements OnInit {
 
     username: string;
     password: string;
+    loader = false;
 
   constructor(public dialogRef: MatDialogRef<any>) { }
 
@@ -21,6 +22,7 @@ export class LoginComponent implements OnInit {
     }
 
     login() : void {
+        this.loader = true;
         if(this.username == 'admin' && this.password == 'admin') {
             alert("Git");
             // this.router.navigate(["user"]);

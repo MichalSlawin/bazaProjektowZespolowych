@@ -1,6 +1,6 @@
 <mat-toolbar class="tytul">
     <mat-toolbar-row>
-        Wydanie karty
+        Logowanie
     </mat-toolbar-row>
 </mat-toolbar>
 <div mat-dialog-content>
@@ -14,5 +14,11 @@
     </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="close()">Cofnij</button>
+    <button mat-stroked-button color="primary" class="table-button bcg-positive" (click)="login()">
+        Zaloguj
+    </button>
+    <span class="fill-space"></span>
+    <button mat-stroked-button color="warn" (click)="close()">
+        Zamknij
+    </button>
 </div>

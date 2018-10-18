@@ -11,3 +11,8 @@ body { margin: 0; font-family: 'Roboto', sans-serif; }
 button {
   outline: none!important;
 }
+
+
+.fill-space {
+  flex: 1 1 auto;
+}

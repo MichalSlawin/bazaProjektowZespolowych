@@ -1,0 +1,75 @@
+<mat-card>
+  <form class="project-form" #myForm="ngForm">
+    <mat-form-field>
+      <input
+              matInput
+              name="name"
+              placeholder="Nazwa projektu"
+              [(ngModel)]="projectData.name"
+              required>
+    </mat-form-field>
+    <mat-form-field>
+      <textarea
+              style="overflow:hidden"
+              matInput name="description"
+              placeholder="Opis projektu"
+              [matTextareaAutosize]="true"
+              [(ngModel)]="projectData.description"
+              required>
+      </textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+              matInput
+              name="link"
+              placeholder="Link do repozytorium"
+              [(ngModel)]="projectData.link"
+              required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-chip-list #chipList required>
+        <mat-chip
+                *ngFor="let language of projectData.languages"
+                [selectable]="selectable"
+                [removable]="removable"
+                (removed)="remove(language)">
+          {{language}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+                placeholder="Język programowania"
+                #languageInput
+                [formControl]="languageCtrl"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let language of filteredLanguages | async" [value]="language">
+          {{language}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-checkbox
+            name="mentoring"
+            [(ngModel)]="projectData.mentoring">
+      Mentoring firmy
+    </mat-checkbox>
+    <mat-form-field>
+      <mat-select
+              placeholder="Opiekun"
+              required
+              name="curator"
+              [(ngModel)]="projectData.curator">
+        <mat-option *ngFor="let curator of curators" [value]="curator.value">
+          {{curator.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-stroked-button color="primary" class="table-button bcg-positive" (click)="create()" [disabled]="!myForm.form.valid || projectData.languages.length < 1">
+      Załóż projekt
+    </button>
+  </form>
+</mat-card>
