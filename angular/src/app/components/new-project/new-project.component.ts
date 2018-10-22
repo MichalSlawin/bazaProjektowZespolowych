@@ -13,7 +13,7 @@ import {FormControl} from "@angular/forms";
 export class NewProjectComponent implements OnInit {
 
     projectData = {
-      name: '',
+        name: '',
         description: '',
         link: '',
         languages: [],

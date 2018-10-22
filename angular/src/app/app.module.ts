@@ -20,19 +20,19 @@ import {
     MatDialogModule,
     MatChipsModule, MatAutocompleteModule, MatSelectModule, MatOptionModule, MatCheckboxModule
 } from '@angular/material';
-import { TestowyComponent } from './components/testowy/testowy.component';
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NavigatorComponent} from "./components/navigator/navigator.component";
 import {NewProjectComponent} from "./components/new-project/new-project.component";
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TestowyComponent,
     LoginComponent,
     NavigatorComponent,
-    NewProjectComponent
+    NewProjectComponent,
+    ProjectDetailsComponent
   ],
   imports: [
     BrowserModule,

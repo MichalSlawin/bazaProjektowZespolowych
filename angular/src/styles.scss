@@ -3,6 +3,10 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
 
+mat-toolbar {
+  z-index: 1000;
+}
+
 .span-button {
   outline: none!important;
   cursor: pointer;
@@ -15,4 +19,18 @@ button {
 
 .fill-space {
   flex: 1 1 auto;
+}
+
+.project-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.project-form mat-form-field {
+  width: 100%;
+}
+
+.with-newlines {
+  white-space: pre-wrap;
 }
