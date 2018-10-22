@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {NewProjectComponent} from "./components/new-project/new-project.component";
 import {ProjectDetailsComponent} from "./components/project-details/project-details.component";
+import {MyProjectComponent} from "./components/my-project/my-project.component";
 
 const routes: Routes = [
     {
@@ -9,6 +10,9 @@ const routes: Routes = [
     },
     {
       path: 'projekt/:id', component: ProjectDetailsComponent
+    },
+    {
+      path: 'moj-projekt', component: MyProjectComponent
     },
     {
         path: '**',  redirectTo: 'nowy-projekt'

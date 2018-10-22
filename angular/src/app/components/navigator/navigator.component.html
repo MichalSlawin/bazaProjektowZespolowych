@@ -8,8 +8,9 @@
     [opened]="!(isHandset$ | async)">
     <mat-toolbar color="primary">LOGO</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="/nowy-projekt" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon> Utwórz projekt</a>
+      <a mat-list-item routerLink="/nowy-projekt" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>add</mat-icon> Utwórz projekt</a>
       <a mat-list-item routerLink="/projekt/1" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon> Szczegóły projekt</a>
+      <a mat-list-item routerLink="/moj-projekt" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon> Mój projekt</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
