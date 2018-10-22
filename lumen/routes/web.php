@@ -14,3 +14,9 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->post('login', 'UserController@login');
+$router->get('login', 'UserController@test');
+$router->get('test', function () {
+    return 'erer';
+});
