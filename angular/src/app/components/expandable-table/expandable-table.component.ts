@@ -18,6 +18,9 @@ import {Project} from '../../project';
   ],
 })
 export class ExpandableTableComponent {
+  
+  constructor() {}
+
   dataSource = ELEMENT_DATA;
   columnsToDisplay = ['indeks', 'nazwa', 'pod_mentoringiem', 'opiekun', 'technologie'];
   expandedElement: Project;

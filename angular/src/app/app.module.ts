@@ -18,22 +18,20 @@ import {
     MatCardModule,
     MatGridListModule,
     MatDialogModule,
-    MatChipsModule, MatAutocompleteModule, MatSelectModule, MatOptionModule, MatCheckboxModule
-    MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatCardModule, MatGridListModule, MatDialogModule, MatTableModule
-    MatChipsModule,
+    MatTableModule,
     MatAutocompleteModule,
     MatSelectModule,
     MatOptionModule,
-    MatCheckboxModule, MatTabsModule
+    MatCheckboxModule, MatTabsModule, MatChipsModule
 } from '@angular/material';
 import { LoginComponent } from './components/login/login.component';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {NavigatorComponent} from "./components/navigator/navigator.component";
-import {NewProjectComponent} from "./components/new-project/new-project.component";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {NavigatorComponent} from './components/navigator/navigator.component';
+import {NewProjectComponent} from './components/new-project/new-project.component';
 import { ExpandableTableComponent } from './components/expandable-table/expandable-table.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
-import {MglTimelineModule} from "angular-mgl-timeline";
+import {MglTimelineModule} from 'angular-mgl-timeline';
 import { HistoryComponent } from './components/history/history.component';
 import { MessagesComponent } from './components/messages/messages.component';
 
@@ -42,9 +40,9 @@ import { MessagesComponent } from './components/messages/messages.component';
     AppComponent,
     LoginComponent,
     NavigatorComponent,
-    NewProjectComponent
+    NewProjectComponent,
     NavigatorComponent,
-    ExpandableTableComponent
+    ExpandableTableComponent,
     NewProjectComponent,
     ProjectDetailsComponent,
     MyProjectComponent,
@@ -69,7 +67,7 @@ import { MessagesComponent } from './components/messages/messages.component';
     MatCardModule,
       MatGridListModule,
       MatDialogModule,
-      MatTableModule
+      MatTableModule,
       MatDialogModule,
       MatChipsModule,
       MatAutocompleteModule,
