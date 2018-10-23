@@ -1,17 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {TestowyComponent} from './components/testowy/testowy.component';
 import {NewProjectComponent} from "./components/new-project/new-project.component";
+import {ProjectDetailsComponent} from "./components/project-details/project-details.component";
+import {MyProjectComponent} from "./components/my-project/my-project.component";
 
 const routes: Routes = [
-    {
-        path: 'test', component: TestowyComponent
-    },
     {
       path: 'nowy-projekt', component: NewProjectComponent
     },
     {
-        path: '**',  redirectTo: 'test'
+      path: 'projekt/:id', component: ProjectDetailsComponent
+    },
+    {
+      path: 'moj-projekt', component: MyProjectComponent
+    },
+    {
+        path: '**',  redirectTo: 'nowy-projekt'
     }
 ];
 

@@ -1,4 +1,5 @@
 @import '~@angular/material/theming';
+@import '~angular-mgl-timeline/theme';
 
 @include mat-core();
 
@@ -9,3 +10,4 @@ $warn: mat-palette($mat-red);
 $theme: mat-dark-theme($primary, $accent, $warn);
 
 @include angular-material-theme($theme);
+@include mgl-timeline-theme($theme);

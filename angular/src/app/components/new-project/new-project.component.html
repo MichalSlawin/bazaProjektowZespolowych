@@ -68,7 +68,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-stroked-button color="primary" class="table-button bcg-positive" (click)="create()" [disabled]="!myForm.form.valid || projectData.languages.length < 1">
+    <button mat-raised-button color="primary" (click)="create()" [disabled]="!myForm.form.valid || projectData.languages.length < 1">
       Załóż projekt
     </button>
   </form>

@@ -20,23 +20,36 @@ import {
     MatDialogModule,
     MatChipsModule, MatAutocompleteModule, MatSelectModule, MatOptionModule, MatCheckboxModule
     MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatCardModule, MatGridListModule, MatDialogModule, MatTableModule
+    MatChipsModule,
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatCheckboxModule, MatTabsModule
 } from '@angular/material';
-import { TestowyComponent } from './components/testowy/testowy.component';
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NavigatorComponent} from "./components/navigator/navigator.component";
 import {NewProjectComponent} from "./components/new-project/new-project.component";
 import { ExpandableTableComponent } from './components/expandable-table/expandable-table.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { MyProjectComponent } from './components/my-project/my-project.component';
+import {MglTimelineModule} from "angular-mgl-timeline";
+import { HistoryComponent } from './components/history/history.component';
+import { MessagesComponent } from './components/messages/messages.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TestowyComponent,
     LoginComponent,
     NavigatorComponent,
     NewProjectComponent
     NavigatorComponent,
     ExpandableTableComponent
+    NewProjectComponent,
+    ProjectDetailsComponent,
+    MyProjectComponent,
+    HistoryComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +76,9 @@ import { ExpandableTableComponent } from './components/expandable-table/expandab
       MatSelectModule,
       MatOptionModule,
       ReactiveFormsModule,
-      MatCheckboxModule
+      MatCheckboxModule,
+      MatTabsModule,
+      MglTimelineModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

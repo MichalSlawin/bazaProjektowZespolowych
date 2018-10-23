@@ -1,4 +1,4 @@
-<mat-toolbar class="tytul">
+<mat-toolbar class="tytul" color="primary">
     <mat-toolbar-row>
         Logowanie
     </mat-toolbar-row>
@@ -6,19 +6,19 @@
 <div mat-dialog-content>
     <form class="container">
         <mat-form-field>
-            <input matInput placeholder="Login">
+            <input matInput name="username" placeholder="Login" [(ngModel)]="username" required>
         </mat-form-field>
         <mat-form-field>
-            <input matInput placeholder="Hasło" type="password">
+            <input matInput name="password" placeholder="Hasło" type="password"  [(ngModel)]="password" required>
         </mat-form-field>
     </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-stroked-button color="primary" class="table-button bcg-positive" (click)="login()">
+    <button mat-raised-button color="primary" (click)="login()">
         Zaloguj
     </button>
     <span class="fill-space"></span>
-    <button mat-stroked-button color="warn" (click)="close()">
+    <button mat-raised-button color="warn" (click)="close()">
         Zamknij
     </button>
 </div>
