@@ -13,9 +13,5 @@
 }
 
 .activated {
-  background-color: red;
-}
-
-.fill-space {
-  flex: 1 1 auto;
+  background-color: #03A9F4;
 }

@@ -12,12 +12,20 @@ import {
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+    MatGridListModule,
+    MatDialogModule,
+    MatChipsModule, MatAutocompleteModule, MatSelectModule, MatOptionModule, MatCheckboxModule
     MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatCardModule, MatGridListModule, MatDialogModule, MatTableModule
 } from '@angular/material';
 import { TestowyComponent } from './components/testowy/testowy.component';
 import { LoginComponent } from './components/login/login.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NavigatorComponent} from "./components/navigator/navigator.component";
+import {NewProjectComponent} from "./components/new-project/new-project.component";
 import { ExpandableTableComponent } from './components/expandable-table/expandable-table.component';
 
 @NgModule({
@@ -25,6 +33,8 @@ import { ExpandableTableComponent } from './components/expandable-table/expandab
     AppComponent,
     TestowyComponent,
     LoginComponent,
+    NavigatorComponent,
+    NewProjectComponent
     NavigatorComponent,
     ExpandableTableComponent
   ],
@@ -47,8 +57,16 @@ import { ExpandableTableComponent } from './components/expandable-table/expandab
       MatGridListModule,
       MatDialogModule,
       MatTableModule
+      MatDialogModule,
+      MatChipsModule,
+      MatAutocompleteModule,
+      MatSelectModule,
+      MatOptionModule,
+      ReactiveFormsModule,
+      MatCheckboxModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+    entryComponents: [LoginComponent]
 })
 export class AppModule { }

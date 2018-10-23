@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {MatDialog} from "@angular/material";
+import {LoginComponent} from "../login/login.component";
 
 @Component({
   selector: 'app-navigator',
@@ -15,10 +17,18 @@ export class NavigatorComponent {
       map(result => result.matches)
     );
     
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  constructor(private breakpointObserver: BreakpointObserver, public dialog: MatDialog) {}
 
   showLogin() {
-    alert("Strona logowania");
+      const dialogRef = this.dialog.open(LoginComponent, {
+          width: '500px'
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+          // if (result) {
+          //     this.getTableData();
+          // }
+      });
   }
 
   }

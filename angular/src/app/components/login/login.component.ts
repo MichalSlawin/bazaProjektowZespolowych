@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MatDialogRef} from "@angular/material";
 
 @Component({
   selector: 'app-login',
@@ -9,13 +10,19 @@ export class LoginComponent implements OnInit {
 
     username: string;
     password: string;
+    loader = false;
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<any>) { }
 
     ngOnInit() {
     }
 
+    close() {
+        this.dialogRef.close();
+    }
+
     login() : void {
+        this.loader = true;
         if(this.username == 'admin' && this.password == 'admin') {
             alert("Git");
             // this.router.navigate(["user"]);
