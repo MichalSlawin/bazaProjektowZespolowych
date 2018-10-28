@@ -5,6 +5,7 @@ import {ProjectDetailsComponent} from "./components/project-details/project-deta
 import {MyProjectComponent} from "./components/my-project/my-project.component";
 import {ExpandableTableComponent} from "./components/expandable-table/expandable-table.component";
 
+
 const routes: Routes = [
     {
       path: 'nowy-projekt', component: NewProjectComponent

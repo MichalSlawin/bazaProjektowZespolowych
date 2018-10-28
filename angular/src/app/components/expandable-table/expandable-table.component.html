@@ -1,9 +1,29 @@
+<!--TODO wyszukiwarka z autocomplete, pole tekstowe po nazwie i po opisie, checkbox czy mentoring-->
+<!--TODO select technologii z autocomplete (zawezany), select z rokiem zwykly, niezawezany-->
+<!--TODO  podzial tabeli na strony, wybor projektow na strone, wyswietlanie po roku-->
+<!--TODO dodac do tabeli rok, nie wyswietlac go, jedynie uzyc do wyszukiwarki-->
+
+
 <table mat-table
        [dataSource]="dataSource" multiTemplateDataRows
        class="mat-elevation-z8">
   <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
     <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-    <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+    <td mat-cell *matCellDef="let element">
+      <span *ngIf="column === 'pod_mentoringiem'; else other">
+        {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
+      </span>
+      <ng-template #other>
+        <mat-chip-list *ngIf="column === 'technologie'; else last">
+          <mat-chip *ngFor="let language of element[column]">
+            {{language}}
+          </mat-chip>
+        </mat-chip-list>
+        <ng-template #last>
+          {{element[column]}}
+        </ng-template>
+      </ng-template>
+    </td>
   </ng-container>
 
   <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
@@ -27,3 +47,5 @@
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 </table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

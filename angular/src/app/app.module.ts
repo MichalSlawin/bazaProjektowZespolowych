@@ -22,7 +22,10 @@ import {
     MatAutocompleteModule,
     MatSelectModule,
     MatOptionModule,
-    MatCheckboxModule, MatTabsModule, MatChipsModule
+    MatCheckboxModule,
+    MatTabsModule,
+    MatChipsModule,
+    MatPaginatorModule,
 } from '@angular/material';
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -77,6 +80,7 @@ import { MessagesComponent } from './components/messages/messages.component';
       MatCheckboxModule,
       MatTabsModule,
       MglTimelineModule,
+      MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
