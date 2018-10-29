@@ -2,6 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Project} from '../../project';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/internal/operators';
 
 /**
  * @title Table with expandable rows
@@ -20,18 +23,50 @@ import {MatPaginator, MatTableDataSource} from '@angular/material';
     })
 
     export class ExpandableTableComponent implements OnInit {
-    constructor() {}
-    dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
-    columnsToDisplay = ['indeks', 'nazwa', 'pod_mentoringiem', 'opiekun', 'technologie'];
-    expandedElement: Project;
+        constructor() {}
+        dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
+        columnsToDisplay = ['indeks', 'nazwa', 'pod_mentoringiem', 'opiekun', 'technologie'];
+        expandedElement: Project;
 
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+        @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    ngOnInit() {
-        this.dataSource.paginator = this.paginator;
+        ngOnInit() {
+            this.dataSource.paginator = this.paginator;
+        }
+
+        applyFilterNameDescription(filterValue: string) {
+            this.dataSource.filterPredicate = function(data, filter: string): boolean {
+                return data.nazwa.toLowerCase().includes(filter) || data.opis.includes(filter);
+            };
+            this.dataSource.filter = filterValue.trim().toLowerCase();
+        }
+
+        // TODO: dodać select z autocomplete
+        applyFilterRok(filterValue: string) {
+            this.dataSource.filterPredicate = function(data, filter: string): boolean {
+                return data.rok.toString().includes(filter);
+            };
+            this.dataSource.filter = filterValue.trim().toLowerCase();
+        }
+
+        // TODO: dodać select z autocomplete
+        applyFilterTechnology(filterValue: string) {
+            this.dataSource.filterPredicate = function(data, filter: string): boolean {
+                return data.technologie.toString().toLowerCase().includes(filter);
+            };
+            this.dataSource.filter = filterValue.trim().toLowerCase();
+        }
+
+        // TODO: umożliwić działanie filtru po mentoringu (checkbox)
+        applyFilterMentoring(filterValue: string) {
+            alert("test");
+            this.dataSource.filterPredicate = function(data, filter: string): boolean {
+                return data.pod_mentoringiem.toString().includes(filter);
+            };
+            this.dataSource.filter = filterValue.trim().toLowerCase();
+        }
     }
-    }
-
+// Dane testowe:
 const ELEMENT_DATA: Project[] = [
     {
         indeks: 1,
@@ -96,6 +131,66 @@ const ELEMENT_DATA: Project[] = [
     {
         indeks: 7,
         nazwa: 'test3',
+        pod_mentoringiem: false,
+        opiekun: 'test3',
+        technologie: ['Java Spring'],
+        opis: 'test3',
+        uczestnicy: 'test3',
+        rok: 2017
+    },
+    {
+        indeks: 8,
+        nazwa: 'test4',
+        pod_mentoringiem: false,
+        opiekun: 'test3',
+        technologie: ['Java Spring'],
+        opis: 'test3',
+        uczestnicy: 'test3',
+        rok: 2017
+    },
+    {
+        indeks: 9,
+        nazwa: 'test5',
+        pod_mentoringiem: false,
+        opiekun: 'test3',
+        technologie: ['Java Spring'],
+        opis: 'test3',
+        uczestnicy: 'test3',
+        rok: 2017
+    },
+    {
+        indeks: 10,
+        nazwa: 'test6',
+        pod_mentoringiem: false,
+        opiekun: 'test3',
+        technologie: ['Java Spring'],
+        opis: 'test3',
+        uczestnicy: 'test3',
+        rok: 2017
+    },
+    {
+        indeks: 11,
+        nazwa: 'test7',
+        pod_mentoringiem: false,
+        opiekun: 'test3',
+        technologie: ['Java Spring'],
+        opis: 'test3',
+        uczestnicy: 'test3',
+        rok: 2017
+    },
+    {
+        indeks: 12,
+        nazwa: 'test8',
+        pod_mentoringiem: false,
+        opiekun: 'test3',
+        technologie: ['Java Spring'],
+        opis: 'test3',
+        uczestnicy: 'test3',
+        rok: 2017
+    },
+    {
+        indeks: 13,
+        nazwa: 'test9',
         pod_mentoringiem: false,
         opiekun: 'test3',
         technologie: ['Java Spring'],
