@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialogRef} from "@angular/material";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ export class LoginComponent implements OnInit {
     password: string;
     loader = false;
 
-  constructor(public dialogRef: MatDialogRef<any>) { }
+  constructor(public dialogRef: MatDialogRef<any>, private userService: UserService) { }
 
     ngOnInit() {
     }
@@ -23,11 +24,16 @@ export class LoginComponent implements OnInit {
 
     login() : void {
         this.loader = true;
-        if(this.username == 'admin' && this.password == 'admin') {
-            alert("Git");
-            // this.router.navigate(["user"]);
-        } else {
-            alert("Invalid credentials");
-        }
+        const data = {
+            username: this.username,
+            password: this.password
+        };
+        this.userService.login(data).subscribe((data) => {
+           this.loader = false;
+           console.log(data);
+        }, error => {
+            console.log('Fail');
+            console.log(error);
+        });
     }
 }

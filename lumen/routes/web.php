@@ -11,12 +11,29 @@
 |
 */
 
+use Illuminate\Support\Facades\DB;
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->options(
+    '/{any:.*}',
+    [
+        'middleware' => ['cors'],
+        function (){
+            return response(['status' => 'success']);
+        }
+    ]
+);
+
 $router->post('login', 'UserController@login');
 $router->get('login', 'UserController@test');
 $router->get('test', function () {
+    ini_set("display_errors", 1);
+    $query = DB::select("SELECT * FROM test");
+    print_r($query);
     return 'erer';
 });
+
+$router->post('mail', 'UserController@mail');

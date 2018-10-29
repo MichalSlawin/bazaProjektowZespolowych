@@ -39,6 +39,7 @@ import { HistoryComponent } from './components/history/history.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import {UiLoadingComponent} from "./components/ui-loading/ui-loading.component";
 import {PolishPaginatorIntl} from "../PolishPaginationIntl";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import {PolishPaginatorIntl} from "../PolishPaginationIntl";
       MatTabsModule,
       MglTimelineModule,
       MatPaginatorModule,
+      HttpClientModule
   ],
   providers: [{provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()}],
   bootstrap: [AppComponent],

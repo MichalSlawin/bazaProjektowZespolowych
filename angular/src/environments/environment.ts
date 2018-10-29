@@ -6,6 +6,8 @@ export const environment = {
   production: false
 };
 
+export const apiLink = 'http://localhost:9000/~atrawinski/lumen/public/index.php';
+
 /*
  * In development mode, to ignore zone related error stack frames such as
  * `zone.run`, `zoneDelegate.invokeTask` for easier debugging, you can
