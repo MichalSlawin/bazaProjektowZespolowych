@@ -25,7 +25,7 @@ import {
     MatCheckboxModule,
     MatTabsModule,
     MatChipsModule,
-    MatPaginatorModule,
+    MatPaginatorModule, MatPaginatorIntl,
 } from '@angular/material';
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -37,6 +37,8 @@ import { MyProjectComponent } from './components/my-project/my-project.component
 import {MglTimelineModule} from 'angular-mgl-timeline';
 import { HistoryComponent } from './components/history/history.component';
 import { MessagesComponent } from './components/messages/messages.component';
+import {UiLoadingComponent} from "./components/ui-loading/ui-loading.component";
+import {PolishPaginatorIntl} from "../PolishPaginationIntl";
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { MessagesComponent } from './components/messages/messages.component';
     ProjectDetailsComponent,
     MyProjectComponent,
     HistoryComponent,
-    MessagesComponent
+    MessagesComponent,
+    UiLoadingComponent
   ],
   imports: [
     BrowserModule,
@@ -82,7 +85,7 @@ import { MessagesComponent } from './components/messages/messages.component';
       MglTimelineModule,
       MatPaginatorModule,
   ],
-  providers: [],
+  providers: [{provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()}],
   bootstrap: [AppComponent],
     entryComponents: [LoginComponent]
 })
