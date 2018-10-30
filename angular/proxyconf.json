@@ -1,0 +1,7 @@
+{
+  "/lumen/public/index.php": {
+    "target": "http://localhost:9000/~atrawinski/",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

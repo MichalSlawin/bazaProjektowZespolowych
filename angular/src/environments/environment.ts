@@ -6,7 +6,7 @@ export const environment = {
   production: false
 };
 
-export const apiLink = 'http://localhost:9000/~atrawinski/lumen/public/index.php';
+export const apiLink = '/lumen/public/index.php';
 
 /*
  * In development mode, to ignore zone related error stack frames such as
