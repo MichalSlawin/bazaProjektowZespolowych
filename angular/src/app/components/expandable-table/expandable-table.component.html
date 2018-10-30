@@ -8,14 +8,26 @@
 </mat-form-field>
 
 <mat-form-field class="rok">
-    <input matInput (keyup)="applyFilterRok($event.target.value)" placeholder="Rok">
+    <input matInput placeholder="Rok"
+           [formControl]="myControlYear" [matAutocomplete]="auto">
+    <mat-autocomplete (optionSelected)="applyFilterRok(myControlYear.value)" #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptionsYear | async" [value]="option">
+            {{option}}
+        </mat-option>
+    </mat-autocomplete>
 </mat-form-field>
 
 <mat-form-field class="technology">
-    <input matInput (keyup)="applyFilterTechnology($event.target.value)" placeholder="Technologia">
+    <input matInput placeholder="Technologia"
+           [formControl]="myControlLanguage" [matAutocomplete]="auto">
+    <mat-autocomplete (optionSelected)="applyFilterTechnology(myControlLanguage.value)" #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptionsLanguage | async" [value]="option">
+            {{option}}
+        </mat-option>
+    </mat-autocomplete>
 </mat-form-field>
 
-<mat-checkbox class="mentoring" name="mentoring" (onchange)="applyFilterMentoring($event.target.value)">
+<mat-checkbox class="mentoring" name="mentoring" (change)="applyFilterMentoring($event.checked)">
     Mentoring
 </mat-checkbox>
 

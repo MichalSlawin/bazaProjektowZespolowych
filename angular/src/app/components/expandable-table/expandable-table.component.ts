@@ -5,6 +5,7 @@ import {MatPaginator, MatTableDataSource} from '@angular/material';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/internal/operators';
+import {COMMA, ENTER} from "@angular/cdk/keycodes";
 
 /**
  * @title Table with expandable rows
@@ -23,15 +24,49 @@ import {map, startWith} from 'rxjs/internal/operators';
     })
 
     export class ExpandableTableComponent implements OnInit {
-        constructor() {}
-        dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
-        columnsToDisplay = ['indeks', 'nazwa', 'pod_mentoringiem', 'opiekun', 'technologie'];
-        expandedElement: Project;
 
-        @ViewChild(MatPaginator) paginator: MatPaginator;
+    dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
+    columnsToDisplay = ['indeks', 'nazwa', 'pod_mentoringiem', 'opiekun', 'technologie'];
+    expandedElement: Project;
+
+    myControlYear = new FormControl();
+    myControlLanguage = new FormControl();
+    years: string[] = ['2016', '2017', '2018'];
+    filteredOptionsYear: Observable<string[]>;
+
+    allLanguages: string[] = ['Java Spring', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C', 'Android'];
+    filteredOptionsLanguage: Observable<string[]>;
+
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+
+
+    constructor() {}
 
         ngOnInit() {
             this.dataSource.paginator = this.paginator;
+
+            this.filteredOptionsYear = this.myControlYear.valueChanges
+                .pipe(
+                    startWith(''),
+                    map(value => this._filterYear(value))
+                );
+            this.filteredOptionsLanguage = this.myControlLanguage.valueChanges
+                .pipe(
+                    startWith(''),
+                    map(value => this._filterLanguage(value))
+                );
+        }
+
+        private _filterYear(value: string): string[] {
+            const filterValue = value.toLowerCase();
+
+            return this.years.filter(option => option.toLowerCase().includes(filterValue));
+        }
+
+        private _filterLanguage(value: string): string[] {
+            const filterValue = value.toLowerCase();
+
+            return this.allLanguages.filter(option => option.toLowerCase().includes(filterValue));
         }
 
         applyFilterNameDescription(filterValue: string) {
@@ -41,7 +76,6 @@ import {map, startWith} from 'rxjs/internal/operators';
             this.dataSource.filter = filterValue.trim().toLowerCase();
         }
 
-        // TODO: dodać select z autocomplete
         applyFilterRok(filterValue: string) {
             this.dataSource.filterPredicate = function(data, filter: string): boolean {
                 return data.rok.toString().includes(filter);
@@ -58,12 +92,16 @@ import {map, startWith} from 'rxjs/internal/operators';
         }
 
         // TODO: umożliwić działanie filtru po mentoringu (checkbox)
-        applyFilterMentoring(filterValue: string) {
-            alert("test");
+        applyFilterMentoring(isChecked) {
             this.dataSource.filterPredicate = function(data, filter: string): boolean {
                 return data.pod_mentoringiem.toString().includes(filter);
             };
-            this.dataSource.filter = filterValue.trim().toLowerCase();
+            if(isChecked === false) {
+                this.dataSource.filter = "";
+            }
+            else {
+                this.dataSource.filter = isChecked.toString().trim().toLowerCase();
+            }
         }
     }
 // Dane testowe:
