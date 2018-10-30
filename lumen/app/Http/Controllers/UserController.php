@@ -43,12 +43,13 @@ class UserController extends Controller
             ldap_set_option($ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
             ldap_set_option($ldapconn, LDAP_OPT_REFERRALS, 0);
             ldap_start_tls($ldapconn);
-            $ldapbind = ldap_bind($ldapconn, $ldapuser, $password);
-            if ($ldapbind)
+            try
             {
+                ldap_bind($ldapconn, $ldapuser, $password);
                 $sr = ldap_search($ldapconn, 'ou=People,dc=inf,dc=ug,dc=edu,dc=pl', "uid=" . $user);
                 $info = ldap_get_entries($ldapconn, $sr);
                 $data = $info[0];
+                //TODO sprawdzić czy jest w bazie danych, jeżeli nie - dopisać i dać tokem, jeżeli jest - dać token
                 if(isset($data["givenname"]))
                     $response["givename"] = $data["givenname"];
                 if(isset($data["sn"]))
@@ -67,8 +68,7 @@ class UserController extends Controller
                     $response["title"] = $data["title"];
                 return response()->json($response, 200);
             }
-            else
-            {
+            catch (\ErrorException $e) {
                 return response()->json("Bad credentials", 401);
             }
         }

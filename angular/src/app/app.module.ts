@@ -40,6 +40,7 @@ import { MessagesComponent } from './components/messages/messages.component';
 import {UiLoadingComponent} from "./components/ui-loading/ui-loading.component";
 import {PolishPaginatorIntl} from "../PolishPaginationIntl";
 import {HttpClientModule} from "@angular/common/http";
+import { FirstUpperPipe } from './pipes/first-upper.pipe';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {HttpClientModule} from "@angular/common/http";
     MyProjectComponent,
     HistoryComponent,
     MessagesComponent,
-    UiLoadingComponent
+    UiLoadingComponent,
+    FirstUpperPipe
   ],
   imports: [
     BrowserModule,
