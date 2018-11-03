@@ -1,17 +1,13 @@
-<!--TODO wyszukiwarka z autocomplete, pole tekstowe po nazwie i po opisie, checkbox czy mentoring-->
-<!--TODO select technologii z autocomplete (zawezany), select z rokiem zwykly, niezawezany-->
-<!--TODO  podzial tabeli na strony, wybor projektow na strone, wyswietlanie po roku-->
-<!--TODO dodac do tabeli rok, nie wyswietlac go, jedynie uzyc do wyszukiwarki-->
 
 <mat-form-field class="nazwa-opis">
     <input matInput (keyup)="applyFilterNameDescription($event.target.value)" placeholder="Nazwa/opis"
-           [(ngModel)]="nameDescriptionValue">
+           [formControl]="formControlNameDescription">
 </mat-form-field>
 
 <mat-form-field class="rok">
     <input matInput placeholder="Rok"
-           [formControl]="FormControlYear" [matAutocomplete]="autoYear" [(ngModel)]="yearValue">
-    <mat-autocomplete (optionSelected)="applyFilterRok(FormControlYear.value)" #autoYear="matAutocomplete">
+           [formControl]="formControlYear" [matAutocomplete]="autoYear">
+    <mat-autocomplete (optionSelected)="applyFilterRok(formControlYear.value)" #autoYear="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptionsYear | async" [value]="option">
             {{option}}
         </mat-option>
@@ -20,8 +16,8 @@
 
 <mat-form-field class="technology">
     <input matInput placeholder="Technologia"
-           [formControl]="FormControlTechnology" [matAutocomplete]="autoTechnology" [(ngModel)]="technologyValue">
-    <mat-autocomplete (optionSelected)="applyFilterTechnology(FormControlTechnology.value)" #autoTechnology="matAutocomplete">
+           [formControl]="formControlTechnology" [matAutocomplete]="autoTechnology">
+    <mat-autocomplete (optionSelected)="applyFilterTechnology(formControlTechnology.value)" #autoTechnology="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptionsTechnology | async" [value]="option">
             {{option}}
         </mat-option>
@@ -29,7 +25,7 @@
 </mat-form-field>
 
 <mat-checkbox class="mentoring" name="mentoring" (change)="applyFilterMentoring($event.checked)"
-              [(ngModel)]="mentoringValue">
+              [formControl]="formControlMentoring">
     Mentoring
 </mat-checkbox>
 
@@ -41,11 +37,11 @@
   <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
       <th mat-header-cell *matHeaderCellDef> {{column | firstUpper}} </th>
       <td mat-cell *matCellDef="let element">
-          <span *ngIf="column === 'pod_mentoringiem'; else other">
+          <span *ngIf="column === 'mentoring'; else other">
               {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
           </span>
           <ng-template #other>
-              <mat-chip-list *ngIf="column === 'technologie'; else last">
+              <mat-chip-list *ngIf="column === 'technologies'; else last">
                   <mat-chip *ngFor="let language of element[column]">
                       {{language}}
                   </mat-chip>
@@ -63,8 +59,8 @@
       <div class="example-element-detail"
            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
         <div class="example-element-description">
-          {{element.opis}}<br /><br />
-          <p class="contestants">Uczestnicy: {{element.uczestnicy}}</p>
+            {{element.description}}<br /><br />
+          <p class="contestants">Uczestnicy: {{element.contestants}}</p>
         </div>
       </div>
     </td>

@@ -26,12 +26,13 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
     export class ExpandableTableComponent implements OnInit {
 
     dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
-    columnsToDisplay = ['indeks', 'nazwa', 'pod_mentoringiem', 'opiekun', 'technologie'];
+    columnsToDisplay = ['id', 'name', 'mentoring', 'curator', 'technologies'];
     expandedElement: Project;
 
-    FormControlYear = new FormControl();
-    FormControlTechnology = new FormControl();
-    FormControlGlobal = '';
+    formControlYear = new FormControl();
+    formControlTechnology = new FormControl();
+    formControlNameDescription = new FormControl();
+    formControlMentoring = new FormControl();
 
     years: string[] = ['2016', '2017', '2018'];
     filteredOptionsYear: Observable<string[]>;
@@ -39,10 +40,13 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
     allTechnologies: string[] = ['Java Spring', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C', 'Android'];
     filteredOptionsTechnology: Observable<string[]>;
 
-    nameDescriptionValue:string = null;
-    yearValue:string = null;
-    technologyValue:string = null;
-    mentoringValue:boolean;
+    filteredValues = {
+        name: "",
+        description: "",
+        year: "",
+        technology: "",
+        mentoring: ""
+    }
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -51,18 +55,28 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
         ngOnInit() {
             this.dataSource.paginator = this.paginator;
 
-            this.filteredOptionsYear = this.FormControlYear.valueChanges
-                .pipe(
+            this.filteredOptionsYear = this.formControlYear.valueChanges.pipe(
                     startWith(''),
                     map(value => this._filterYear(value))
                 );
-            this.filteredOptionsTechnology = this.FormControlTechnology.valueChanges
-                .pipe(
+            this.filteredOptionsTechnology = this.formControlTechnology.valueChanges.pipe(
                     startWith(''),
                     map(value => this._filterTechnology(value))
                 );
 
-            //this.dataSource.filterPredicate = this.customFilterPredicate();
+            this.dataSource.filterPredicate = this.customFilterPredicate();
+        }
+
+        private customFilterPredicate() {
+            const myFilterPredicate = (data: Project, filter: string): boolean => {
+                let searchString = JSON.parse(filter);
+                return data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 &&
+                    data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1
+                    && data.year.toString().trim().toLowerCase().indexOf(searchString.year.toLowerCase()) !== -1 &&
+                    data.technologies.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
+                    && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1;
+            }
+            return myFilterPredicate;
         }
 
         private _filterYear(value: string): string[] {
@@ -78,177 +92,191 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
         }
 
         applyFilterNameDescription(filterValue: string) {
-            this.dataSource.filterPredicate = function(data, filter: string): boolean {
-                return data.nazwa.toLowerCase().includes(filter) || data.opis.includes(filter);
-            };
-            this.dataSource.filter = filterValue.trim().toLowerCase();
+            // this.dataSource.filterPredicate = function(data, filter: string): boolean {
+            //     return data.name.toLowerCase().includes(filter) || data.description.includes(filter);
+            // };
+            // this.dataSource.filter = filterValue.trim().toLowerCase();
+            this.filteredValues['name'] = filterValue.trim().toLowerCase();
+            this.filteredValues['description'] = filterValue.trim().toLowerCase();
+            this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
         applyFilterRok(filterValue: string) {
-            this.dataSource.filterPredicate = function(data, filter: string): boolean {
-                return data.rok.toString().includes(filter);
-            };
-            this.dataSource.filter = filterValue.trim().toLowerCase();
+            // this.dataSource.filterPredicate = function(data, filter: string): boolean {
+            //     return data.year.toString().includes(filter);
+            // };
+            // this.dataSource.filter = filterValue.trim().toLowerCase();
+            this.filteredValues['year'] = filterValue.toString().trim().toLowerCase();
+            this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
         applyFilterTechnology(filterValue: string) {
-            this.dataSource.filterPredicate = function(data, filter: string): boolean {
-                return data.technologie.toString().toLowerCase().includes(filter);
-            };
-            this.dataSource.filter = filterValue.trim().toLowerCase();
+            // this.dataSource.filterPredicate = function(data, filter: string): boolean {
+            //     return data.technologies.toString().toLowerCase().includes(filter);
+            // };
+            // this.dataSource.filter = filterValue.trim().toLowerCase();
+            this.filteredValues['technology'] = filterValue.trim().toLowerCase();
+            this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
         applyFilterMentoring(isChecked) {
-            this.dataSource.filterPredicate = function(data, filter: string): boolean {
-                return data.pod_mentoringiem.toString().includes(filter);
-            };
+            // this.dataSource.filterPredicate = function(data, filter: string): boolean {
+            //     return data.mentoring.toString().includes(filter);
+            // };
             if(isChecked === false) {
-                this.dataSource.filter = "";
+                this.filteredValues['mentoring'] = "";
             }
             else {
-                this.dataSource.filter = isChecked.toString().trim().toLowerCase();
+                this.filteredValues['mentoring'] = "true";
             }
+            this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
-        // BŁĄD: pola tekstowe są czyszczone tylko za pierwszym razem
         clearFilters() {
             this.dataSource.filter = "";
-            this.nameDescriptionValue = "";
-            this.yearValue = "";
-            this.technologyValue = "";
-            this.mentoringValue = false;
+
+            this.filteredValues.name = "";
+            this.filteredValues.description = "";
+            this.filteredValues.year = "";
+            this.filteredValues.technology = "";
+            this.filteredValues.mentoring = "";
+
+            this.formControlNameDescription.setValue("");
+            this.formControlYear.setValue("");
+            this.formControlTechnology.setValue("");
+            this.formControlMentoring.setValue(false);
         }
     }
 // Dane testowe:
 const ELEMENT_DATA: Project[] = [
     {
-        indeks: 1,
-        nazwa: 'Sklep sportowy',
-        pod_mentoringiem: true,
-        opiekun: 'Anna Wyborna',
-        technologie: ['Angular6', 'Laravel'],
-        opis: 'Aplikacja sklep sportowy do przeglądanie i kupowania produktów sportowych.',
-        uczestnicy: 'Jan Kowalski, Marcin Nowak',
-        rok: 2018
+        id: 1,
+        name: 'Sklep sportowy',
+        mentoring: true,
+        curator: 'Anna Wyborna',
+        technologies: ['Angular6', 'Laravel'],
+        description: 'Aplikacja sklep sportowy do przeglądanie i kupowania produktów sportowych.',
+        contestants: 'Jan Kowalski, Marcin Nowak',
+        year: 2018
     },
     {
-        indeks: 2,
-        nazwa: 'Aplikacja do biegania',
-        pod_mentoringiem: false,
-        opiekun: 'Marian Piotrowski',
-        technologie: ['Android'],
-        opis: 'Aplikacja mobilna pozwalająca użytkownikowi mierzyć i zapisywać czasy i odległości swoich biegów',
-        uczestnicy: 'Anna Szymańska, Dorota Cieślak',
-        rok: 2017
+        id: 2,
+        name: 'Aplikacja do biegania',
+        mentoring: false,
+        curator: 'Marian Piotrowski',
+        technologies: ['Android'],
+        description: 'Aplikacja mobilna pozwalająca użytkownikowi mierzyć i zapisywać czasy i odległości swoich biegów',
+        contestants: 'Anna Szymańska, Dorota Cieślak',
+        year: 2017
     },
     {
-        indeks: 3,
-        nazwa: 'Sklep',
-        pod_mentoringiem: true,
-        opiekun: 'Marian Piotrowski',
-        technologie: ['Android'],
-        opis: 'aplikacja do zarzadzania sklepem',
-        uczestnicy: 'studenci',
-        rok: 2018
+        id: 3,
+        name: 'Sklep',
+        mentoring: true,
+        curator: 'Marian Piotrowski',
+        technologies: ['Android'],
+        description: 'aplikacja do zarzadzania sklepem',
+        contestants: 'studenci',
+        year: 2018
     },
     {
-        indeks: 4,
-        nazwa: 'Aplikacja',
-        pod_mentoringiem: false,
-        opiekun: 'Anna Wyborna',
-        technologie: ['Laravel'],
-        opis: 'aplikacja do zarzadzania sklepem',
-        uczestnicy: 'studenci',
-        rok: 2017
+        id: 4,
+        name: 'Aplikacja',
+        mentoring: false,
+        curator: 'Anna Wyborna',
+        technologies: ['Laravel'],
+        description: 'aplikacja do zarzadzania sklepem',
+        contestants: 'studenci',
+        year: 2017
     },
     {
-        indeks: 5,
-        nazwa: 'test1',
-        pod_mentoringiem: true,
-        opiekun: 'test1',
-        technologie: ['Java'],
-        opis: 'test1',
-        uczestnicy: 'test1',
-        rok: 2016
+        id: 5,
+        name: 'test1',
+        mentoring: true,
+        curator: 'test1',
+        technologies: ['Java'],
+        description: 'test1',
+        contestants: 'test1',
+        year: 2016
     },
     {
-        indeks: 6,
-        nazwa: 'test2',
-        pod_mentoringiem: true,
-        opiekun: 'test2',
-        technologie: ['Java Spring'],
-        opis: 'test2',
-        uczestnicy: 'test2',
-        rok: 2016
+        id: 6,
+        name: 'test2',
+        mentoring: true,
+        curator: 'test2',
+        technologies: ['Java Spring'],
+        description: 'test2',
+        contestants: 'test2',
+        year: 2016
     },
     {
-        indeks: 7,
-        nazwa: 'test3',
-        pod_mentoringiem: false,
-        opiekun: 'test3',
-        technologie: ['Java Spring'],
-        opis: 'test3',
-        uczestnicy: 'test3',
-        rok: 2017
+        id: 7,
+        name: 'test3',
+        mentoring: false,
+        curator: 'test3',
+        technologies: ['Java Spring'],
+        description: 'test3',
+        contestants: 'test3',
+        year: 2017
     },
     {
-        indeks: 8,
-        nazwa: 'test4',
-        pod_mentoringiem: false,
-        opiekun: 'test3',
-        technologie: ['Java Spring'],
-        opis: 'test3',
-        uczestnicy: 'test3',
-        rok: 2017
+        id: 8,
+        name: 'test4',
+        mentoring: false,
+        curator: 'test3',
+        technologies: ['Java Spring'],
+        description: 'test3',
+        contestants: 'test3',
+        year: 2017
     },
     {
-        indeks: 9,
-        nazwa: 'test5',
-        pod_mentoringiem: false,
-        opiekun: 'test3',
-        technologie: ['Java Spring'],
-        opis: 'test3',
-        uczestnicy: 'test3',
-        rok: 2017
+        id: 9,
+        name: 'test5',
+        mentoring: false,
+        curator: 'test3',
+        technologies: ['Java Spring'],
+        description: 'test3',
+        contestants: 'test3',
+        year: 2017
     },
     {
-        indeks: 10,
-        nazwa: 'test6',
-        pod_mentoringiem: false,
-        opiekun: 'test3',
-        technologie: ['Java Spring'],
-        opis: 'test3',
-        uczestnicy: 'test3',
-        rok: 2017
+        id: 10,
+        name: 'test6',
+        mentoring: false,
+        curator: 'test3',
+        technologies: ['Java Spring'],
+        description: 'test3',
+        contestants: 'test3',
+        year: 2017
     },
     {
-        indeks: 11,
-        nazwa: 'test7',
-        pod_mentoringiem: false,
-        opiekun: 'test3',
-        technologie: ['Java Spring'],
-        opis: 'test3',
-        uczestnicy: 'test3',
-        rok: 2017
+        id: 11,
+        name: 'test7',
+        mentoring: false,
+        curator: 'test3',
+        technologies: ['Java Spring'],
+        description: 'test3',
+        contestants: 'test3',
+        year: 2017
     },
     {
-        indeks: 12,
-        nazwa: 'test8',
-        pod_mentoringiem: false,
-        opiekun: 'test3',
-        technologie: ['Java Spring'],
-        opis: 'test3',
-        uczestnicy: 'test3',
-        rok: 2017
+        id: 12,
+        name: 'test8',
+        mentoring: false,
+        curator: 'test3',
+        technologies: ['Java Spring'],
+        description: 'test3',
+        contestants: 'test3',
+        year: 2017
     },
     {
-        indeks: 13,
-        nazwa: 'test9',
-        pod_mentoringiem: false,
-        opiekun: 'test3',
-        technologie: ['Java Spring'],
-        opis: 'test3',
-        uczestnicy: 'test3',
-        rok: 2017
+        id: 13,
+        name: 'test9',
+        mentoring: false,
+        curator: 'test3',
+        technologies: ['Java Spring'],
+        description: 'test3',
+        contestants: 'test3',
+        year: 2017
     },
 ];

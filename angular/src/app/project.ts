@@ -1,10 +1,10 @@
 export class Project {
-    nazwa: string;
-    indeks: number;
-    pod_mentoringiem: boolean;
-    opiekun: string;
-    technologie: string[];
-    opis: string;
-    uczestnicy: string;
-    rok: number;
+    name: string;
+    id: number;
+    mentoring: boolean;
+    curator: string;
+    technologies: string[];
+    description: string;
+    contestants: string;
+    year: number;
 }
