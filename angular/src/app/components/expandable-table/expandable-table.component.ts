@@ -29,32 +29,40 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
     columnsToDisplay = ['indeks', 'nazwa', 'pod_mentoringiem', 'opiekun', 'technologie'];
     expandedElement: Project;
 
-    myControlYear = new FormControl();
-    myControlLanguage = new FormControl();
+    FormControlYear = new FormControl();
+    FormControlTechnology = new FormControl();
+    FormControlGlobal = '';
+
     years: string[] = ['2016', '2017', '2018'];
     filteredOptionsYear: Observable<string[]>;
 
-    allLanguages: string[] = ['Java Spring', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C', 'Android'];
-    filteredOptionsLanguage: Observable<string[]>;
+    allTechnologies: string[] = ['Java Spring', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C', 'Android'];
+    filteredOptionsTechnology: Observable<string[]>;
+
+    nameDescriptionValue:string = null;
+    yearValue:string = null;
+    technologyValue:string = null;
+    mentoringValue:boolean;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
-
 
     constructor() {}
 
         ngOnInit() {
             this.dataSource.paginator = this.paginator;
 
-            this.filteredOptionsYear = this.myControlYear.valueChanges
+            this.filteredOptionsYear = this.FormControlYear.valueChanges
                 .pipe(
                     startWith(''),
                     map(value => this._filterYear(value))
                 );
-            this.filteredOptionsLanguage = this.myControlLanguage.valueChanges
+            this.filteredOptionsTechnology = this.FormControlTechnology.valueChanges
                 .pipe(
                     startWith(''),
-                    map(value => this._filterLanguage(value))
+                    map(value => this._filterTechnology(value))
                 );
+
+            //this.dataSource.filterPredicate = this.customFilterPredicate();
         }
 
         private _filterYear(value: string): string[] {
@@ -63,10 +71,10 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
             return this.years.filter(option => option.toLowerCase().includes(filterValue));
         }
 
-        private _filterLanguage(value: string): string[] {
+        private _filterTechnology(value: string): string[] {
             const filterValue = value.toLowerCase();
 
-            return this.allLanguages.filter(option => option.toLowerCase().includes(filterValue));
+            return this.allTechnologies.filter(option => option.toLowerCase().includes(filterValue));
         }
 
         applyFilterNameDescription(filterValue: string) {
@@ -83,7 +91,6 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
             this.dataSource.filter = filterValue.trim().toLowerCase();
         }
 
-        // TODO: dodać select z autocomplete
         applyFilterTechnology(filterValue: string) {
             this.dataSource.filterPredicate = function(data, filter: string): boolean {
                 return data.technologie.toString().toLowerCase().includes(filter);
@@ -91,7 +98,6 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
             this.dataSource.filter = filterValue.trim().toLowerCase();
         }
 
-        // TODO: umożliwić działanie filtru po mentoringu (checkbox)
         applyFilterMentoring(isChecked) {
             this.dataSource.filterPredicate = function(data, filter: string): boolean {
                 return data.pod_mentoringiem.toString().includes(filter);
@@ -102,6 +108,15 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
             else {
                 this.dataSource.filter = isChecked.toString().trim().toLowerCase();
             }
+        }
+
+        // BŁĄD: pola tekstowe są czyszczone tylko za pierwszym razem
+        clearFilters() {
+            this.dataSource.filter = "";
+            this.nameDescriptionValue = "";
+            this.yearValue = "";
+            this.technologyValue = "";
+            this.mentoringValue = false;
         }
     }
 // Dane testowe:
