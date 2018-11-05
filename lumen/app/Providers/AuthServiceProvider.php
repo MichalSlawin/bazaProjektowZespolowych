@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\User;
-use Illuminate\Support\Facades\Gate;
+use App\Student;
+use App\Worker;
 use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -34,10 +34,15 @@ class AuthServiceProvider extends ServiceProvider
             if($request->header('Authorization'))
             {
                 $key = trim($request->header('Authorization'));
-                $user = User::where('token', $key)->first();
-                if(!empty($user))
+                $student = Student::where('token', $key)->first();
+                if(!empty($student))
                 {
-                    return $user;
+                    return $student;
+                }
+                $worker = Worker::where('token', $key)->first();
+                if(!empty($worker))
+                {
+                    return $worker;
                 }
             }
             return null;
