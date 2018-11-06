@@ -68,9 +68,6 @@ $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
 ]);
 
-$app->routeMiddleware([
-    'jsonApi' => App\Http\Middleware\JsonApi::class,
-]);
 
 /*
 |--------------------------------------------------------------------------
