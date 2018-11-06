@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
+import {NgxWigModule} from 'ngx-wig';
 import {
     MatToolbarModule,
     MatButtonModule,
@@ -41,6 +42,7 @@ import {UiLoadingComponent} from "./components/ui-loading/ui-loading.component";
 import {PolishPaginatorIntl} from "../PolishPaginationIntl";
 import {HttpClientModule} from "@angular/common/http";
 import { FirstUpperPipe } from './pipes/first-upper.pipe';
+import { NewMessageComponent } from './components/new-message/new-message.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { FirstUpperPipe } from './pipes/first-upper.pipe';
     HistoryComponent,
     MessagesComponent,
     UiLoadingComponent,
-    FirstUpperPipe
+    FirstUpperPipe,
+    NewMessageComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +90,8 @@ import { FirstUpperPipe } from './pipes/first-upper.pipe';
       MatTabsModule,
       MglTimelineModule,
       MatPaginatorModule,
-      HttpClientModule
+      HttpClientModule,
+      NgxWigModule
   ],
   providers: [{provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()}],
   bootstrap: [AppComponent],

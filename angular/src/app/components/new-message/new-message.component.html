@@ -1,0 +1,27 @@
+<!--<link href="https://cdn.materialdesignicons.com/2.1.19/css/materialdesignicons.min.css" rel="stylesheet" />-->
+
+<mat-toolbar class="tytul" color="primary">
+  <mat-toolbar-row>
+    Logowanie
+  </mat-toolbar-row>
+</mat-toolbar>
+<div mat-dialog-content>
+  <!--<ngx-wig  [content]="text1" [placeholder]="'Enter instructions here.'"></ngx-wig>-->
+  <form class="container">
+    <mat-form-field>
+      <input matInput name="username" placeholder="Login" required>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput name="password" placeholder="Hasło" type="password" required>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary">
+    Zaloguj
+  </button>
+  <span class="fill-space"></span>
+  <button mat-raised-button color="warn">
+    Zamknij
+  </button>
+</div>
