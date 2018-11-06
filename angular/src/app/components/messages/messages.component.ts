@@ -17,7 +17,7 @@ export class MessagesComponent implements OnInit {
 
   compose() {
       const dialogRef = this.dialog.open(NewMessageComponent, {
-          width: '500px'
+          width: '800px'
       });
   }
 

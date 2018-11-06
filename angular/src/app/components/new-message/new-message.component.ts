@@ -10,8 +10,6 @@ import { NgxWigComponent } from "ngx-wig";
 })
 export class NewMessageComponent implements OnInit {
 
-  text1 = 'dupa';
-
   constructor(public dialogRef: MatDialogRef<any>, private userService: UserService) {}
 
   ngOnInit() {

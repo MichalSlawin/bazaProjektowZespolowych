@@ -95,6 +95,6 @@ import { NewMessageComponent } from './components/new-message/new-message.compon
   ],
   providers: [{provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()}],
   bootstrap: [AppComponent],
-    entryComponents: [LoginComponent]
+    entryComponents: [LoginComponent, NewMessageComponent]
 })
 export class AppModule { }

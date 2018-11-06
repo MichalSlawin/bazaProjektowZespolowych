@@ -29,24 +29,24 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
     columnsToDisplay = ['id', 'name', 'mentoring', 'curator', 'technologies'];
     expandedElement: Project;
 
-    formControlYear = new FormControl();
+    filteredValues = {
+        name: "",
+        description: "",
+        year: "2018",
+        technology: "",
+        mentoring: ""
+    }
+
+    formControlYear = new FormControl(this.filteredValues.year.toString());
     formControlTechnology = new FormControl();
     formControlNameDescription = new FormControl();
     formControlMentoring = new FormControl();
 
-    years: string[] = ['2016', '2017', '2018'];
-    filteredOptionsYear: Observable<string[]>;
+    years: string[] = ['2018', '2017', '2016'];
+    //filteredOptionsYear: Observable<string[]>;
 
     allTechnologies: string[] = ['Java Spring', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C', 'Android'];
     filteredOptionsTechnology: Observable<string[]>;
-
-    filteredValues = {
-        name: "",
-        description: "",
-        year: "",
-        technology: "",
-        mentoring: ""
-    }
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -55,16 +55,15 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
         ngOnInit() {
             this.dataSource.paginator = this.paginator;
 
-            this.filteredOptionsYear = this.formControlYear.valueChanges.pipe(
-                    startWith(''),
-                    map(value => this._filterYear(value))
-                );
             this.filteredOptionsTechnology = this.formControlTechnology.valueChanges.pipe(
                     startWith(''),
                     map(value => this._filterTechnology(value))
                 );
 
             this.dataSource.filterPredicate = this.customFilterPredicate();
+
+            this.dataSource.filter = JSON.stringify(this.filteredValues);
+            this.formControlYear.setValue(this.filteredValues.year);
         }
 
         private customFilterPredicate() {
@@ -79,12 +78,6 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
             return myFilterPredicate;
         }
 
-        private _filterYear(value: string): string[] {
-            const filterValue = value.toLowerCase();
-
-            return this.years.filter(option => option.toLowerCase().includes(filterValue));
-        }
-
         private _filterTechnology(value: string): string[] {
             const filterValue = value.toLowerCase();
 
@@ -92,37 +85,23 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
         }
 
         applyFilterNameDescription(filterValue: string) {
-            // this.dataSource.filterPredicate = function(data, filter: string): boolean {
-            //     return data.name.toLowerCase().includes(filter) || data.description.includes(filter);
-            // };
-            // this.dataSource.filter = filterValue.trim().toLowerCase();
             this.filteredValues['name'] = filterValue.trim().toLowerCase();
             this.filteredValues['description'] = filterValue.trim().toLowerCase();
             this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
         applyFilterRok(filterValue: string) {
-            // this.dataSource.filterPredicate = function(data, filter: string): boolean {
-            //     return data.year.toString().includes(filter);
-            // };
-            // this.dataSource.filter = filterValue.trim().toLowerCase();
             this.filteredValues['year'] = filterValue.toString().trim().toLowerCase();
             this.dataSource.filter = JSON.stringify(this.filteredValues);
+            console.log(filterValue);
         }
 
         applyFilterTechnology(filterValue: string) {
-            // this.dataSource.filterPredicate = function(data, filter: string): boolean {
-            //     return data.technologies.toString().toLowerCase().includes(filter);
-            // };
-            // this.dataSource.filter = filterValue.trim().toLowerCase();
             this.filteredValues['technology'] = filterValue.trim().toLowerCase();
             this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
         applyFilterMentoring(isChecked) {
-            // this.dataSource.filterPredicate = function(data, filter: string): boolean {
-            //     return data.mentoring.toString().includes(filter);
-            // };
             if(isChecked === false) {
                 this.filteredValues['mentoring'] = "";
             }
@@ -132,20 +111,19 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
             this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
-        clearFilters() {
-            this.dataSource.filter = "";
-
+        clearNameDescription() {
             this.filteredValues.name = "";
             this.filteredValues.description = "";
-            this.filteredValues.year = "";
-            this.filteredValues.technology = "";
-            this.filteredValues.mentoring = "";
-
             this.formControlNameDescription.setValue("");
-            this.formControlYear.setValue("");
-            this.formControlTechnology.setValue("");
-            this.formControlMentoring.setValue(false);
+            this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
+
+        clearTechnology() {
+            this.filteredValues.technology = "";
+            this.formControlTechnology.setValue("");
+            this.dataSource.filter = JSON.stringify(this.filteredValues);
+        }
+
     }
 // Dane testowe:
 const ELEMENT_DATA: Project[] = [
@@ -162,7 +140,7 @@ const ELEMENT_DATA: Project[] = [
     {
         id: 2,
         name: 'Aplikacja do biegania',
-        mentoring: false,
+        mentoring: true,
         curator: 'Marian Piotrowski',
         technologies: ['Android'],
         description: 'Aplikacja mobilna pozwalająca użytkownikowi mierzyć i zapisywać czasy i odległości swoich biegów',
@@ -262,9 +240,9 @@ const ELEMENT_DATA: Project[] = [
     {
         id: 12,
         name: 'test8',
-        mentoring: false,
+        mentoring: true,
         curator: 'test3',
-        technologies: ['Java Spring'],
+        technologies: ['Java EE'],
         description: 'test3',
         contestants: 'test3',
         year: 2017

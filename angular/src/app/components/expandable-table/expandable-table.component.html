@@ -1,22 +1,27 @@
+<!--TODO: dodać przyciski dla technologii i nazwy/opisu do czyszczenia, usunąć przycisk czyszczenia wszystkiego-->
 
 <mat-form-field class="nazwa-opis">
     <input matInput (keyup)="applyFilterNameDescription($event.target.value)" placeholder="Nazwa/opis"
            [formControl]="formControlNameDescription">
+    <button mat-button *ngIf="formControlNameDescription.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearNameDescription()">
+        <mat-icon>close</mat-icon>
+    </button>
 </mat-form-field>
 
 <mat-form-field class="rok">
-    <input matInput placeholder="Rok"
-           [formControl]="formControlYear" [matAutocomplete]="autoYear">
-    <mat-autocomplete (optionSelected)="applyFilterRok(formControlYear.value)" #autoYear="matAutocomplete">
-        <mat-option *ngFor="let option of filteredOptionsYear | async" [value]="option">
-            {{option}}
+    <mat-select placeholder="Rok" (selectionChange)="applyFilterRok($event.value.toString())" [formControl]="formControlYear">
+        <mat-option *ngFor="let year of years" [value]="year">
+            {{year}}
         </mat-option>
-    </mat-autocomplete>
+    </mat-select>
 </mat-form-field>
 
 <mat-form-field class="technology">
     <input matInput placeholder="Technologia"
            [formControl]="formControlTechnology" [matAutocomplete]="autoTechnology">
+    <button mat-button *ngIf="formControlTechnology.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearTechnology()">
+        <mat-icon>close</mat-icon>
+    </button>
     <mat-autocomplete (optionSelected)="applyFilterTechnology(formControlTechnology.value)" #autoTechnology="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptionsTechnology | async" [value]="option">
             {{option}}
@@ -28,8 +33,6 @@
               [formControl]="formControlMentoring">
     Mentoring
 </mat-checkbox>
-
-<button mat-raised-button color="warn" class="clearButton" (click)="clearFilters()">Wyczyść</button>
 
 <table mat-table
        [dataSource]="dataSource" multiTemplateDataRows
