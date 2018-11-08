@@ -38,6 +38,24 @@ class LdapController extends Controller
         }
     }
 
+    public function getUserData($username, $password, $search)
+    {
+        $ldapconn = $this->connect($username, $password);
+        if(is_array($ldapconn))
+        {
+            return $ldapconn;
+        }
+        else
+        {
+            $sr = ldap_search($ldapconn, 'ou=People,dc=inf,dc=ug,dc=edu,dc=pl', "uid=" . $search);
+            $info = ldap_get_entries($ldapconn, $sr);
+            $data = $info[0];
+            $response["name"] = $data["displayname"][0];
+            $response["type"] = $data["employeetype"][0];
+            return ["data" => $response, "code" => 200];
+        }
+    }
+
     private function connect($username, $password)
     {
         $ldapconn = ldap_connect($this->ldap_host);
