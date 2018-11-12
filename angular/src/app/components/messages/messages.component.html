@@ -7,4 +7,19 @@
   <!--TODO:W edytorze przełącznik czy mail prywatny(tylko do opiekuna) czy publiczny(do opiekuna i do grupy)-->
 
   <button mat-raised-button color="primary" class="composeButton" (click)="compose()">Napisz</button>
+
+  <mat-accordion multi="true">
+    <mat-expansion-panel *ngFor="let message of messages">
+      <mat-expansion-panel-header class="right-aligned-header">
+        <mat-panel-title>
+          <span class="recipient">{{message.recipient}}</span>
+          <span class="title">{{message.title}}</span>
+        </mat-panel-title>
+        <mat-panel-description>
+          {{message.sendDate}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <span class="content">{{message.content}}</span>
+    </mat-expansion-panel>
+  </mat-accordion>
 </mat-card>

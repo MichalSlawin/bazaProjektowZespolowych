@@ -43,6 +43,7 @@ import {PolishPaginatorIntl} from '../PolishPaginationIntl';
 import {HttpClientModule} from '@angular/common/http';
 import { FirstUpperPipe } from './pipes/first-upper.pipe';
 import { NewMessageComponent } from './components/new-message/new-message.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { NewMessageComponent } from './components/new-message/new-message.compon
     MatInputModule,
     MatCardModule,
       MatSnackBarModule,
+      MatExpansionModule,
       MatGridListModule,
       MatDialogModule,
       MatTableModule,
