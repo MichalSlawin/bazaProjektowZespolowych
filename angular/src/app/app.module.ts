@@ -26,7 +26,7 @@ import {
     MatCheckboxModule,
     MatTabsModule,
     MatChipsModule,
-    MatPaginatorModule, MatPaginatorIntl,
+    MatPaginatorModule, MatPaginatorIntl, MatSnackBarModule,
 } from '@angular/material';
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -38,9 +38,9 @@ import { MyProjectComponent } from './components/my-project/my-project.component
 import {MglTimelineModule} from 'angular-mgl-timeline';
 import { HistoryComponent } from './components/history/history.component';
 import { MessagesComponent } from './components/messages/messages.component';
-import {UiLoadingComponent} from "./components/ui-loading/ui-loading.component";
-import {PolishPaginatorIntl} from "../PolishPaginationIntl";
-import {HttpClientModule} from "@angular/common/http";
+import {UiLoadingComponent} from './components/ui-loading/ui-loading.component';
+import {PolishPaginatorIntl} from '../PolishPaginationIntl';
+import {HttpClientModule} from '@angular/common/http';
 import { FirstUpperPipe } from './pipes/first-upper.pipe';
 import { NewMessageComponent } from './components/new-message/new-message.component';
 
@@ -77,6 +77,7 @@ import { NewMessageComponent } from './components/new-message/new-message.compon
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
+      MatSnackBarModule,
       MatGridListModule,
       MatDialogModule,
       MatTableModule,

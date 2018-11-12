@@ -69,8 +69,8 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
         private customFilterPredicate() {
             const myFilterPredicate = (data: Project, filter: string): boolean => {
                 let searchString = JSON.parse(filter);
-                return data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 &&
-                    data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1
+                return (data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 ||
+                    data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1)
                     && data.year.toString().trim().toLowerCase().indexOf(searchString.year.toLowerCase()) !== -1 &&
                     data.technologies.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
                     && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1;
