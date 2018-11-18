@@ -7,14 +7,14 @@
 </mat-toolbar>
 <div mat-dialog-content>
   <form class="container">
-    <mat-form-field>
-      <input matInput name="recipient" placeholder="Do" [formControl]="formControlRecipient" required>
-    </mat-form-field>
+    <!--<mat-form-field>-->
+      <!--<input matInput type="email" pattern=".+@sigma.ug.edu.pl" name="recipient" placeholder="Do" [formControl]="formControlRecipient" required>-->
+    <!--</mat-form-field>-->
     <mat-form-field>
       <input matInput name="title" placeholder="Tytuł" [formControl]="formControlTitle" required>
     </mat-form-field>
-    <mat-checkbox name="isPrivate" [formControl]="formControlPrivate">
-      Wiadomość prywatna
+    <mat-checkbox name="isPublic" [formControl]="formControlPublic">
+      Wiadomość publiczna
     </mat-checkbox>
 
     <ngx-wig [placeholder]="'Treść wiadomości'" [formControl]="formControlContent"></ngx-wig>

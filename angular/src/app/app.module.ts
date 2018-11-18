@@ -42,6 +42,7 @@ import {UiLoadingComponent} from './components/ui-loading/ui-loading.component';
 import {PolishPaginatorIntl} from '../PolishPaginationIntl';
 import {HttpClientModule} from '@angular/common/http';
 import { FirstUpperPipe } from './pipes/first-upper.pipe';
+import { FilterMessagesPipe } from './pipes/filter-messages.pipe';
 import { NewMessageComponent } from './components/new-message/new-message.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 
@@ -60,11 +61,12 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MessagesComponent,
     UiLoadingComponent,
     FirstUpperPipe,
+    FilterMessagesPipe,
     NewMessageComponent
   ],
   imports: [
     BrowserModule,
-      FormsModule,
+    FormsModule,
     AppRoutingModule,
     NgbModule.forRoot(),
     BrowserAnimationsModule,

@@ -14,13 +14,13 @@ export class NewMessageComponent implements OnInit {
   formControlRecipient = new FormControl();
   formControlTitle = new FormControl();
   formControlContent = new FormControl();
-  formControlPrivate = new FormControl();
+  formControlPublic = new FormControl();
 
   data = {
     recipient: '',
     title: '',
     content: '',
-    isPrivate: false
+    isPublic: false
   };
 
   constructor(public dialogRef: MatDialogRef<any>, public snackBar: MatSnackBar) {}
@@ -36,17 +36,18 @@ export class NewMessageComponent implements OnInit {
         this.data.recipient = this.formControlRecipient.value;
         this.data.title = this.formControlTitle.value;
         this.data.content = this.formControlContent.value;
-        if (this.formControlPrivate.value == null) {
-          this.data.isPrivate = false;
+        if (this.formControlPublic.value == null) {
+          this.data.isPublic = false;
         } else {
-            this.data.isPrivate = this.formControlPrivate.value;
+            this.data.isPublic = this.formControlPublic.value;
         }
 
-        if (this.data.recipient == null) {
-          this.openSnackBar('Podaj odbiorcę wiadomości');
-        } else if (this.data.title == null) {
+        // if (this.data.recipient == null || this.data.recipient === '') {
+        //   this.openSnackBar('Podaj odbiorcę wiadomości');
+        // } else
+        if (this.data.title == null || this.data.title === '') {
             this.openSnackBar('Podaj tytuł wiadomości');
-        } else if (this.data.content == null) {
+        } else if (this.data.content == null || this.data.content === '') {
             this.openSnackBar('Podaj treść wiadomości');
         } else {
             console.log(this.data);

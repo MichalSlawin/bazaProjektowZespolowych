@@ -4,5 +4,5 @@ export class Message {
     sendDate: string;
     title: string;
     content: string;
-    isPrivate: boolean;
+    isPublic: boolean;
 }
