@@ -65,3 +65,8 @@ tr.example-element-row:not(.example-expanded-row):active {
 .mentoring {
   margin-left: 8%;
 }
+
+.example-element-row:hover {
+  background: #00AAF1!important;
+  cursor: pointer;
+}

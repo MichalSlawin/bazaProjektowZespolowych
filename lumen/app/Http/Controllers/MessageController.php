@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 
+use App\Message;
 use App\Project;
 use App\Student;
 use App\Worker;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -46,11 +48,13 @@ class MessageController extends Controller
 //        $worker_domain = "@inf.ug.edu.pl";
         if($user instanceof Student)
         {
+            $from_role = "student";
             $domain = $student_domain;
-            $project = Project::where('student_id', $user->id)->fist();
+            $project = Project::where('student_id', $user->id)->first();
         }
         else
         {
+            $from_role = 'worker';
             $domain = $worker_domain;
             $project = Project::where('id', $project_id)->where('worker_id', $user->id)->first();
         }
@@ -58,7 +62,6 @@ class MessageController extends Controller
         {
             return response()->json("Unauthorized", 401);
         }
-
         if($user instanceof Student)
         {
             $receiver = Worker::find($project->worker_id);
@@ -71,12 +74,12 @@ class MessageController extends Controller
         }
 
         $ldap = new LdapController();
-        $ldapResponseSender = $ldap->getUserData($user->username, $password, $user->userame);
+        $ldapResponseSender = $ldap->getUserData($user->username, $password, $user->username);
         if($ldapResponseSender["code"] == 200)
         {
             $senderData = $ldapResponseSender["data"];
             $senderDisplayName = $senderData["name"];
-            $ldapResponseReceiver = $ldap->getUserData($user->username, $password, $receiver->userame);
+            $ldapResponseReceiver = $ldap->getUserData($user->username, $password, $receiver->username);
             $receiverData = $ldapResponseReceiver["data"];
             $receiverDisplayName = $receiverData["name"];
         }
@@ -85,10 +88,23 @@ class MessageController extends Controller
             return response()->json($ldapResponseSender["msg"], $ldapResponseSender["code"]);
         }
 
+        try
+        {
+            $message = new Message();
+            $message->subject = $subject;
+            $message->body = $body;
+            $message->is_public = $is_public;
+            $message->project_id = $project_id;
+            $message->from_role = $from_role;
+            $message->save();
+        }
+        catch (QueryException $e) {
+            return response()->json("Something went wrong", 500);
+        }
+
         $mail = new PHPMailer();
         try
         {
-            $mail->SMTPDebug = 1;
             $mail->isSMTP();
             $mail->SMTPAuth = true;
             $mail->SMTPSecure = 'ssl';
@@ -102,6 +118,8 @@ class MessageController extends Controller
 //            $mail->Host = "inf.ug.edu.pl";
             $mail->Host = "153.19.7.228";
             $mail->Port = 465;
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'base64';
             $mail->IsHTML(true);
             $mail->Username = $user->username;
             $mail->Password = $password;
@@ -114,7 +132,7 @@ class MessageController extends Controller
                 //DW do studentów
             }
             $mail->send();
-            return "Sended";
+            return response()->json("Sended", 200);
         }
         catch (Exception $e)
         {

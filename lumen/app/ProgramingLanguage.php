@@ -9,4 +9,9 @@ class ProgramingLanguage extends Model
 {
     public $timestamps = false;
     public $table = 'programing_language';
+
+    public function projects()
+    {
+        return $this->belongsToMany("App\Project", "project_language", "programing_language_id", "project_id");
+    }
 }
