@@ -9,6 +9,7 @@ class ProgramingLanguage extends Model
 {
     public $timestamps = false;
     public $table = 'programing_language';
+    protected $hidden = ['pivot'];
 
     public function projects()
     {

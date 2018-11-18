@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Worker extends Model
 {
-    public $hidden = ['token'];
+    public $hidden = ['token', 'pivot'];
     public $table = 'worker';
 
     public function projects()

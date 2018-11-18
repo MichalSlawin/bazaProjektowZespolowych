@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    public $hidden = ['token'];
+    public $hidden = ['token', 'pivot'];
     public $table = 'student';
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class AcademicYear extends Model
 {
     public $timestamps = false;
+    protected $hidden = ['pivot'];
     public $table = 'academic_year';
 
 

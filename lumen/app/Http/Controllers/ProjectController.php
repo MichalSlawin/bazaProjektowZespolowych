@@ -29,13 +29,17 @@ class ProjectController extends Controller
         if($user instanceof Student || $user instanceof Worker)
         {
             //Wszystkie projekty
-            $projects = Project::with(['languages', 'status'])->get();
+            $projects = Project::with(['languages', 'status', 'students'])->get();
             return response()->json($projects, 200);
         }
         else
         {
             //Tylko aktywne
-            $projects = Project::with(['languages', 'status'])->where('status_id', 3)->get();
+            $projects = Project::with(['languages', 'status', 'students'])->where('status_id', 3)->get();
+            foreach ($projects as $project)
+            {
+                $project->students->makeHidden(['username', 'index_no', 'id', 'created_at', 'updated_at']);
+            }
             return response()->json($projects, 200);
         }
     }
