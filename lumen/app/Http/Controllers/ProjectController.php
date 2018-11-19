@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\AcademicYear;
+use App\ProgramingLanguage;
 use App\Project;
 use App\ProjectHistory;
 use App\ProjectStudent;
@@ -56,7 +57,8 @@ class ProjectController extends Controller
                     'description' => 'required',
                     'link' => 'required',
                     'mentoring' => 'required|boolean',
-                    'worker' => 'required|exists:worker,id'
+                    'worker' => 'required|exists:worker,id',
+                    'languages' => 'required|array'
                 ]);
             }
             catch (ValidationException $e)
@@ -64,7 +66,14 @@ class ProjectController extends Controller
                 return response()->json($e->response->original, $e->status);
             }
             $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
-            //TODO czy pracownik jest prowadzącym w tym semestrze
+            $workerCheck = Worker::whereHas('academicYear', function ($query) use ($academicYear) {
+                $query->where('id', $academicYear->id);
+            })->take(1)->first();
+            if(empty($workerCheck))
+            {
+                return response()->json("Wrong worker", 400);
+            }
+
             $projectCheck = DB::select("SELECT COUNT(ps.student_id) as 'CID' FROM project p
                                         JOIN project_student ps ON ps.project_id = p.id
                                         WHERE ps.accepted = ? AND ps.student_id = ? AND p.academic_year_id = ?", [1, $user->id, $academicYear->id]);
@@ -98,8 +107,17 @@ class ProjectController extends Controller
                     $projectStudent->student_id = $user->id;
                     $projectStudent->accepted = 1;
                     $projectStudent->save();
-                    //TODO dodać języki programowania
-
+                    $languages = $request->get('languages');
+                    foreach ($languages as $language)
+                    {
+                        $languageObject = ProgramingLanguage::whereRaw( 'LOWER(`name`) like ?', [$language])->take(1)->first();
+                        if(empty($languageObject))
+                        {
+                            $languageObject = new ProgramingLanguage();
+                            $languageObject->name = $language;
+                        }
+                        $project->languages()->save($languageObject);
+                    }
                     $projectHistory = new ProjectHistory();
                     $projectHistory->body = "Projekt został utworzony";
                     $projectHistory->project_id = $project->id;
@@ -108,7 +126,7 @@ class ProjectController extends Controller
                 catch (QueryException $e) {
                     return response()->json("Something went wrong", 500);
                 }
-                return response()->json("Gotowy", 200);
+                return response()->json("Success", 200);
             }
             return response()->json("You already belong to project", 401);
         }
