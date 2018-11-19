@@ -34,3 +34,7 @@ $router->get('project/mine', 'ProjectController@getMine');
 $router->get('project/{id:[0-9]+}', 'ProjectController@getById');
 
 $router->post('project', 'ProjectController@add');
+
+$router->get('worker/current', 'WorkerController@getCurrent');
+
+$router->post('worker/current', 'WorkerController@updateCurrent');
