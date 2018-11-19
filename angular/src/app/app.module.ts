@@ -45,6 +45,7 @@ import { FirstUpperPipe } from './pipes/first-upper.pipe';
 import { FilterMessagesPipe } from './pipes/filter-messages.pipe';
 import { NewMessageComponent } from './components/new-message/new-message.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { CheckPasswordComponent } from './components/check-password/check-password.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     UiLoadingComponent,
     FirstUpperPipe,
     FilterMessagesPipe,
-    NewMessageComponent
+    NewMessageComponent,
+    CheckPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -100,6 +102,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
   ],
   providers: [{provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()}],
   bootstrap: [AppComponent],
-    entryComponents: [LoginComponent, NewMessageComponent]
+    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent]
 })
 export class AppModule { }

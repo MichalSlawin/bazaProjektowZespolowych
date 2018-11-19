@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialogRef} from '@angular/material';
-import {UserService} from '../../services/user.service';
-import { NgxWigComponent } from 'ngx-wig';
+import {MatDialog, MatDialogRef} from '@angular/material';
 import {FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
+import {CheckPasswordComponent} from '../check-password/check-password.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-message',
@@ -23,7 +23,10 @@ export class NewMessageComponent implements OnInit {
     isPublic: false
   };
 
-  constructor(public dialogRef: MatDialogRef<any>, public snackBar: MatSnackBar) {}
+  isPasswordCorrect: boolean;
+  checkPasswordDialogRef: MatDialogRef<CheckPasswordComponent>;
+
+  constructor(public dialogRef: MatDialogRef<NewMessageComponent>, public snackBar: MatSnackBar, public dialog: MatDialog) {}
 
   ngOnInit() {
   }
@@ -33,6 +36,7 @@ export class NewMessageComponent implements OnInit {
     }
 
     send() {
+
         this.data.recipient = this.formControlRecipient.value;
         this.data.title = this.formControlTitle.value;
         this.data.content = this.formControlContent.value;
@@ -50,14 +54,32 @@ export class NewMessageComponent implements OnInit {
         } else if (this.data.content == null || this.data.content === '') {
             this.openSnackBar('Podaj treść wiadomości');
         } else {
-            console.log(this.data);
-            this.dialogRef.close();
+            this.checkPassword();
         }
     }
 
     openSnackBar(message: string) {
         this.snackBar.open(message, 'Zamknij', {
             duration: 2000,
+        });
+    }
+
+    checkPassword() {
+        this.isPasswordCorrect = false;
+        this.checkPasswordDialogRef = this.dialog.open(CheckPasswordComponent, {
+            width: '600px'
+        });
+        this.checkPasswordDialogRef.afterClosed().pipe(
+            filter(isCorrect => isCorrect)
+        ).subscribe(isCorrect => {
+            this.isPasswordCorrect = isCorrect;
+            if (this.isPasswordCorrect) {
+                console.log(this.data);
+                this.dialogRef.close();
+                this.openSnackBar('Wiadomość wysłana');
+            } else {
+                this.openSnackBar('Nieprawidłowe hasło');
+            }
         });
     }
 }
