@@ -39,7 +39,7 @@ class ProjectController extends Controller
             $projects = Project::with(['languages', 'status', 'students'])->where('status_id', 3)->get();
             foreach ($projects as $project)
             {
-                $project->students->makeHidden(['username', 'index_no', 'id', 'created_at', 'updated_at']);
+                $project->students->makeHidden(['username', 'index_no', 'id']);
             }
             return response()->json($projects, 200);
         }
@@ -61,6 +61,30 @@ class ProjectController extends Controller
             return response()->json($project, 200);
         }
         return response()->json("Unauthorized", 401);
+    }
+
+    public function getById($id)
+    {
+        $user = Auth::user();
+        $project = Project::with(['students', 'messages', 'history', 'worker', 'status'])->find($id);
+        if($user instanceof Worker)
+        {
+            if($project->worker_id != $user->id)
+            {
+                $project->makeHidden(['messages', 'history']);
+            }
+        }
+        else
+        {
+            $projectCheck = DB::select("SELECT COUNT(ps.id) as 'CID' FROM project p
+                                        JOIN project_student ps ON ps.project_id = p.id
+                                        WHERE ps.student_id = ? AND p.id = ? and ps.accepted = ?", [$user->id, $id, 1]);
+            if($projectCheck[0]->CID != 1)
+            {
+                $project->makeHidden(['messages', 'history']);
+            }
+        }
+        return response()->json($project, 200);
     }
 
     public function add(Request $request)

@@ -31,5 +31,6 @@ $router->post('mail', 'MessageController@send');
 
 $router->get('project', 'ProjectController@get');
 $router->get('project/mine', 'ProjectController@getMine');
+$router->get('project/{id:[0-9]+}', 'ProjectController@getById');
 
 $router->post('project', 'ProjectController@add');
