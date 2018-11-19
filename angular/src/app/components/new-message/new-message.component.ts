@@ -23,7 +23,6 @@ export class NewMessageComponent implements OnInit {
     isPublic: false
   };
 
-  isPasswordCorrect: boolean;
   checkPasswordDialogRef: MatDialogRef<CheckPasswordComponent>;
 
   constructor(public dialogRef: MatDialogRef<NewMessageComponent>, public snackBar: MatSnackBar, public dialog: MatDialog) {}
@@ -65,21 +64,18 @@ export class NewMessageComponent implements OnInit {
     }
 
     checkPassword() {
-        this.isPasswordCorrect = false;
         this.checkPasswordDialogRef = this.dialog.open(CheckPasswordComponent, {
             width: '600px'
         });
-        this.checkPasswordDialogRef.afterClosed().pipe(
-            filter(isCorrect => isCorrect)
-        ).subscribe(isCorrect => {
-            this.isPasswordCorrect = isCorrect;
-            if (this.isPasswordCorrect) {
-                console.log(this.data);
-                this.dialogRef.close();
-                this.openSnackBar('Wiadomość wysłana');
-            } else {
-                this.openSnackBar('Nieprawidłowe hasło');
-            }
+
+        this.checkPasswordDialogRef.afterClosed().subscribe(isPasswordCorrect => {
+                if (isPasswordCorrect) {
+                    console.log(this.data);
+                    this.dialogRef.close();
+                    this.openSnackBar('Wiadomość wysłana');
+                } else {
+                    this.openSnackBar('Nieprawidłowe hasło');
+                }
         });
     }
 }
