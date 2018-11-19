@@ -30,5 +30,6 @@ $router->post('login', 'LoginController@login');
 $router->post('mail', 'MessageController@send');
 
 $router->get('project', 'ProjectController@get');
+$router->get('project/mine', 'ProjectController@getMine');
 
 $router->post('project', 'ProjectController@add');

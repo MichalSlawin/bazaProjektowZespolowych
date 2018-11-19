@@ -45,6 +45,24 @@ class ProjectController extends Controller
         }
     }
 
+    public function getMine()
+    {
+        $user = Auth::user();
+        if($user instanceof Student)
+        {
+            $project = Project::whereHas('students', function ($query) use ($user) {
+                $query->where('student_id', $user->id);
+                $query->where('accepted', 1);
+            })->with(['students', 'messages', 'history', 'worker'])->orderBy('id', 'desc')->take(1)->first();
+            if(empty($project))
+            {
+                return response()->json("Nie masz projektu", 400);
+            }
+            return response()->json($project, 200);
+        }
+        return response()->json("Unauthorized", 401);
+    }
+
     public function add(Request $request)
     {
         $user = Auth::user();
