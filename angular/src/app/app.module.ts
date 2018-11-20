@@ -40,12 +40,14 @@ import { HistoryComponent } from './components/history/history.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import {UiLoadingComponent} from './components/ui-loading/ui-loading.component';
 import {PolishPaginatorIntl} from '../PolishPaginationIntl';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { FirstUpperPipe } from './pipes/first-upper.pipe';
 import { FilterMessagesPipe } from './pipes/filter-messages.pipe';
 import { NewMessageComponent } from './components/new-message/new-message.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { CheckPasswordComponent } from './components/check-password/check-password.component';
+import {TokenInterceptor} from "./__helpers/token.interceptor";
+import {ErrorInterceptor} from "./__helpers/error.interceptors";
 
 @NgModule({
   declarations: [
@@ -100,7 +102,11 @@ import { CheckPasswordComponent } from './components/check-password/check-passwo
       HttpClientModule,
       NgxWigModule
   ],
-  providers: [{provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()}],
+  providers: [
+      {provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()},
+      { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+      ],
   bootstrap: [AppComponent],
     entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent]
 })
