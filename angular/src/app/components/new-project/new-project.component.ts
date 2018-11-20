@@ -4,6 +4,8 @@ import {MatAutocompleteSelectedEvent, MatChipInputEvent} from "@angular/material
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from "@angular/forms";
+import {UserService} from "../../services/user.service";
+import {ProjectService} from "../../services/project.service";
 
 @Component({
   selector: 'app-new-project',
@@ -27,30 +29,26 @@ export class NewProjectComponent implements OnInit {
     languageCtrl = new FormControl();
     filteredLanguages: Observable<string[]>;
     separatorKeysCodes: number[] = [ENTER, COMMA];
-    allLanguages: string[] = ['Java SE', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C'];
-    curators = [{
-        value: '1',
-        name: 'Osoba 1'
-    },{
-        value: '2',
-        name: 'Osoba 2'
-    },{
-        value: '3',
-        name: 'Osoba 3'
-    },{
-        value: '4',
-        name: 'Osoba 4'
-    }];
+    allLanguages;
+    curators;
 
     @ViewChild('languageInput') languageInput: ElementRef<HTMLInputElement>;
 
-    constructor() { }
+    constructor(private user: UserService, private project: ProjectService) { }
 
     ngOnInit() {
-        this.filteredLanguages = this.languageCtrl.valueChanges.pipe(
-            startWith(null),
-            map((language: string | null) => language ? this._filter(language) : this.allLanguages.slice())
-        );
+        this.project.getLanguages().subscribe((data) => {
+            this.allLanguages = data;
+            this.filteredLanguages = this.languageCtrl.valueChanges.pipe(
+                startWith(null),
+                map((language: string | null) => language ? this._filter(language) : this.allLanguages.slice())
+            );
+        });
+
+
+        this.user.workerList().subscribe((data) => {
+            this.curators = data;
+        });
     }
 
     add(event: MatChipInputEvent): void {

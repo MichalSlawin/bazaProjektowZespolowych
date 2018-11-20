@@ -38,3 +38,5 @@ $router->post('project', 'ProjectController@add');
 $router->get('worker/current', 'WorkerController@getCurrent');
 
 $router->post('worker/current', 'WorkerController@updateCurrent');
+
+$router->get('programing-language', 'ProgramingLanguageController@get');

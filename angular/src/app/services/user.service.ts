@@ -15,4 +15,8 @@ export class UserService {
       uploadData.append('password', data['password']);
       return this.http.post(apiLink + '/login', uploadData);
   }
+
+  workerList() {
+      return this.http.get(apiLink + '/worker/current')
+  }
 }

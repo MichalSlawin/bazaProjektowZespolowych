@@ -20,7 +20,7 @@ const routes: Routes = [
         path: 'projekty', component: ExpandableTableComponent
     },
     {
-        path: '**',  redirectTo: 'nowy-projekt'
+        path: '**',  redirectTo: 'projekty'
     }
 ];
 

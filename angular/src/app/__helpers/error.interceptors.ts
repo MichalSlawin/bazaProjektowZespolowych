@@ -14,7 +14,8 @@ export class ErrorInterceptor implements HttpInterceptor {
             if (err.status === 401) {
                 if (err.error === 'Unauthorized') {
                     localStorage.removeItem('token');
-                    location.reload(true);
+                    // location.reload(true);
+                    location.href = "/";
                 } else {
                     console.log("Złe dane logowania")
                 }
