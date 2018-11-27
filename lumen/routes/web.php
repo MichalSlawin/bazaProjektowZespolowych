@@ -35,6 +35,8 @@ $router->get('project/{id:[0-9]+}', 'ProjectController@getById');
 
 $router->post('project', 'ProjectController@add');
 
+$router->delete('project', 'ProjectController@delete');
+
 $router->get('worker/current', 'WorkerController@getCurrent');
 
 $router->post('worker/current', 'WorkerController@updateCurrent');

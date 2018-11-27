@@ -194,4 +194,21 @@ class ProjectController extends Controller
         }
         return response()->json("Unauthorized", 401);
     }
+
+    public function delete()
+    {
+        $user = Auth::user();
+        if(!$user instanceof Student) {
+            return response()->json("Unauthorized", 401);
+        }
+        $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
+        $project = Project::whereHas('academicYear', function ($query) use ($academicYear) {
+            $query->where('id', $academicYear->id);
+        })->where('student_id', $user->id)->first();
+        if(empty($project))
+        {
+            return response()->json("You dont have project", 400);
+        }
+        return response()->json($project, 200);
+    }
 }
