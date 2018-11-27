@@ -12,4 +12,8 @@ export class ProjectService {
   getLanguages() {
     return this.http.get(apiLink + "/programing-language");
   }
+
+  getList() {
+    return this.http.get(apiLink + "/project");
+  }
 }

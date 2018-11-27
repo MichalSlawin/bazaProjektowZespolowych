@@ -1,6 +1,6 @@
 {
   "/lumen/public/index.php": {
-    "target": "http://localhost:9000/~atrawinski/",
+    "target": "http://localhost:9000/~mslawinski/",
     "secure": false,
     "changeOrigin": true
   }

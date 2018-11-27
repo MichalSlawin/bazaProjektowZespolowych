@@ -1,5 +1,3 @@
-<!--TODO: dodać przyciski dla technologii i nazwy/opisu do czyszczenia, usunąć przycisk czyszczenia wszystkiego-->
-
 <mat-form-field class="nazwa-opis">
     <input matInput (keyup)="applyFilterNameDescription($event.target.value)" placeholder="Nazwa/opis"
            [formControl]="formControlNameDescription">
@@ -9,7 +7,8 @@
 </mat-form-field>
 
 <mat-form-field class="rok">
-    <mat-select placeholder="Rok" (selectionChange)="applyFilterRok($event.value.toString())" [formControl]="formControlYear">
+    <mat-select placeholder="Rok" [formControl]="formControlYear">
+    <!--<mat-select placeholder="Rok" (selectionChange)="applyFilterRok($event.value.toString())" [formControl]="formControlYear">-->
         <mat-option *ngFor="let year of years" [value]="year">
             {{year}}
         </mat-option>
@@ -44,7 +43,7 @@
               {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
           </span>
           <ng-template #other>
-              <mat-chip-list *ngIf="column === 'technologies'; else last">
+              <mat-chip-list *ngIf="column === 'technologie'; else last">
                   <mat-chip *ngFor="let language of element[column]">
                       {{language}}
                   </mat-chip>

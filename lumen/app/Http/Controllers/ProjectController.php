@@ -27,11 +27,30 @@ class ProjectController extends Controller
     public function get()
     {
         $user = Auth::user();
+        $columns = ["nazwa", "mentoring" , "opiekun", "technologie"];
+
+        $allLanguagesObjects = ProgramingLanguage::all();
+        $allLanguages = [];
+        foreach ($allLanguagesObjects as $language)
+        {
+            $allLanguages[] = $language->name;
+        }
+
         if($user instanceof Student || $user instanceof Worker)
         {
             //Wszystkie projekty
-            $projects = Project::with(['languages', 'status', 'students'])->get();
-            return response()->json($projects, 200);
+            $projects = Project::with(['languages', 'students', 'worker'])->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring"]);
+            foreach ($projects as $project)
+            {
+                $languageArray = [];
+                foreach ($project->languages as $language)
+                {
+                    $languageArray[] = $language->name;
+                }
+                $project->technologie = $languageArray;
+
+                $project->opiekun = $project->worker->username;
+            }
         }
         else
         {
@@ -41,8 +60,9 @@ class ProjectController extends Controller
             {
                 $project->students->makeHidden(['username', 'index_no', 'id']);
             }
-            return response()->json($projects, 200);
         }
+        return response()->json(["data" => $projects, "columns" => $columns, "allLanguages" => $allLanguages], 200);
+
     }
 
     public function getMine()

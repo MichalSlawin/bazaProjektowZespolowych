@@ -6,6 +6,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/internal/operators';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {ProjectService} from "../../services/project.service";
 
 /**
  * @title Table with expandable rows
@@ -25,8 +26,10 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
 
     export class ExpandableTableComponent implements OnInit {
 
-    dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
-    columnsToDisplay = ['id', 'name', 'mentoring', 'curator', 'technologies'];
+    dataSource;
+    // dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
+    // columnsToDisplay = ['id', 'name', 'mentoring', 'curator', 'technologies'];
+    columnsToDisplay;
     expandedElement: Project;
 
     filteredValues = {
@@ -45,25 +48,37 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
     years: string[] = ['2018', '2017', '2016'];
     //filteredOptionsYear: Observable<string[]>;
 
-    allTechnologies: string[] = ['Java Spring', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C', 'Android'];
+    //allTechnologies: string[] = ['Java Spring', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C', 'Android'];
+    allTechnologies: string[];
     filteredOptionsTechnology: Observable<string[]>;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor() {}
+    constructor(private project: ProjectService) {}
 
         ngOnInit() {
-            this.dataSource.paginator = this.paginator;
+            this.project.getList().subscribe((data) => {
+                this.dataSource = new MatTableDataSource(data['data']);
+                this.columnsToDisplay = data['columns'];
+                this.allTechnologies = data['allLanguages'];
 
-            this.filteredOptionsTechnology = this.formControlTechnology.valueChanges.pipe(
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.filterPredicate = this.customFilterPredicate();
+
+                this.dataSource.filter = JSON.stringify(this.filteredValues);
+
+
+                this.filteredOptionsTechnology = this.formControlTechnology.valueChanges.pipe(
                     startWith(''),
                     map(value => this._filterTechnology(value))
                 );
 
-            this.dataSource.filterPredicate = this.customFilterPredicate();
 
-            this.dataSource.filter = JSON.stringify(this.filteredValues);
-            this.formControlYear.setValue(this.filteredValues.year);
+                this.formControlYear.setValue(this.filteredValues.year);
+            });
+
+
+
         }
 
         private customFilterPredicate() {
@@ -71,8 +86,8 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
                 let searchString = JSON.parse(filter);
                 return (data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 ||
                     data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1)
-                    && data.year.toString().trim().toLowerCase().indexOf(searchString.year.toLowerCase()) !== -1 &&
-                    data.technologies.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
+                    // && data.year.toString().trim().toLowerCase().indexOf(searchString.year.toLowerCase()) !== -1 &&
+                    && data.technologies.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
                     && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1;
             }
             return myFilterPredicate;
@@ -90,11 +105,11 @@ import {COMMA, ENTER} from "@angular/cdk/keycodes";
             this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
-        applyFilterRok(filterValue: string) {
-            this.filteredValues['year'] = filterValue.toString().trim().toLowerCase();
-            this.dataSource.filter = JSON.stringify(this.filteredValues);
-            console.log(filterValue);
-        }
+        // applyFilterRok(filterValue: string) {
+        //     this.filteredValues['year'] = filterValue.toString().trim().toLowerCase();
+        //     this.dataSource.filter = JSON.stringify(this.filteredValues);
+        //     console.log(filterValue);
+        // }
 
         applyFilterTechnology(filterValue: string) {
             this.filteredValues['technology'] = filterValue.trim().toLowerCase();
