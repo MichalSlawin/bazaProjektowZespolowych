@@ -7,9 +7,9 @@
 </mat-form-field>
 
 <mat-form-field class="rok">
-    <mat-select placeholder="Rok" [formControl]="formControlYear">
-    <!--<mat-select placeholder="Rok" (selectionChange)="applyFilterRok($event.value.toString())" [formControl]="formControlYear">-->
-        <mat-option *ngFor="let year of years" [value]="year">
+    <!--<mat-select placeholder="Rok" [formControl]="formControlYear">-->
+    <mat-select placeholder="Rok" (selectionChange)="applyFilterRok($event.value.toString())" [formControl]="formControlYear">
+        <mat-option *ngFor="let year of allYears" [value]="year">
             {{year}}
         </mat-option>
     </mat-select>

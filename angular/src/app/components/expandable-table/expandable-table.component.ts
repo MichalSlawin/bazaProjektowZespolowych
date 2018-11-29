@@ -35,7 +35,7 @@ import {ProjectService} from "../../services/project.service";
     filteredValues = {
         name: "",
         description: "",
-        year: "2018",
+        year: "2018/19",
         technology: "",
         mentoring: ""
     }
@@ -45,7 +45,7 @@ import {ProjectService} from "../../services/project.service";
     formControlNameDescription = new FormControl();
     formControlMentoring = new FormControl();
 
-    years: string[] = ['2018', '2017', '2016'];
+    allYears: string[];
     //filteredOptionsYear: Observable<string[]>;
 
     //allTechnologies: string[] = ['Java Spring', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C', 'Android'];
@@ -61,6 +61,7 @@ import {ProjectService} from "../../services/project.service";
                 this.dataSource = new MatTableDataSource(data['data']);
                 this.columnsToDisplay = data['columns'];
                 this.allTechnologies = data['allLanguages'];
+                this.allYears = data['allYears'];
 
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.filterPredicate = this.customFilterPredicate();
@@ -82,12 +83,12 @@ import {ProjectService} from "../../services/project.service";
         }
 
         private customFilterPredicate() {
-            const myFilterPredicate = (data: Project, filter: string): boolean => {
+            const myFilterPredicate = (data, filter: string): boolean => {
                 let searchString = JSON.parse(filter);
-                return (data.name.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 ||
+                return (data.nazwa.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 ||
                     data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1)
-                    // && data.year.toString().trim().toLowerCase().indexOf(searchString.year.toLowerCase()) !== -1 &&
-                    && data.technologies.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
+                    && data.rok.toString().trim().toLowerCase().indexOf(searchString.year.toLowerCase()) !== -1
+                    && data.technologie.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
                     && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1;
             }
             return myFilterPredicate;
@@ -105,11 +106,10 @@ import {ProjectService} from "../../services/project.service";
             this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
-        // applyFilterRok(filterValue: string) {
-        //     this.filteredValues['year'] = filterValue.toString().trim().toLowerCase();
-        //     this.dataSource.filter = JSON.stringify(this.filteredValues);
-        //     console.log(filterValue);
-        // }
+        applyFilterRok(filterValue: string) {
+            this.filteredValues['year'] = filterValue.toString().trim().toLowerCase();
+            this.dataSource.filter = JSON.stringify(this.filteredValues);
+        }
 
         applyFilterTechnology(filterValue: string) {
             this.filteredValues['technology'] = filterValue.trim().toLowerCase();

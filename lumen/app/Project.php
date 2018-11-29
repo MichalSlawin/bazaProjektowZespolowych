@@ -45,4 +45,9 @@ class Project extends Model
     {
         return $this->hasMany("App\Message", "project_id", "id");
     }
+
+    public function academic_year() {
+        return $this->belongsTo("App\AcademicYear", "academic_year_id", "id");
+    }
+
 }

@@ -27,7 +27,7 @@ class ProjectController extends Controller
     public function get()
     {
         $user = Auth::user();
-        $columns = ["nazwa", "mentoring" , "opiekun", "technologie"];
+        $columns = ["nazwa", "mentoring" , "opiekun", "technologie", "rok"];
 
         $allLanguagesObjects = ProgramingLanguage::all();
         $allLanguages = [];
@@ -35,11 +35,17 @@ class ProjectController extends Controller
         {
             $allLanguages[] = $language->name;
         }
+        $allYearsObjects = AcademicYear::all();
+        $allYears = [];
+        foreach ($allYearsObjects as $year)
+        {
+            $allYears[] = $year->name;
+        }
 
         if($user instanceof Student || $user instanceof Worker)
         {
             //Wszystkie projekty
-            $projects = Project::with(['languages', 'students', 'worker'])->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring"]);
+            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id"]);
             foreach ($projects as $project)
             {
                 $languageArray = [];
@@ -50,6 +56,8 @@ class ProjectController extends Controller
                 $project->technologie = $languageArray;
 
                 $project->opiekun = $project->worker->username;
+
+                $project->rok = $project->academic_year->name;
             }
         }
         else
@@ -61,7 +69,7 @@ class ProjectController extends Controller
                 $project->students->makeHidden(['username', 'index_no', 'id']);
             }
         }
-        return response()->json(["data" => $projects, "columns" => $columns, "allLanguages" => $allLanguages], 200);
+        return response()->json(["data" => $projects, "columns" => $columns, "allLanguages" => $allLanguages, "allYears" => $allYears], 200);
 
     }
 
