@@ -24,28 +24,25 @@ class ProjectController extends Controller
         $this->middleware('auth', ['except' => ['get']]);
     }
 
-    public function get()
+    public function get(Request $request)
     {
-        $user = Auth::user();
-        $columns = ["nazwa", "mentoring" , "opiekun", "technologie", "rok"];
+        if($request->get("rok"))
+        {
+            $year = $request->get("rok");
+        }
+        else
+        {
+            $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
+            $year = $academicYear->id;
+        }
 
-        $allLanguagesObjects = ProgramingLanguage::all();
-        $allLanguages = [];
-        foreach ($allLanguagesObjects as $language)
-        {
-            $allLanguages[] = $language->name;
-        }
-        $allYearsObjects = AcademicYear::all();
-        $allYears = [];
-        foreach ($allYearsObjects as $year)
-        {
-            $allYears[] = $year->name;
-        }
+        $user = Auth::user();
+        $columns = ["nazwa", "mentoring" , "opiekun", "technologie"];
 
         if($user instanceof Student || $user instanceof Worker)
         {
             //Wszystkie projekty
-            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id"]);
+            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id"]);
             foreach ($projects as $project)
             {
                 $languageArray = [];
@@ -69,7 +66,7 @@ class ProjectController extends Controller
                 $project->students->makeHidden(['username', 'index_no', 'id']);
             }
         }
-        return response()->json(["data" => $projects, "columns" => $columns, "allLanguages" => $allLanguages, "allYears" => $allYears], 200);
+        return response()->json(["data" => $projects, "columns" => $columns],200);
 
     }
 

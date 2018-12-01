@@ -42,3 +42,5 @@ $router->get('worker/current', 'WorkerController@getCurrent');
 $router->post('worker/current', 'WorkerController@updateCurrent');
 
 $router->get('programing-language', 'ProgramingLanguageController@get');
+
+$router->get('academic-year', 'AcademicYearController@get');

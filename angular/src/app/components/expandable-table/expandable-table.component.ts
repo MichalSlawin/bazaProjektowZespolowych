@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/internal/operators';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {ProjectService} from "../../services/project.service";
+import {forEach} from "@angular/router/src/utils/collection";
 
 /**
  * @title Table with expandable rows
@@ -27,29 +28,24 @@ import {ProjectService} from "../../services/project.service";
     export class ExpandableTableComponent implements OnInit {
 
     dataSource;
-    // dataSource = new MatTableDataSource<Project>(ELEMENT_DATA);
-    // columnsToDisplay = ['id', 'name', 'mentoring', 'curator', 'technologies'];
     columnsToDisplay;
     expandedElement: Project;
 
     filteredValues = {
         name: "",
         description: "",
-        year: "2018/19",
+        year: "",
         technology: "",
         mentoring: ""
     }
 
-    formControlYear = new FormControl(this.filteredValues.year.toString());
+    year;
     formControlTechnology = new FormControl();
     formControlNameDescription = new FormControl();
     formControlMentoring = new FormControl();
 
-    allYears: string[];
-    //filteredOptionsYear: Observable<string[]>;
-
-    //allTechnologies: string[] = ['Java Spring', 'Java EE', 'PHP', 'Python', 'C#', 'C++', 'C', 'Android'];
-    allTechnologies: string[];
+    allYears;
+    allTechnologies;
     filteredOptionsTechnology: Observable<string[]>;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -57,29 +53,38 @@ import {ProjectService} from "../../services/project.service";
     constructor(private project: ProjectService) {}
 
         ngOnInit() {
-            this.project.getList().subscribe((data) => {
+            this.project.getAcademicYears().subscribe((data) => {
+                this.allYears = data;
+                this.year = data[0]['id'];
+                this.getProjectList(this.year);
+            });
+
+            this.project.getLanguages().subscribe((data) => {
+                this.allTechnologies = data['allLanguages'];
+            })
+
+        }
+
+        getProjectList(year) {
+            this.project.getList(year).subscribe((data) => {
                 this.dataSource = new MatTableDataSource(data['data']);
                 this.columnsToDisplay = data['columns'];
-                this.allTechnologies = data['allLanguages'];
-                this.allYears = data['allYears'];
 
                 this.dataSource.paginator = this.paginator;
                 this.dataSource.filterPredicate = this.customFilterPredicate();
 
                 this.dataSource.filter = JSON.stringify(this.filteredValues);
 
-
                 this.filteredOptionsTechnology = this.formControlTechnology.valueChanges.pipe(
                     startWith(''),
                     map(value => this._filterTechnology(value))
                 );
 
-
-                this.formControlYear.setValue(this.filteredValues.year);
             });
+        }
 
-
-
+        private changeYear() {
+            this.getProjectList(this.year);
         }
 
         private customFilterPredicate() {
@@ -87,7 +92,6 @@ import {ProjectService} from "../../services/project.service";
                 let searchString = JSON.parse(filter);
                 return (data.nazwa.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 ||
                     data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1)
-                    && data.rok.toString().trim().toLowerCase().indexOf(searchString.year.toLowerCase()) !== -1
                     && data.technologie.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
                     && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1;
             }
@@ -103,11 +107,6 @@ import {ProjectService} from "../../services/project.service";
         applyFilterNameDescription(filterValue: string) {
             this.filteredValues['name'] = filterValue.trim().toLowerCase();
             this.filteredValues['description'] = filterValue.trim().toLowerCase();
-            this.dataSource.filter = JSON.stringify(this.filteredValues);
-        }
-
-        applyFilterRok(filterValue: string) {
-            this.filteredValues['year'] = filterValue.toString().trim().toLowerCase();
             this.dataSource.filter = JSON.stringify(this.filteredValues);
         }
 
@@ -140,136 +139,4 @@ import {ProjectService} from "../../services/project.service";
         }
 
     }
-// Dane testowe:
-const ELEMENT_DATA: Project[] = [
-    {
-        id: 1,
-        name: 'Sklep sportowy',
-        mentoring: true,
-        curator: 'Anna Wyborna',
-        technologies: ['Angular6', 'Laravel'],
-        description: 'Aplikacja sklep sportowy do przeglądanie i kupowania produktów sportowych.',
-        contestants: 'Jan Kowalski, Marcin Nowak',
-        year: 2018
-    },
-    {
-        id: 2,
-        name: 'Aplikacja do biegania',
-        mentoring: true,
-        curator: 'Marian Piotrowski',
-        technologies: ['Android'],
-        description: 'Aplikacja mobilna pozwalająca użytkownikowi mierzyć i zapisywać czasy i odległości swoich biegów',
-        contestants: 'Anna Szymańska, Dorota Cieślak',
-        year: 2017
-    },
-    {
-        id: 3,
-        name: 'Sklep',
-        mentoring: true,
-        curator: 'Marian Piotrowski',
-        technologies: ['Android'],
-        description: 'aplikacja do zarzadzania sklepem',
-        contestants: 'studenci',
-        year: 2018
-    },
-    {
-        id: 4,
-        name: 'Aplikacja',
-        mentoring: false,
-        curator: 'Anna Wyborna',
-        technologies: ['Laravel'],
-        description: 'aplikacja do zarzadzania sklepem',
-        contestants: 'studenci',
-        year: 2017
-    },
-    {
-        id: 5,
-        name: 'test1',
-        mentoring: true,
-        curator: 'test1',
-        technologies: ['Java'],
-        description: 'test1',
-        contestants: 'test1',
-        year: 2016
-    },
-    {
-        id: 6,
-        name: 'test2',
-        mentoring: true,
-        curator: 'test2',
-        technologies: ['Java Spring'],
-        description: 'test2',
-        contestants: 'test2',
-        year: 2016
-    },
-    {
-        id: 7,
-        name: 'test3',
-        mentoring: false,
-        curator: 'test3',
-        technologies: ['Java Spring'],
-        description: 'test3',
-        contestants: 'test3',
-        year: 2017
-    },
-    {
-        id: 8,
-        name: 'test4',
-        mentoring: false,
-        curator: 'test3',
-        technologies: ['Java Spring'],
-        description: 'test3',
-        contestants: 'test3',
-        year: 2017
-    },
-    {
-        id: 9,
-        name: 'test5',
-        mentoring: false,
-        curator: 'test3',
-        technologies: ['Java Spring'],
-        description: 'test3',
-        contestants: 'test3',
-        year: 2017
-    },
-    {
-        id: 10,
-        name: 'test6',
-        mentoring: false,
-        curator: 'test3',
-        technologies: ['Java Spring'],
-        description: 'test3',
-        contestants: 'test3',
-        year: 2017
-    },
-    {
-        id: 11,
-        name: 'test7',
-        mentoring: false,
-        curator: 'test3',
-        technologies: ['Java Spring'],
-        description: 'test3',
-        contestants: 'test3',
-        year: 2017
-    },
-    {
-        id: 12,
-        name: 'test8',
-        mentoring: true,
-        curator: 'test3',
-        technologies: ['Java EE'],
-        description: 'test3',
-        contestants: 'test3',
-        year: 2017
-    },
-    {
-        id: 13,
-        name: 'test9',
-        mentoring: false,
-        curator: 'test3',
-        technologies: ['Java Spring'],
-        description: 'test3',
-        contestants: 'test3',
-        year: 2017
-    },
-];
+
