@@ -60,7 +60,7 @@ import {forEach} from "@angular/router/src/utils/collection";
             });
 
             this.project.getLanguages().subscribe((data) => {
-                this.allTechnologies = data['allLanguages'];
+                this.allTechnologies = data;
             })
 
         }
