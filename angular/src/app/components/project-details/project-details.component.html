@@ -1,44 +1,53 @@
-<mat-card>
-  <mat-list>
-    <mat-list-item>
-      <h4>Nazwa projektu</h4>
-    </mat-list-item>
-    <mat-list-item>
-      {{projectData.name}}
-    </mat-list-item>
-    <mat-list-item>
-      <h4>Opis projektu</h4>
-    </mat-list-item>
-    <mat-list-item>
-      <span class="with-newlines">{{projectData.description}}</span>
-    </mat-list-item>
-    <mat-list-item>
-      <h4>Link do repozytorium</h4>
-    </mat-list-item>
-    <mat-list-item>
-      <a [href]="projectData.link" target="_blank">{{projectData.link}}</a>
-    </mat-list-item>
-    <mat-list-item>
-      <h4>Języki programowania</h4>
-    </mat-list-item>
-    <mat-list-item>
-      <mat-chip-list>
-        <mat-chip *ngFor="let language of projectData.languages">
-          {{language}}
-        </mat-chip>
-      </mat-chip-list>
-    </mat-list-item>
-    <mat-list-item>
-      <h4>Mentoring firmy</h4>
-    </mat-list-item>
-    <mat-list-item>
-      {{projectData.mentoring ? 'Zainteresowanie' : 'Brak zainteresowania'}}
-    </mat-list-item>
-    <mat-list-item>
-      <h4>Opiekun</h4>
-    </mat-list-item>
-    <mat-list-item>
-      {{projectData.curator}}
-    </mat-list-item>
-  </mat-list>
-</mat-card>
+<mat-list>
+  <mat-card>
+    <h4>Nazwa projektu</h4>
+  </mat-card>
+  <mat-card>
+    {{projectData?.name}}
+  </mat-card>
+  <mat-card>
+    <h4>Opis projektu</h4>
+  </mat-card>
+  <mat-card>
+    <span class="with-newlines">{{projectData?.description}}</span>
+  </mat-card>
+  <mat-card>
+    <h4>Link do repozytorium</h4>
+  </mat-card>
+  <mat-card>
+    <a [href]="projectData?.link" target="_blank">{{projectData?.link}}</a>
+  </mat-card>
+  <mat-card>
+    <h4>Języki programowania</h4>
+  </mat-card>
+  <mat-card>
+    <mat-chip-list>
+      <mat-chip *ngFor="let language of projectData?.languages">
+        {{language.name}}
+      </mat-chip>
+    </mat-chip-list>
+  </mat-card>
+  <mat-card>
+    <h4>Mentoring firmy</h4>
+  </mat-card>
+  <mat-card>
+    {{projectData?.mentoring ? 'Zainteresowanie' : 'Brak zainteresowania'}}
+  </mat-card>
+  <mat-card>
+    <h4>Opiekun</h4>
+  </mat-card>
+  <mat-card>
+    {{projectData?.worker.username}}
+  </mat-card>
+  <mat-card>
+    <h4>Uczestnicy</h4>
+  </mat-card>
+  <mat-card>
+    <mat-list>
+      <mat-list-item *ngFor="let student of projectData?.students">
+        <mat-icon mat-list-icon>fiber_manual_record</mat-icon>
+        {{student.index_no}}
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</mat-list>

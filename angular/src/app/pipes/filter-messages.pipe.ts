@@ -12,7 +12,7 @@ export class FilterMessagesPipe implements PipeTransform {
         }
 
         return messages.filter(message => {
-            return message.title.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
+            return message.subject.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
         });
     }
 

@@ -2,17 +2,17 @@
   <mat-tab-group>
     <mat-tab label="Szczegóły">
       <ng-template matTabContent>
-        <app-project-details></app-project-details>
+        <app-project-details [projectData]="projectData"></app-project-details>
       </ng-template>
     </mat-tab>
     <mat-tab label="Wiadomości">
       <ng-template matTabContent>
-        <app-messages></app-messages>
+        <app-messages [projectMessages]="projectData?.messages"></app-messages>
       </ng-template>
     </mat-tab>
     <mat-tab label="Historia">
       <ng-template matTabContent>
-        <app-history></app-history>
+        <app-history [projectHistory]="projectData?.history"></app-history>
       </ng-template>
     </mat-tab>
   </mat-tab-group>

@@ -35,4 +35,8 @@ export class ProjectService {
 
     return this.http.get(apiLink + "/project", { params: params });
   }
+
+  getMine() {
+    return this.http.get(apiLink + '/project/mine');
+  }
 }

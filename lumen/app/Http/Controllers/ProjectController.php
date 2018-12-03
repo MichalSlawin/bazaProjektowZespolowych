@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\AcademicYear;
+use App\Message;
 use App\ProgramingLanguage;
 use App\Project;
 use App\ProjectHistory;
@@ -60,9 +61,20 @@ class ProjectController extends Controller
         else
         {
             //Tylko aktywne
-            $projects = Project::with(['languages', 'status', 'students'])->where('status_id', 3)->get();
+            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->where('status_id', 3)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id"]);
             foreach ($projects as $project)
             {
+                $languageArray = [];
+                foreach ($project->languages as $language)
+                {
+                    $languageArray[] = $language->name;
+                }
+                $project->technologie = $languageArray;
+
+                $project->opiekun = $project->worker->username;
+
+                $project->rok = $project->academic_year->name;
+
                 $project->students->makeHidden(['username', 'index_no', 'id']);
             }
         }
@@ -78,10 +90,18 @@ class ProjectController extends Controller
             $project = Project::whereHas('students', function ($query) use ($user) {
                 $query->where('student_id', $user->id);
                 $query->where('accepted', 1);
-            })->with(['students', 'messages', 'history', 'worker'])->orderBy('id', 'desc')->take(1)->first();
+            })->with(['students', 'history', 'worker', 'languages'])->orderBy('id', 'desc')->take(1)->first();
             if(empty($project))
             {
                 return response()->json("Nie masz projektu", 400);
+            }
+            if($project->student_id == $user->id)
+            {
+                $project->messages = Message::where('project_id', $project->id)->get();
+            }
+            else
+            {
+                $project->messages = Message::where('project_id', $project->id)->where('is_public', 1)->get();
             }
             return response()->json($project, 200);
         }
@@ -186,6 +206,7 @@ class ProjectController extends Controller
                         $project->languages()->save($languageObject);
                     }
                     $projectHistory = new ProjectHistory();
+                    $projectHistory->subject = "Utworzono projekt";
                     $projectHistory->body = "Projekt został utworzony";
                     $projectHistory->project_id = $project->id;
                     $projectHistory->save();

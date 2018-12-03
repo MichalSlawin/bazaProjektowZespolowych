@@ -1,22 +1,14 @@
 
 <mat-card>
-  <!--TODO:Widok główny: wyświetlone wszystkie wiadomości, do których użytkownik ma wgląd, od najnowszych do najstarszych.-->
-  <!--TODO:https://material.angular.io/components/expansion/overview-->
-  <!--TODO:Gdzieś u góry przycisk nowa wiadomość. Wyskakujące okienko do pisania nowej wiadomości, tak jak logowanie.-->
-  <!--TODO:https://github.com/stevermeister/ngx-wig-->
-  <!--TODO:W edytorze przełącznik czy mail prywatny(tylko do opiekuna) czy publiczny(do opiekuna i do grupy)-->
-  <!--TODO:przeszukiwanie maili po tytule-->
-
   <button mat-raised-button color="primary" class="composeButton" (click)="compose()">Napisz</button>
 
   <mat-form-field class="title_filter">
-    <input matInput placeholder="Temat" [formControl]="formControlTitleFilter">
-    <button mat-button *ngIf="formControlTitleFilter.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearTitle()">
+    <input matInput placeholder="Temat" [formControl]="formControlSubjectFilter">
+    <button mat-button *ngIf="formControlSubjectFilter.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearSubject()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
 
-  <!--kod z https://stackblitz.com/edit/table-like-mat-accordion?file=app%2Fapp.component.html-->
   <mat-accordion displayMode="flat" multi class="mat-table">
     <section class="mat-elevation-z2 mat-header-row">
       <span class="mat-header-cell" mat-sort-header="vesselName">Od</span>
@@ -24,13 +16,13 @@
       <span class="mat-header-cell" mat-sort-header="vesselStatus">Temat</span>
     </section>
 
-    <mat-expansion-panel *ngFor="let message of (messages | filterMessages:formControlTitleFilter.value)">
+    <mat-expansion-panel *ngFor="let message of (messages | filterMessages:formControlSubjectFilter.value)">
       <mat-expansion-panel-header class="mat-row">
-        <span class="mat-cell">{{message.sender}}</span>
-        <span class="mat-cell">{{message.sendDate}}</span>
-        <span class="mat-cell">{{message.title | filterMessages}}</span>
+        <span class="mat-cell">{{message.from_role}}</span>
+        <span class="mat-cell">{{message.created_at}}</span>
+        <span class="mat-cell">{{message.subject | filterMessages}}</span>
       </mat-expansion-panel-header>
-      <span>{{message.content}}</span>
+      <span class="with-newlines" [innerHTML]="message.body"></span>
     </mat-expansion-panel>
 
   </mat-accordion>

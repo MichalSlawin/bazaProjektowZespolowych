@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-project-details',
@@ -7,18 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProjectDetailsComponent implements OnInit {
 
-  projectData = {
-      name: 'Projekt zespołowy',
-      description: 'To jest krótki opis\ntego projektu.',
-      link: 'https://github.com',
-      languages: ['Angular 6', 'Java EE'],
-      mentoring: false,
-      curator: 'Osoba 2'
-  };
+    @Input('projectData') projectData;
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
 }
