@@ -17,6 +17,12 @@ export class MyProjectComponent implements OnInit {
     this.getProjectData();
   }
 
+  refresh(value) {
+    if(value) {
+      this.getProjectData();
+    }
+  }
+
   getProjectData() {
     this.project.getMine().subscribe((data) => {
       this.projectData = data;

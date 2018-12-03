@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatDialog} from "@angular/material";
 import {NewMessageComponent} from "../new-message/new-message.component";
 import {FormControl} from "@angular/forms";
@@ -17,14 +17,24 @@ export class MessagesComponent implements OnInit {
     @Input('projectMessages') messages;
     @Input('projectId') projectId;
 
+    @Output() messageEvent = new EventEmitter();
+
   constructor(public dialog: MatDialog) {}
 
   ngOnInit() {}
+
+  refreshMessages() {
+      this.messageEvent.emit(true);
+  }
 
   compose() {
       const dialogRef = this.dialog.open(NewMessageComponent, {
           width: '800px',
           data: this.projectId
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+         this.refreshMessages();
       });
   }
 
