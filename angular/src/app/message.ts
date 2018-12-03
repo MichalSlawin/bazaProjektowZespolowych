@@ -1,8 +1,7 @@
 export class Message {
-    sender: string;
-    recipient: string;
-    sendDate: string;
-    title: string;
-    content: string;
+    from_role: string;
+    created_at: string;
+    subject: string;
+    body: string;
     isPublic: boolean;
 }
