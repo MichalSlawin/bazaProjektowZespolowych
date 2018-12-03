@@ -15,6 +15,7 @@ export class MessagesComponent implements OnInit {
     formControlSubjectFilter = new FormControl();
 
     @Input('projectMessages') messages;
+    @Input('projectId') projectId;
 
   constructor(public dialog: MatDialog) {}
 
@@ -22,7 +23,8 @@ export class MessagesComponent implements OnInit {
 
   compose() {
       const dialogRef = this.dialog.open(NewMessageComponent, {
-          width: '800px'
+          width: '800px',
+          data: this.projectId
       });
   }
 

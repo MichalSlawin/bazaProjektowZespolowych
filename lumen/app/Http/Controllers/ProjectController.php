@@ -97,11 +97,11 @@ class ProjectController extends Controller
             }
             if($project->student_id == $user->id)
             {
-                $project->messages = Message::where('project_id', $project->id)->get();
+                $project->messages = Message::where('project_id', $project->id)->orderBy('created_at', 'desc')->get();
             }
             else
             {
-                $project->messages = Message::where('project_id', $project->id)->where('is_public', 1)->get();
+                $project->messages = Message::where('project_id', $project->id)->where('is_public', 1)->orderBy('created_at', 'desc')->get();
             }
             return response()->json($project, 200);
         }

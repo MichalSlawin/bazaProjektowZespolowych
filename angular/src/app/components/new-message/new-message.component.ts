@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {MatDialog, MatDialogRef} from '@angular/material';
+import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material';
 import {FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
 import {CheckPasswordComponent} from '../check-password/check-password.component';
@@ -16,6 +16,7 @@ export class NewMessageComponent implements OnInit {
   formControlPublic = new FormControl();
 
   data = {
+    id: '',
     subject: '',
     body: '',
     is_public: false
@@ -23,7 +24,10 @@ export class NewMessageComponent implements OnInit {
 
   checkPasswordDialogRef: MatDialogRef<CheckPasswordComponent>;
 
-  constructor(public dialogRef: MatDialogRef<NewMessageComponent>, public snackBar: MatSnackBar, public dialog: MatDialog) {}
+  constructor(public dialogRef: MatDialogRef<NewMessageComponent>,
+              @Inject(MAT_DIALOG_DATA) public id: any,
+              public snackBar: MatSnackBar,
+              public dialog: MatDialog) {}
 
   ngOnInit() {
   }
@@ -33,7 +37,7 @@ export class NewMessageComponent implements OnInit {
     }
 
     send() {
-
+        this.data.id = this.id;
         this.data.subject = this.formControlSubject.value;
         this.data.body = this.formControlBody.value;
         if (this.formControlPublic.value == null) {

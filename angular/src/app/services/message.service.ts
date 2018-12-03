@@ -11,7 +11,7 @@ export class MessageService {
 
   sendMessage(data) {
       const uploadData = new FormData();
-      uploadData.append('project_id', '6');
+      uploadData.append('project_id', data['id']);
       uploadData.append('body', data['body']);
       uploadData.append('subject', data['subject']);
       uploadData.append('password', data['password']);

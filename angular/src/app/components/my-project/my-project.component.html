@@ -7,7 +7,7 @@
     </mat-tab>
     <mat-tab label="Wiadomości">
       <ng-template matTabContent>
-        <app-messages [projectMessages]="projectData?.messages"></app-messages>
+        <app-messages [projectMessages]="projectData?.messages" [projectId]="projectData?.id"></app-messages>
       </ng-template>
     </mat-tab>
     <mat-tab label="Historia">
