@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,7 +10,10 @@ import {LoginComponent} from "../login/login.component";
   templateUrl: './navigator.component.html',
   styleUrls: ['./navigator.component.css']
 })
-export class NavigatorComponent {
+export class NavigatorComponent implements OnInit{
+
+    isLoggedIn = false;
+    roleName = '';
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -30,5 +33,18 @@ export class NavigatorComponent {
           }
       });
   }
+
+  logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      window.location.reload();
+  }
+
+    ngOnInit() {
+      if(localStorage.getItem('token') && localStorage.getItem('role')) {
+          this.roleName = localStorage.getItem('role');
+          this.isLoggedIn = true;
+      }
+    }
 
   }
