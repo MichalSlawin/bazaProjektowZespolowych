@@ -86,7 +86,8 @@ export class NewProjectComponent implements OnInit {
     }
 
     create() {
-        console.log(this.projectData);
-        alert("Utworzono projekt");
+        this.project.add(this.projectData).subscribe((data) => {
+            console.log(data);
+        });
     }
 }

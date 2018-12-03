@@ -18,8 +18,8 @@ export class LoginComponent implements OnInit {
     ngOnInit() {
     }
 
-    close() {
-        this.dialogRef.close();
+    close(state) {
+        this.dialogRef.close(state);
     }
 
     login() : void {
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
            this.loader = false;
            localStorage.setItem("token", data['token']);
            localStorage.setItem("role", data['role']);
-           this.close();
+           this.close(true);
         }, error => {
             console.log('Fail');
             console.log(error);

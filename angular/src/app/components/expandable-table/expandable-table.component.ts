@@ -37,7 +37,7 @@ import {forEach} from "@angular/router/src/utils/collection";
         year: "",
         technology: "",
         mentoring: ""
-    }
+    };
 
     year;
     formControlTechnology = new FormControl();
@@ -94,7 +94,7 @@ import {forEach} from "@angular/router/src/utils/collection";
                     data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1)
                     && data.technologie.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
                     && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1;
-            }
+            };
             return myFilterPredicate;
         }
 
@@ -120,7 +120,7 @@ import {forEach} from "@angular/router/src/utils/collection";
                 this.filteredValues['mentoring'] = "";
             }
             else {
-                this.filteredValues['mentoring'] = "true";
+                this.filteredValues['mentoring'] = "1";
             }
             this.dataSource.filter = JSON.stringify(this.filteredValues);
         }

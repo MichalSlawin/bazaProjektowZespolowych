@@ -26,9 +26,9 @@ class ProjectController extends Controller
 
     public function get(Request $request)
     {
-        if($request->get("rok"))
+        if($request->input("rok"))
         {
-            $year = $request->get("rok");
+            $year = $request->input("rok");
         }
         else
         {

@@ -25,9 +25,9 @@ export class NavigatorComponent {
       });
 
       dialogRef.afterClosed().subscribe(result => {
-          // if (result) {
-          //     this.getTableData();
-          // }
+          if (result) {
+              window.location.reload();
+          }
       });
   }
 
