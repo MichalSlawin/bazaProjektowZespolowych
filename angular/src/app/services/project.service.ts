@@ -22,10 +22,9 @@ export class ProjectService {
     uploadData.append('name', data['name']);
     uploadData.append('description', data['description']);
     uploadData.append('link', data['link']);
-    // for(let language in data['languages']) {
-    //   uploadData.append('languages[]', language);
-    // }
-      console.log(data['languages']);
+    for(let language of data['languages']) {
+      uploadData.append('languages[]', language);
+    }
     uploadData.append('mentoring', data['mentoring'] ? '1' : '0');
     uploadData.append('worker', data['curator']);
     return this.http.post(apiLink + '/project', uploadData);
