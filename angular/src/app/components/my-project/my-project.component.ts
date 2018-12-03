@@ -9,6 +9,7 @@ import {ProjectService} from "../../services/project.service";
 export class MyProjectComponent implements OnInit {
 
   projectData;
+  showProject = false;
 
   constructor(private project: ProjectService) { }
 
@@ -19,6 +20,12 @@ export class MyProjectComponent implements OnInit {
   getProjectData() {
     this.project.getMine().subscribe((data) => {
       this.projectData = data;
+      this.showProject = true;
+    }, error => {
+      console.log("adas");
+      this.projectData = {
+        body: 'Nie jesteś przypisany/a do żadnego projektu.'
+      };
     });
   }
 

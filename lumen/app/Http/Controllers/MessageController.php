@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Message;
 use App\Project;
+use App\ProjectStudent;
 use App\Student;
 use App\Worker;
 use Illuminate\Database\QueryException;
@@ -44,17 +45,16 @@ class MessageController extends Controller
         $is_public = $request->get('is_public');
         $project_id = $request->get('project_id');
         $student_domain = "@sigma.ug.edu.pl";
-        $worker_domain = "@sigma.ug.edu.pl";
-//        $worker_domain = "@inf.ug.edu.pl";
+        $worker_domain = "@inf.ug.edu.pl";
         if($user instanceof Student)
         {
-            $from_role = "student";
+            $from_role = "Student";
             $domain = $student_domain;
             $project = Project::where('student_id', $user->id)->first();
         }
         else
         {
-            $from_role = 'worker';
+            $from_role = 'Pracownik';
             $domain = $worker_domain;
             $project = Project::where('id', $project_id)->where('worker_id', $user->id)->first();
         }
@@ -127,11 +127,18 @@ class MessageController extends Controller
             $mail->Subject = $subject;
             $mail->Body = $body;
             $mail->AddAddress($to_email, $receiverDisplayName);
-            if($is_public)
+            if($is_public == 1)
             {
-                //DW do studentów
+                $students = ProjectStudent::with(['student'])->where('project_id', $project_id)->get();
+                foreach ($students as $student)
+                {
+                    if($student->student->username != $user->username)
+                    {
+                        $mail->addCC($student->student->username.$student_domain);
+                    }
+                }
             }
-            $mail->send();
+            //$mail->send();
             return response()->json("Sended", 200);
         }
         catch (Exception $e)

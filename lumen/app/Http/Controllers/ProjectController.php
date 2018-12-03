@@ -90,10 +90,10 @@ class ProjectController extends Controller
             $project = Project::whereHas('students', function ($query) use ($user) {
                 $query->where('student_id', $user->id);
                 $query->where('accepted', 1);
-            })->with(['students', 'history', 'worker', 'languages'])->orderBy('id', 'desc')->take(1)->first();
+            })->with(['students', 'history', 'worker', 'languages', 'academic_year', 'status'])->orderBy('id', 'desc')->take(1)->first();
             if(empty($project))
             {
-                return response()->json("Nie masz projektu", 400);
+                return response()->json("Nie masz projektu", 404);
             }
             if($project->student_id == $user->id)
             {
@@ -111,7 +111,7 @@ class ProjectController extends Controller
     public function getById($id)
     {
         $user = Auth::user();
-        $project = Project::with(['students', 'messages', 'history', 'worker', 'status'])->find($id);
+        $project = Project::with(['students', 'messages', 'history', 'worker', 'status', 'academic_year'])->find($id);
         if($user instanceof Worker)
         {
             if($project->worker_id != $user->id)

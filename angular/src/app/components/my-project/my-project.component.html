@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-tab-group>
+  <mat-tab-group *ngIf="showProject">
     <mat-tab label="Szczegóły">
       <ng-template matTabContent>
         <app-project-details [projectData]="projectData"></app-project-details>
@@ -16,4 +16,7 @@
       </ng-template>
     </mat-tab>
   </mat-tab-group>
+  <div *ngIf="!showProject">
+    <h4>{{projectData?.body}}</h4>
+  </div>
 </mat-card>

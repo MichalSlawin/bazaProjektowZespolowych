@@ -11,16 +11,14 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./new-message.component.scss']
 })
 export class NewMessageComponent implements OnInit {
-  formControlRecipient = new FormControl();
-  formControlTitle = new FormControl();
-  formControlContent = new FormControl();
+  formControlSubject = new FormControl();
+  formControlBody = new FormControl();
   formControlPublic = new FormControl();
 
   data = {
-    recipient: '',
-    title: '',
-    content: '',
-    isPublic: false
+    subject: '',
+    body: '',
+    is_public: false
   };
 
   checkPasswordDialogRef: MatDialogRef<CheckPasswordComponent>;
@@ -36,21 +34,17 @@ export class NewMessageComponent implements OnInit {
 
     send() {
 
-        this.data.recipient = this.formControlRecipient.value;
-        this.data.title = this.formControlTitle.value;
-        this.data.content = this.formControlContent.value;
+        this.data.subject = this.formControlSubject.value;
+        this.data.body = this.formControlBody.value;
         if (this.formControlPublic.value == null) {
-          this.data.isPublic = false;
+          this.data.is_public = false;
         } else {
-            this.data.isPublic = this.formControlPublic.value;
+            this.data.is_public = this.formControlPublic.value;
         }
 
-        // if (this.data.recipient == null || this.data.recipient === '') {
-        //   this.openSnackBar('Podaj odbiorcę wiadomości');
-        // } else
-        if (this.data.title == null || this.data.title === '') {
+        if (this.data.subject == null || this.data.subject === '') {
             this.openSnackBar('Podaj tytuł wiadomości');
-        } else if (this.data.content == null || this.data.content === '') {
+        } else if (this.data.body == null || this.data.body === '') {
             this.openSnackBar('Podaj treść wiadomości');
         } else {
             this.checkPassword();
@@ -65,12 +59,12 @@ export class NewMessageComponent implements OnInit {
 
     checkPassword() {
         this.checkPasswordDialogRef = this.dialog.open(CheckPasswordComponent, {
-            width: '600px'
+            width: '600px',
+            data: this.data
         });
 
         this.checkPasswordDialogRef.afterClosed().subscribe(isPasswordCorrect => {
                 if (isPasswordCorrect) {
-                    console.log(this.data);
                     this.dialogRef.close();
                     this.openSnackBar('Wiadomość wysłana');
                 } else {
