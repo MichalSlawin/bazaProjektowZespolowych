@@ -34,4 +34,10 @@ export class MyProjectComponent implements OnInit {
     });
   }
 
+  delete() {
+    this.project.delete().subscribe((data) => {
+      console.log(data);
+    })
+  }
+
 }

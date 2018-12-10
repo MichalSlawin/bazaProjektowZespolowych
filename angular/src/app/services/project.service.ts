@@ -43,4 +43,10 @@ export class ProjectService {
   getMine() {
     return this.http.get(apiLink + '/project/mine');
   }
+
+  delete() {
+      const uploadData = new FormData();
+      uploadData.append("_method", "DELETE");
+    return this.http.post(apiLink + '/project', uploadData);
+  }
 }
