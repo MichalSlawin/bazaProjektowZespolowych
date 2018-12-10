@@ -1,0 +1,22 @@
+<mat-card>
+  <mat-tab-group>
+    <mat-tab label="Szczegóły">
+      <ng-template matTabContent>
+        <app-project-details [projectData]="projectData"></app-project-details>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Wiadomości" *ngIf="projectData?.messages">
+      <ng-template matTabContent>
+        <app-messages (messageEvent)="refresh($event)" [projectMessages]="projectData?.messages" [projectId]="projectData?.id"></app-messages>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Historia" *ngIf="projectData?.history">
+      <ng-template matTabContent>
+        <app-history [projectHistory]="projectData?.history"></app-history>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+  <div *ngIf="!showProject">
+    <h4>{{projectData?.body}}</h4>
+  </div>
+</mat-card>

@@ -3,6 +3,7 @@ import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/c
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {MatDialog} from '@angular/material';
+import {ErrorDialogComponent} from "../components/error-dialog/error-dialog.component";
 
 
 @Injectable()
@@ -14,15 +15,28 @@ export class ErrorInterceptor implements HttpInterceptor {
             if (err.status === 401) {
                 if (err.error === 'Unauthorized') {
                     localStorage.removeItem('token');
-                    // location.reload(true);
+                    localStorage.removeItem('role');
                     location.href = "/";
                 } else {
                     console.log("Złe dane logowania")
                 }
-            } else if (err.status === 400) {
-                console.log(err.error);
+            } else if (err.status === 400 || err.status === 404) {
+                const dialogRef = this.dialog.open(ErrorDialogComponent, {
+                    width: '600px',
+                    data: err.error,
+                    id: 'infoDialog'
+                });
+                dialogRef.afterClosed().subscribe(() => {
+                   if(err.status === 404) {
+                       location.href = "/";
+                   }
+                });
             } else if (err.status === 500) {
-                console.log("Błąd wykonywania operacji");
+                const dialogRef = this.dialog.open(ErrorDialogComponent, {
+                    width: '600px',
+                    data: 'Wystąpił błąd podczas wykonywania operacji',
+                    id: 'infoDialog'
+                });
             }
 
             const error = err.error.message || err.statusText;

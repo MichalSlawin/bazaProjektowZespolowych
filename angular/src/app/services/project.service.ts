@@ -17,6 +17,10 @@ export class ProjectService {
     return this.http.get(apiLink + "/academic-year");
   }
 
+  getById(id) {
+    return this.http.get(apiLink + '/project/' + id);
+  }
+
   add(data) {
     const uploadData = new FormData();
     uploadData.append('name', data['name']);

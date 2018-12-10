@@ -48,6 +48,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { CheckPasswordComponent } from './components/check-password/check-password.component';
 import {TokenInterceptor} from "./__helpers/token.interceptor";
 import {ErrorInterceptor} from "./__helpers/error.interceptors";
+import { ProjectShowComponent } from './components/project-show/project-show.component';
+import {ErrorDialogComponent} from "./components/error-dialog/error-dialog.component";
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import {ErrorInterceptor} from "./__helpers/error.interceptors";
     FirstUpperPipe,
     FilterMessagesPipe,
     NewMessageComponent,
-    CheckPasswordComponent
+    CheckPasswordComponent,
+    ProjectShowComponent,
+  ErrorDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -100,7 +104,7 @@ import {ErrorInterceptor} from "./__helpers/error.interceptors";
       MglTimelineModule,
       MatPaginatorModule,
       HttpClientModule,
-      NgxWigModule
+      NgxWigModule,
   ],
   providers: [
       {provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()},
@@ -108,6 +112,6 @@ import {ErrorInterceptor} from "./__helpers/error.interceptors";
       { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
       ],
   bootstrap: [AppComponent],
-    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent]
+    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent]
 })
 export class AppModule { }

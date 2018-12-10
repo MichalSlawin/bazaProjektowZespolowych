@@ -43,7 +43,7 @@ class ProjectController extends Controller
         if($user instanceof Student || $user instanceof Worker)
         {
             //Wszystkie projekty
-            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id"]);
+            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
             foreach ($projects as $project)
             {
                 $languageArray = [];
@@ -61,7 +61,7 @@ class ProjectController extends Controller
         else
         {
             //Tylko aktywne
-            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->where('status_id', 3)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id"]);
+            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->where('status_id', 3)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
             foreach ($projects as $project)
             {
                 $languageArray = [];
@@ -111,7 +111,11 @@ class ProjectController extends Controller
     public function getById($id)
     {
         $user = Auth::user();
-        $project = Project::with(['students', 'messages', 'history', 'worker', 'status', 'academic_year'])->find($id);
+        $project = Project::with(['students', 'messages', 'history', 'worker', 'languages', 'status', 'academic_year'])->find($id);
+        if(empty($project))
+        {
+            return response()->json("Nie ma takiego projektu", 404);
+        }
         if($user instanceof Worker)
         {
             if($project->worker_id != $user->id)
