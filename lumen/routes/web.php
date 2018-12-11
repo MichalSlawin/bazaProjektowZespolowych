@@ -25,6 +25,7 @@ $router->options(
     ]
 );
 
+$router->get('token', 'LoginController@token');
 $router->post('login', 'LoginController@login');
 
 $router->post('mail', 'MessageController@send');

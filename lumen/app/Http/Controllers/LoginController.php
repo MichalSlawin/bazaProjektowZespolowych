@@ -7,10 +7,21 @@ use App\Student;
 use App\Worker;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
+
+    public function token()
+    {
+        $user = Auth::user();
+        if(empty($user))
+        {
+            return response()->json("Unauthorized", 401);
+        }
+        return response()->json("OK", 200);
+    }
 
     public function login(Request $request)
     {
