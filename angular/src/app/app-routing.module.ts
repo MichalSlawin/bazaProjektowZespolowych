@@ -6,6 +6,7 @@ import {MyProjectComponent} from "./components/my-project/my-project.component";
 import {ExpandableTableComponent} from "./components/expandable-table/expandable-table.component";
 import {ProjectShowComponent} from "./components/project-show/project-show.component";
 import {WorkerTableComponent} from "./components/worker-table/worker-table.component";
+import {ProjectShowComponent} from "./components/project-show/project-show.component";
 
 
 const routes: Routes = [
