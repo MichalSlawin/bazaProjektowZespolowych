@@ -1,0 +1,81 @@
+<!--
+  TODO: tabela z projektami przypisanymi do pracownika
+  TODO: wyswietlanie: nazwa, mentoring, status, technologie
+  TODO: po rozwinieciu: opis i uczestnicy, przycisk przejdz do projektu
+  TODO: filtrowanie: po nazwie, nr indeksu, mentoring, status
+-->
+
+<mat-form-field class="nazwa-opis">
+    <input matInput (keyup)="applyFilterNameDescription($event.target.value)" placeholder="Nazwa/opis"
+           [formControl]="formControlNameDescription">
+    <button mat-button *ngIf="formControlNameDescription.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearNameDescription()">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field>
+
+<mat-form-field class="nr-indeksu">
+    <input matInput (keyup)="applyFilterIndeksNr($event.target.value)" placeholder="Nr indeksu"
+           [formControl]="formControlIndeksNr">
+    <button mat-button *ngIf="formControlIndeksNr.value" matSuffix mat-icon-button aria-label="Clear" (click)="clearIndeksNr()">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field>
+
+<mat-form-field class="status">
+    <mat-select placeholder="Status" (selectionChange)="changeStatus()" [(ngModel)] = "status">
+        <mat-option *ngFor="let status of allStatuses" [value]="status.id">
+            {{status.name}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+
+<mat-checkbox class="mentoring" name="mentoring" (change)="applyFilterMentoring($event.checked)"
+              [formControl]="formControlMentoring">
+    Mentoring
+</mat-checkbox>
+
+<table mat-table
+       [dataSource]="dataSource" multiTemplateDataRows
+       class="mat-elevation-z8">
+    <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+        <th mat-header-cell *matHeaderCellDef> {{column | firstUpper}} </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="column === 'mentoring'; else other">
+              {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
+          </span>
+            <ng-template #other>
+                <mat-chip-list *ngIf="column === 'technologie'; else last">
+                    <mat-chip *ngFor="let language of element[column]">
+                        {{language}}
+                    </mat-chip>
+                </mat-chip-list>
+                <ng-template #last>
+                    {{element[column]}}
+                </ng-template>
+            </ng-template>
+        </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+            <div class="example-element-detail"
+                 [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <div class="example-element-description with-newlines">{{element.description}}<br /><br />
+                    <p class="contestants">Uczestnicy: {{element.contestants}}</p>
+                    <button mat-raised-button color="primary" class="toProjectButton">Przejdź do projektu</button>
+                </div>
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+        class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

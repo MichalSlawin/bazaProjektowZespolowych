@@ -48,6 +48,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { CheckPasswordComponent } from './components/check-password/check-password.component';
 import {TokenInterceptor} from "./__helpers/token.interceptor";
 import {ErrorInterceptor} from "./__helpers/error.interceptors";
+import { WorkerTableComponent } from './components/worker-table/worker-table.component';
+import { ProjectManagementComponent } from './components/project-management/project-management.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import {ErrorInterceptor} from "./__helpers/error.interceptors";
     FirstUpperPipe,
     FilterMessagesPipe,
     NewMessageComponent,
-    CheckPasswordComponent
+    CheckPasswordComponent,
+    WorkerTableComponent,
+    ProjectManagementComponent
   ],
   imports: [
     BrowserModule,
