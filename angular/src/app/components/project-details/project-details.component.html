@@ -17,6 +17,14 @@
   <mat-card>
     <a [href]="projectData?.link" target="_blank">{{projectData?.link}}</a>
   </mat-card>
+  <div *ngIf="projectData?.release_link !== null">
+    <mat-card>
+      <h4>Link do aplikacji</h4>
+    </mat-card>
+    <mat-card>
+      <a [href]="projectData?.release_link" target="_blank">{{projectData?.release_link}}</a>
+    </mat-card>
+  </div>
   <mat-card>
     <h4>Języki programowania</h4>
   </mat-card>
@@ -31,7 +39,12 @@
     <h4>Mentoring firmy</h4>
   </mat-card>
   <mat-card>
-    {{projectData?.mentoring ? 'Zainteresowanie' : 'Brak zainteresowania'}}
+    <span *ngIf="projectData?.company_name !== null; else mentoring">
+      {{projectData?.company_name}}
+    </span>
+    <ng-template #mentoring>
+      {{projectData?.mentoring ? 'Zainteresowanie' : 'Brak zainteresowania'}}
+    </ng-template>
   </mat-card>
   <mat-card>
     <h4>Rok akademicki</h4>
@@ -52,7 +65,7 @@
     <mat-list>
       <mat-list-item *ngFor="let student of projectData?.students">
         <mat-icon mat-list-icon>fiber_manual_record</mat-icon>
-        {{student.index_no}}
+        {{student.index_no}} - {{student.username}}
       </mat-list-item>
     </mat-list>
   </mat-card>

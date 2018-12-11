@@ -19,4 +19,8 @@ export class UserService {
   workerList() {
       return this.http.get(apiLink + '/worker/current');
   }
+
+  checkToken() {
+      return this.http.get(apiLink + '/token');
+  }
 }

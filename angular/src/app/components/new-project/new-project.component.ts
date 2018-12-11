@@ -1,11 +1,13 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatAutocompleteSelectedEvent, MatChipInputEvent} from "@angular/material";
+import {MatAutocompleteSelectedEvent, MatChipInputEvent, MatDialog} from "@angular/material";
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {FormControl} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import {ProjectService} from "../../services/project.service";
+import {ErrorDialogComponent} from "../error-dialog/error-dialog.component";
+import {SuccessDialogComponent} from "../success-dialog/success-dialog.component";
 
 @Component({
   selector: 'app-new-project',
@@ -34,7 +36,7 @@ export class NewProjectComponent implements OnInit {
 
     @ViewChild('languageInput') languageInput: ElementRef<HTMLInputElement>;
 
-    constructor(private user: UserService, private project: ProjectService) { }
+    constructor(private user: UserService, private project: ProjectService, public dialog: MatDialog) { }
 
     ngOnInit() {
         this.project.getLanguages().subscribe((data) => {
@@ -87,7 +89,13 @@ export class NewProjectComponent implements OnInit {
 
     create() {
         this.project.add(this.projectData).subscribe((data) => {
-            console.log(data);
+            const dialogRef = this.dialog.open(SuccessDialogComponent, {
+                width: '600px',
+                data: 'Utworzono projekt'
+            });
+            dialogRef.afterClosed().subscribe(() => {
+                location.href = "/moj-projekt";
+            });
         });
     }
 }

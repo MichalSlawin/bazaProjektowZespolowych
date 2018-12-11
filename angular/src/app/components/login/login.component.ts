@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialogRef} from "@angular/material";
+import {MatDialogRef, MatSnackBar} from "@angular/material";
 import {UserService} from "../../services/user.service";
 
 @Component({
@@ -13,13 +13,19 @@ export class LoginComponent implements OnInit {
     password: string;
     loader = false;
 
-  constructor(public dialogRef: MatDialogRef<any>, private userService: UserService) { }
+  constructor(public dialogRef: MatDialogRef<any>, private userService: UserService, public snackBar: MatSnackBar) { }
 
     ngOnInit() {
     }
 
     close(state) {
         this.dialogRef.close(state);
+    }
+
+    openSnackBar(message: string) {
+        this.snackBar.open(message, 'Zamknij', {
+            duration: 2000,
+        });
     }
 
     login() : void {
@@ -34,8 +40,8 @@ export class LoginComponent implements OnInit {
            localStorage.setItem("role", data['role']);
            this.close(true);
         }, error => {
-            console.log('Fail');
-            console.log(error);
+            this.loader = false;
+            this.openSnackBar('Nieprawidłowe hasło');
         });
     }
 }

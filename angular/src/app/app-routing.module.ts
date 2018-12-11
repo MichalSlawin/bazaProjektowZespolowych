@@ -4,6 +4,7 @@ import {NewProjectComponent} from "./components/new-project/new-project.componen
 import {ProjectDetailsComponent} from "./components/project-details/project-details.component";
 import {MyProjectComponent} from "./components/my-project/my-project.component";
 import {ExpandableTableComponent} from "./components/expandable-table/expandable-table.component";
+import {ProjectShowComponent} from "./components/project-show/project-show.component";
 import {WorkerTableComponent} from "./components/worker-table/worker-table.component";
 
 
@@ -12,7 +13,7 @@ const routes: Routes = [
       path: 'nowy-projekt', component: NewProjectComponent
     },
     {
-      path: 'projekt/:id', component: ProjectDetailsComponent
+      path: 'projekt/:id', component: ProjectShowComponent
     },
     {
       path: 'moj-projekt', component: MyProjectComponent

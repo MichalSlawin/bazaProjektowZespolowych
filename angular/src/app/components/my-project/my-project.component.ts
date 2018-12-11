@@ -28,11 +28,16 @@ export class MyProjectComponent implements OnInit {
       this.projectData = data;
       this.showProject = true;
     }, error => {
-      console.log("adas");
       this.projectData = {
         body: 'Nie jesteś przypisany/a do żadnego projektu.'
       };
     });
+  }
+
+  delete() {
+    this.project.delete().subscribe((data) => {
+      console.log(data);
+    })
   }
 
 }

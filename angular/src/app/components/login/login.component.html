@@ -15,7 +15,9 @@
 </div>
 <div mat-dialog-actions>
     <button mat-raised-button color="primary" (click)="login()">
-        Zaloguj
+        <span>
+            <mat-spinner *ngIf="loader" [diameter]="30" style="float: left; margin-right: 20px;" color="accent"></mat-spinner>Zaloguj
+        </span>
     </button>
     <span class="fill-space"></span>
     <button mat-raised-button color="warn" (click)="close(false)">

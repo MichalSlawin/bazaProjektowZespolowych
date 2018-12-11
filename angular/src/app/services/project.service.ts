@@ -17,9 +17,9 @@ export class ProjectService {
     return this.http.get(apiLink + "/academic-year");
   }
 
-  // getStatuses() {
-  //   return this.http.get(apiLink + "/status");
-  // }
+  getById(id) {
+    return this.http.get(apiLink + '/project/' + id);
+  }
 
   add(data) {
     const uploadData = new FormData();
@@ -42,5 +42,11 @@ export class ProjectService {
 
   getMine() {
     return this.http.get(apiLink + '/project/mine');
+  }
+
+  delete() {
+      const uploadData = new FormData();
+      uploadData.append("_method", "DELETE");
+    return this.http.post(apiLink + '/project', uploadData);
   }
 }

@@ -43,7 +43,7 @@ class ProjectController extends Controller
         if($user instanceof Student || $user instanceof Worker)
         {
             //Wszystkie projekty
-            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id"]);
+            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
             foreach ($projects as $project)
             {
                 $languageArray = [];
@@ -61,7 +61,7 @@ class ProjectController extends Controller
         else
         {
             //Tylko aktywne
-            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->where('status_id', 3)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id"]);
+            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->where('status_id', 3)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
             foreach ($projects as $project)
             {
                 $languageArray = [];
@@ -97,10 +97,12 @@ class ProjectController extends Controller
             }
             if($project->student_id == $user->id)
             {
+                $project->is_owner = true;
                 $project->messages = Message::where('project_id', $project->id)->orderBy('created_at', 'desc')->get();
             }
             else
             {
+                $project->is_owner = false;
                 $project->messages = Message::where('project_id', $project->id)->where('is_public', 1)->orderBy('created_at', 'desc')->get();
             }
             return response()->json($project, 200);
@@ -111,13 +113,18 @@ class ProjectController extends Controller
     public function getById($id)
     {
         $user = Auth::user();
-        $project = Project::with(['students', 'messages', 'history', 'worker', 'status', 'academic_year'])->find($id);
+        $project = Project::with(['students', 'messages', 'history', 'worker', 'languages', 'status', 'academic_year'])->find($id);
+        if(empty($project))
+        {
+            return response()->json("Nie ma takiego projektu", 404);
+        }
         if($user instanceof Worker)
         {
             if($project->worker_id != $user->id)
             {
                 $project->makeHidden(['messages', 'history']);
             }
+            $project->is_owner = false;
         }
         else
         {
@@ -127,6 +134,14 @@ class ProjectController extends Controller
             if($projectCheck[0]->CID != 1)
             {
                 $project->makeHidden(['messages', 'history']);
+            }
+            if($project->student_id == $user->id)
+            {
+                $project->is_owner = true;
+            }
+            else
+            {
+                $project->is_owner = false;
             }
         }
         return response()->json($project, 200);
@@ -228,13 +243,22 @@ class ProjectController extends Controller
             return response()->json("Unauthorized", 401);
         }
         $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
-        $project = Project::whereHas('academicYear', function ($query) use ($academicYear) {
+        $project = Project::whereHas('academic_year', function ($query) use ($academicYear) {
             $query->where('id', $academicYear->id);
         })->where('student_id', $user->id)->first();
         if(empty($project))
         {
             return response()->json("You dont have project", 400);
         }
-        return response()->json($project, 200);
+        if($project->status_id == 1)
+        {
+//            $project->languages()->detach();
+//            $project->students()->detach();
+//            $project->history()->delete();
+//            $project->messages()->delete();
+//            $project->delete();
+            return response()->json("Deleted", 200);
+        }
+        return response()->json("Nie można usunąć tego projektu", 400);
     }
 }

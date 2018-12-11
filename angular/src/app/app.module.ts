@@ -50,6 +50,9 @@ import {TokenInterceptor} from "./__helpers/token.interceptor";
 import {ErrorInterceptor} from "./__helpers/error.interceptors";
 import { WorkerTableComponent } from './components/worker-table/worker-table.component';
 import { ProjectManagementComponent } from './components/project-management/project-management.component';
+import { ProjectShowComponent } from './components/project-show/project-show.component';
+import {ErrorDialogComponent} from "./components/error-dialog/error-dialog.component";
+import { SuccessDialogComponent } from './components/success-dialog/success-dialog.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +71,10 @@ import { ProjectManagementComponent } from './components/project-management/proj
     FirstUpperPipe,
     FilterMessagesPipe,
     NewMessageComponent,
+    CheckPasswordComponent,
+    ProjectShowComponent,
+  ErrorDialogComponent,
+  SuccessDialogComponent
     CheckPasswordComponent,
     WorkerTableComponent,
     ProjectManagementComponent
@@ -104,7 +111,7 @@ import { ProjectManagementComponent } from './components/project-management/proj
       MglTimelineModule,
       MatPaginatorModule,
       HttpClientModule,
-      NgxWigModule
+      NgxWigModule,
   ],
   providers: [
       {provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()},
@@ -112,6 +119,6 @@ import { ProjectManagementComponent } from './components/project-management/proj
       { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
       ],
   bootstrap: [AppComponent],
-    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent]
+    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent, SuccessDialogComponent]
 })
 export class AppModule { }
