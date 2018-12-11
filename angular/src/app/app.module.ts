@@ -50,6 +50,7 @@ import {TokenInterceptor} from "./__helpers/token.interceptor";
 import {ErrorInterceptor} from "./__helpers/error.interceptors";
 import { ProjectShowComponent } from './components/project-show/project-show.component';
 import {ErrorDialogComponent} from "./components/error-dialog/error-dialog.component";
+import { SuccessDialogComponent } from './components/success-dialog/success-dialog.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import {ErrorDialogComponent} from "./components/error-dialog/error-dialog.compo
     NewMessageComponent,
     CheckPasswordComponent,
     ProjectShowComponent,
-  ErrorDialogComponent
+  ErrorDialogComponent,
+  SuccessDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -112,6 +114,6 @@ import {ErrorDialogComponent} from "./components/error-dialog/error-dialog.compo
       { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
       ],
   bootstrap: [AppComponent],
-    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent]
+    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent, SuccessDialogComponent]
 })
 export class AppModule { }

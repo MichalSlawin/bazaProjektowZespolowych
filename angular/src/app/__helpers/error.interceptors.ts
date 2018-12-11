@@ -17,8 +17,6 @@ export class ErrorInterceptor implements HttpInterceptor {
                     localStorage.removeItem('token');
                     localStorage.removeItem('role');
                     location.href = "/";
-                } else {
-                    console.log("Złe dane logowania");
                 }
             } else if (err.status === 400 || err.status === 404) {
                 const dialogRef = this.dialog.open(ErrorDialogComponent, {
