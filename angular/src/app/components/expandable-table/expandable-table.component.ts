@@ -50,6 +50,8 @@ import {forEach} from "@angular/router/src/utils/collection";
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    loaded = false;
+
     constructor(private project: ProjectService) {}
 
         ngOnInit() {
@@ -66,7 +68,9 @@ import {forEach} from "@angular/router/src/utils/collection";
         }
 
         getProjectList(year) {
+        this.loaded = false;
             this.project.getList(year).subscribe((data) => {
+                this.loaded = true;
                 this.dataSource = new MatTableDataSource(data['data']);
                 this.columnsToDisplay = data['columns'];
 

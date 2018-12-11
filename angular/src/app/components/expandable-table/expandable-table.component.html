@@ -7,7 +7,6 @@
 </mat-form-field>
 
 <mat-form-field class="rok">
-    <!--<mat-select placeholder="Rok" [formControl]="formControlYear">-->
     <mat-select placeholder="Rok" (selectionChange)="changeYear()" [(ngModel)] = "year">
         <mat-option *ngFor="let year of allYears" [value]="year.id">
             {{year.name}}
@@ -33,63 +32,66 @@
     Mentoring
 </mat-checkbox>
 
-<div class="table-responsive">
-    <table mat-table
-           [dataSource]="dataSource" multiTemplateDataRows
-           class="mat-elevation-z8">
-      <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
-          <th mat-header-cell *matHeaderCellDef> {{column | firstUpper}} </th>
-          <td mat-cell *matCellDef="let element">
-              <span *ngIf="column === 'mentoring'; else other">
-                  <span *ngIf="element.company_name !== null; else mentoring">
-                    {{element.company_name}}
+<app-ui-loading *ngIf="!loaded"></app-ui-loading>
+<div [class]="loaded ? '' : 'loading'">
+    <div class="table-responsive">
+        <table mat-table
+               [dataSource]="dataSource" multiTemplateDataRows
+               class="mat-elevation-z8">
+          <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
+              <th mat-header-cell *matHeaderCellDef> {{column | firstUpper}} </th>
+              <td mat-cell *matCellDef="let element">
+                  <span *ngIf="column === 'mentoring'; else other">
+                      <span *ngIf="element.company_name !== null; else mentoring">
+                        {{element.company_name}}
+                      </span>
+                      <ng-template #mentoring>
+                        {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
+                      </ng-template>
                   </span>
-                  <ng-template #mentoring>
-                    {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
+                  <ng-template #other>
+                      <mat-chip-list *ngIf="column === 'technologie'; else last">
+                          <mat-chip *ngFor="let language of element[column]">
+                              {{language}}
+                          </mat-chip>
+                      </mat-chip-list>
+                      <ng-template #last>
+                          {{element[column]}}
+                      </ng-template>
                   </ng-template>
-              </span>
-              <ng-template #other>
-                  <mat-chip-list *ngIf="column === 'technologie'; else last">
-                      <mat-chip *ngFor="let language of element[column]">
-                          {{language}}
-                      </mat-chip>
-                  </mat-chip-list>
-                  <ng-template #last>
-                      {{element[column]}}
-                  </ng-template>
-              </ng-template>
-          </td>
-      </ng-container>
+              </td>
+          </ng-container>
 
-      <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-          <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-            <div class="example-element-description with-newlines">{{element.description}}<br /><br />
-              <p class="contestants">Uczestnicy:</p>
-                <mat-list>
-                    <mat-list-item *ngFor="let student of element?.students">
-                        <mat-icon mat-list-icon>fiber_manual_record</mat-icon>
-                        <span *ngIf="student.index_no; else field">
-                            {{student.index_no}} - {{student.username}}
-                        </span>
-                        <ng-template #field>
-                            {{student.field === 'informatykal3dz-3apli' ? 'Aplikacje bazodanowe' : 'Tester aplikacji'}}
-                        </ng-template>
-                    </mat-list-item>
-                </mat-list>
-                <button color="primary" mat-raised-button [routerLink]="'/projekt/' + element.id">Szczegóły</button>
-            </div>
-          </div>
-        </td>
-      </ng-container>
+          <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+              <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <div class="example-element-description with-newlines">{{element.description}}<br /><br />
+                  <p class="contestants">Uczestnicy:</p>
+                    <mat-list>
+                        <mat-list-item *ngFor="let student of element?.students">
+                            <mat-icon mat-list-icon>fiber_manual_record</mat-icon>
+                            <span *ngIf="student.index_no; else field">
+                                {{student.index_no}} - {{student.username}}
+                            </span>
+                            <ng-template #field>
+                                {{student.field === 'informatykal3dz-3apli' ? 'Aplikacje bazodanowe' : 'Tester aplikacji'}}
+                            </ng-template>
+                        </mat-list-item>
+                    </mat-list>
+                    <button color="primary" mat-raised-button [routerLink]="'/projekt/' + element.id">Szczegóły</button>
+                </div>
+              </div>
+            </td>
+          </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-      <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
-          class="example-element-row"
-          [class.example-expanded-row]="expandedElement === element"
-          (click)="expandedElement = element">
-      </tr>
-      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-    </table>
+          <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+          <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+              class="example-element-row"
+              [class.example-expanded-row]="expandedElement === element"
+              (click)="expandedElement = element">
+          </tr>
+          <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
