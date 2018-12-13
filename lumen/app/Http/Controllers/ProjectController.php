@@ -118,6 +118,13 @@ class ProjectController extends Controller
             {
                 $project->is_owner = false;
                 $project->messages = Message::where('project_id', $project->id)->where('is_public', 1)->orderBy('created_at', 'desc')->get();
+                foreach ($project->students as $key => $student)
+                {
+                    if($student->pivot->accepted == 0)
+                    {
+                        $project->students->forget($key);
+                    }
+                }
             }
             return response()->json($project, 200);
         }
