@@ -53,6 +53,8 @@ import { ProjectManagementComponent } from './components/project-management/proj
 import { ProjectShowComponent } from './components/project-show/project-show.component';
 import {ErrorDialogComponent} from "./components/error-dialog/error-dialog.component";
 import { SuccessDialogComponent } from './components/success-dialog/success-dialog.component';
+import { ParticipantsComponent } from './components/participants/participants.component';
+import { CreditsComponent } from './components/credits/credits.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +79,9 @@ import { SuccessDialogComponent } from './components/success-dialog/success-dial
   SuccessDialogComponent,
     CheckPasswordComponent,
     WorkerTableComponent,
-    ProjectManagementComponent
+    ProjectManagementComponent,
+    ParticipantsComponent,
+    CreditsComponent
   ],
   imports: [
     BrowserModule,
@@ -119,6 +123,6 @@ import { SuccessDialogComponent } from './components/success-dialog/success-dial
       { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
       ],
   bootstrap: [AppComponent],
-    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent, SuccessDialogComponent]
+    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent, SuccessDialogComponent, CreditsComponent]
 })
 export class AppModule { }

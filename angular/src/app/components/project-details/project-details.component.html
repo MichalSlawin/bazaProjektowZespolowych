@@ -62,11 +62,6 @@
     <h4>Uczestnicy</h4>
   </mat-card>
   <mat-card>
-    <mat-list>
-      <mat-list-item *ngFor="let student of projectData?.students">
-        <mat-icon mat-list-icon>fiber_manual_record</mat-icon>
-        {{student.index_no}} - {{student.username}}
-      </mat-list-item>
-    </mat-list>
+    <app-participants [status]="projectData?.status" [students]="projectData?.students"></app-participants>
   </mat-card>
 </mat-list>
