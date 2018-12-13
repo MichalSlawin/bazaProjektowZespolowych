@@ -74,7 +74,7 @@ import { SuccessDialogComponent } from './components/success-dialog/success-dial
     CheckPasswordComponent,
     ProjectShowComponent,
   ErrorDialogComponent,
-  SuccessDialogComponent
+  SuccessDialogComponent,
     CheckPasswordComponent,
     WorkerTableComponent,
     ProjectManagementComponent
