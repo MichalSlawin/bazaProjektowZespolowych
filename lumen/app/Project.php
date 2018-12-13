@@ -28,7 +28,7 @@ class Project extends Model
 
     public function students()
     {
-        return $this->belongsToMany("App\Student", "project_student", "project_id", "student_id");
+        return $this->belongsToMany("App\Student", "project_student", "project_id", "student_id")->withPivot('accepted');
     }
 
     public function worker()

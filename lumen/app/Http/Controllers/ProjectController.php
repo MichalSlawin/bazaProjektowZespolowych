@@ -46,6 +46,13 @@ class ProjectController extends Controller
             $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
             foreach ($projects as $project)
             {
+                foreach ($project->students as $key => $student)
+                {
+                    if($student->pivot->accepted == 0)
+                    {
+                        $project->students->forget($key);
+                    }
+                }
                 $languageArray = [];
                 foreach ($project->languages as $language)
                 {
@@ -64,6 +71,13 @@ class ProjectController extends Controller
             $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->where('status_id', 3)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
             foreach ($projects as $project)
             {
+                foreach ($project->students as $key => $student)
+                {
+                    if($student->pivot->accepted == 0)
+                    {
+                        $project->students->forget($key);
+                    }
+                }
                 $languageArray = [];
                 foreach ($project->languages as $language)
                 {
@@ -142,6 +156,13 @@ class ProjectController extends Controller
             else
             {
                 $project->is_owner = false;
+            }
+        }
+        foreach ($project->students as $key => $student)
+        {
+            if($student->pivot->accepted == 0)
+            {
+                $project->students->forget($key);
             }
         }
         return response()->json($project, 200);
