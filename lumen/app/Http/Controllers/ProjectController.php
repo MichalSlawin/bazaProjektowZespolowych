@@ -163,13 +163,13 @@ class ProjectController extends Controller
             else
             {
                 $project->is_owner = false;
-            }
-        }
-        foreach ($project->students as $key => $student)
-        {
-            if($student->pivot->accepted == 0)
-            {
-                $project->students->forget($key);
+                foreach ($project->students as $key => $student)
+                {
+                    if($student->pivot->accepted == 0)
+                    {
+                        $project->students->forget($key);
+                    }
+                }
             }
         }
         return response()->json($project, 200);

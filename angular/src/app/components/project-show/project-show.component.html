@@ -2,12 +2,12 @@
   <mat-tab-group>
     <mat-tab label="Szczegóły">
       <ng-template matTabContent>
-        <app-project-details [projectData]="projectData"></app-project-details>
+        <app-project-details (messageEvent)="refresh($event)" [projectData]="projectData"></app-project-details>
       </ng-template>
     </mat-tab>
     <mat-tab label="Wiadomości" *ngIf="projectData?.messages">
       <ng-template matTabContent>
-        <app-messages (messageEvent)="refresh($event)" [projectMessages]="projectData?.messages" [projectId]="projectData?.id"></app-messages>
+        <app-messages (messageEvent)="refresh($event)" [projectOwner] = "projectData?.is_owner" [projectMessages]="projectData?.messages" [projectId]="projectData?.id"></app-messages>
       </ng-template>
     </mat-tab>
     <mat-tab label="Historia" *ngIf="projectData?.history">

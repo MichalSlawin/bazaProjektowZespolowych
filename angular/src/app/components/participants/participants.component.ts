@@ -19,12 +19,15 @@ export class ParticipantsComponent implements OnInit {
   constructor(private project: ProjectService) { }
 
   ngOnInit() {
-    this.students.forEach((student) => {
-      if(student.pivot.accepted == 1) {
-        this.acceptedCount++;
-      }
-    });
   }
+
+    countStudents() {
+        this.students.forEach((student) => {
+            if(student.pivot.accepted == 1) {
+                this.acceptedCount++;
+            }
+        });
+    }
 
     refreshParticipants() {
         this.messageEvent.emit(true);
