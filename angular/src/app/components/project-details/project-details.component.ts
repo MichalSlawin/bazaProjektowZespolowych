@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-project-details',
@@ -9,9 +9,14 @@ export class ProjectDetailsComponent implements OnInit {
 
     @Input('projectData') projectData;
 
+    @Output() messageEvent = new EventEmitter();
+
     constructor() { }
 
     ngOnInit() {
     }
 
+    refreshData() {
+        this.messageEvent.emit(true);
+    }
 }

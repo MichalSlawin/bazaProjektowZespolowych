@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ProjectService} from "../../services/project.service";
 
 @Component({
   selector: 'app-participants',
@@ -11,9 +12,11 @@ export class ParticipantsComponent implements OnInit {
   @Input('status') status;
   @Input('is_owner') is_owner;
 
+  @Output() messageEvent = new EventEmitter();
+
   acceptedCount = 0;
   maxAccepted = 4;
-  constructor() { }
+  constructor(private project: ProjectService) { }
 
   ngOnInit() {
     this.students.forEach((student) => {
@@ -23,12 +26,20 @@ export class ParticipantsComponent implements OnInit {
     });
   }
 
+    refreshParticipants() {
+        this.messageEvent.emit(true);
+    }
+
     accept(id) {
-      console.log('Zaakceptuj:' + id);
+      this.project.accept(id).subscribe((data) => {
+        this.refreshParticipants();
+      });
     }
 
     throwOut(id) {
-      console.log('Wyrzuć:' + id);
+        this.project.throwOut(id).subscribe((data) => {
+            this.refreshParticipants();
+        });
     }
 
 }

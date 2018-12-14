@@ -25,11 +25,14 @@ $router->options(
     ]
 );
 
+//LoginController
 $router->get('token', 'LoginController@token');
 $router->post('login', 'LoginController@login');
 
+//MessageController
 $router->post('mail', 'MessageController@send');
 
+//ProjectController
 $router->get('project', 'ProjectController@get');
 $router->get('project/mine', 'ProjectController@getMine');
 $router->get('project/{id:[0-9]+}', 'ProjectController@getById');
@@ -38,10 +41,20 @@ $router->post('project', 'ProjectController@add');
 
 $router->delete('project', 'ProjectController@delete');
 
+//WorkerController
 $router->get('worker/current', 'WorkerController@getCurrent');
 
 $router->post('worker/current', 'WorkerController@updateCurrent');
 
+//ProgramingLanguageController
 $router->get('programing-language', 'ProgramingLanguageController@get');
 
+//AcademicYearController
 $router->get('academic-year', 'AcademicYearController@get');
+
+
+//ProjectStudentController
+$router->put('project/mine/students/{id:[0-9]+}', 'ProjectStudentController@accept');
+
+$router->delete('project/mine/students/{id:[0-9]+}', 'ProjectStudentController@delete');
+
