@@ -3,24 +3,27 @@
         Logowanie
     </mat-toolbar-row>
 </mat-toolbar>
-<div mat-dialog-content>
-    <form class="container">
+<form>
+    <div mat-dialog-content class="container">
         <mat-form-field>
             <input matInput name="username" placeholder="Login" [(ngModel)]="username" required>
         </mat-form-field>
         <mat-form-field>
             <input matInput name="password" placeholder="Hasło" type="password"  [(ngModel)]="password" required>
         </mat-form-field>
-    </form>
-</div>
-<div mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="login()">
-        <span>
-            <mat-spinner *ngIf="loader" [diameter]="30" style="float: left; margin-right: 20px;" color="accent"></mat-spinner>Zaloguj
-        </span>
-    </button>
-    <span class="fill-space"></span>
-    <button mat-raised-button color="warn" (click)="close(false)">
-        Zamknij
-    </button>
-</div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="login()">
+            <span>
+                <mat-spinner *ngIf="loader; else login_text" [diameter]="30" color="accent"></mat-spinner>
+                <ng-template #login_text>
+                    Zaloguj
+                </ng-template>
+            </span>
+        </button>
+        <span class="fill-space"></span>
+        <button mat-raised-button color="warn" (click)="close(false)">
+            Zamknij
+        </button>
+    </div>
+</form>

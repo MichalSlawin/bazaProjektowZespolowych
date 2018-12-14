@@ -37,8 +37,8 @@ class LoginController extends Controller
             return response()->json($e->response->original, $e->status);
         }
 
-        $username = $request->get('username');
-        $password = $request->get('password');
+        $username = trim($request->get('username'));
+        $password = trim($request->get('password'));
 
         $ldap = new LdapController();
         $ldapResponse = $ldap->checkLogin($username, $password);
