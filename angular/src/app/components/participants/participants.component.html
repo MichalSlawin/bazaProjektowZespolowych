@@ -1,4 +1,7 @@
 <mat-list>
+  <div *ngIf="status?.id == 1 && is_owner == false;">
+    <button mat-raised-button color="accent" (click)="signIn()">Zgłoś się</button>
+  </div>
   <div *ngIf="status?.id != 1 || is_owner == false; else editable">
     <mat-list-item *ngFor="let student of students">
       <mat-icon mat-list-icon>fiber_manual_record</mat-icon>
@@ -8,7 +11,7 @@
   <ng-template #editable>
     Maksymalna ilość: {{maxAccepted}}
     <mat-list-item *ngFor="let student of students">
-      <button mat-raised-button color="primary" (click)="accept(student.id)" *ngIf="student.pivot.accepted == 0 && acceptedCount < maxAccepted; else accepted">Zaakceptuj</button>
+      <button mat-raised-button color="primary" (click)="accept(student.id)" *ngIf="student.pivot.accepted == 0; else accepted">Zaakceptuj</button>
       <ng-template #accepted>
         <button mat-raised-button color="warn" (click)="throwOut(student.id)">Wyrzuć</button>
       </ng-template>

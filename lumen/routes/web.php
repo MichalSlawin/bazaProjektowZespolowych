@@ -54,6 +54,8 @@ $router->get('academic-year', 'AcademicYearController@get');
 
 
 //ProjectStudentController
+$router->post('project/{id:[0-9]+}/students', 'ProjectStudentController@add');
+
 $router->put('project/mine/students/{id:[0-9]+}', 'ProjectStudentController@accept');
 
 $router->delete('project/mine/students/{id:[0-9]+}', 'ProjectStudentController@delete');

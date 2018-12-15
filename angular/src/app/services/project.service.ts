@@ -50,15 +50,5 @@ export class ProjectService {
     return this.http.post(apiLink + '/project', uploadData);
   }
 
-  accept(id) {
-    const uploadData = new FormData();
-    uploadData.append("_method", "PUT");
-    return this.http.post(apiLink + '/project/mine/students/' + id, uploadData);
-  }
 
-  throwOut(id) {
-    const uploadData = new FormData();
-    uploadData.append("_method", "DELETE");
-    return this.http.post(apiLink + '/project/mine/students/' + id, uploadData);
-  }
 }

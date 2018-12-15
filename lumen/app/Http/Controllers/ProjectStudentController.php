@@ -16,6 +16,42 @@ class ProjectStudentController extends Controller
         $this->middleware('auth');
     }
 
+    public function add($id)
+    {
+        $user = Auth::user();
+        if($user instanceof Student)
+        {
+            $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
+            $projectTest = Project::whereHas('students', function ($query) use ($user) {
+                $query->where('student_id', $user->id);
+                $query->where('accepted', 1);
+            })->where('academic_year_id', $academicYear->id)->take(1)->first();
+            if(!empty($projectTest))
+            {
+                return response()->json("Należysz już do projektu", 400);
+            }
+            $project = Project::with('students')->find($id);
+            if(empty($project))
+            {
+                return response()->json("Nie ma takiego projektu", 404);
+            }
+            foreach ($project->students as $student)
+            {
+                if($student["id"] == $user->id)
+                {
+                    return response()->json("Zgłoszenie zostało już przyjęte", 400);
+                }
+            }
+            $projectStudent = new ProjectStudent();
+            $projectStudent->project_id = $project->id;
+            $projectStudent->student_id = $user->id;
+            $projectStudent->accepted = 0;
+            $projectStudent->save();
+            return response()->json("OK", 200);
+        }
+        return response()->json("Unauthorized", 401);
+    }
+
     public function delete($id)
     {
         $user = Auth::user();

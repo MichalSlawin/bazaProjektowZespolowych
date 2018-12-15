@@ -6,7 +6,7 @@
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="!(isHandset$ | async)">
-    <mat-toolbar color="primary">LOGO</mat-toolbar>
+    <mat-toolbar color="primary" class="logo"></mat-toolbar>
     <mat-nav-list>
       <a mat-list-item routerLink="/nowy-projekt" *ngIf="roleName == 'student'" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>add</mat-icon> Utwórz projekt</a>
       <a mat-list-item routerLink="/moj-projekt" *ngIf="roleName == 'student'" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon> Mój projekt</a>

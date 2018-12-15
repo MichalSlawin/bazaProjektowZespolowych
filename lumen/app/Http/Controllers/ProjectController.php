@@ -46,13 +46,7 @@ class ProjectController extends Controller
             $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
             foreach ($projects as $project)
             {
-                foreach ($project->students as $key => $student)
-                {
-                    if($student->pivot->accepted == 0)
-                    {
-                        $project->students->forget($key);
-                    }
-                }
+                $this->acceptedStudents($project->students);
                 $languageArray = [];
                 foreach ($project->languages as $language)
                 {
@@ -71,13 +65,7 @@ class ProjectController extends Controller
             $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->where('status_id', 3)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
             foreach ($projects as $project)
             {
-                foreach ($project->students as $key => $student)
-                {
-                    if($student->pivot->accepted == 0)
-                    {
-                        $project->students->forget($key);
-                    }
-                }
+                $this->acceptedStudents($project->students);
                 $languageArray = [];
                 foreach ($project->languages as $language)
                 {
@@ -118,13 +106,7 @@ class ProjectController extends Controller
             {
                 $project->is_owner = false;
                 $project->messages = Message::where('project_id', $project->id)->where('is_public', 1)->orderBy('created_at', 'desc')->get();
-                foreach ($project->students as $key => $student)
-                {
-                    if($student->pivot->accepted == 0)
-                    {
-                        $project->students->forget($key);
-                    }
-                }
+                $this->acceptedStudents($project->students);
             }
             return response()->json($project, 200);
         }
@@ -163,17 +145,12 @@ class ProjectController extends Controller
             else
             {
                 $project->is_owner = false;
-                foreach ($project->students as $key => $student)
-                {
-                    if($student->pivot->accepted == 0)
-                    {
-                        $project->students->forget($key);
-                    }
-                }
+                $this->acceptedStudents($project->students);
             }
         }
         return response()->json($project, 200);
     }
+
 
     public function add(Request $request)
     {
@@ -276,17 +253,45 @@ class ProjectController extends Controller
         })->where('student_id', $user->id)->first();
         if(empty($project))
         {
-            return response()->json("You dont have project", 400);
+            return response()->json("Nie masz projektu", 400);
         }
         if($project->status_id == 1)
         {
-//            $project->languages()->detach();
-//            $project->students()->detach();
-//            $project->history()->delete();
-//            $project->messages()->delete();
-//            $project->delete();
+            $project->languages()->detach();
+            $project->students()->detach();
+            $project->history()->delete();
+            $project->messages()->delete();
+            $project->delete();
             return response()->json("Deleted", 200);
         }
         return response()->json("Nie można usunąć tego projektu", 400);
+    }
+
+
+
+    private function acceptedStudents($students)
+    {
+        $lastKey = 0;
+        $length = count($students);
+        for($i = 0; $i < count($students); $i++)
+        {
+            if($students[$i]->pivot->accepted == 1)
+            {
+                $students[$lastKey] = $students[$i];
+                $lastKey++;
+            }
+            else
+            {
+                $length--;
+            }
+        }
+        if(($lastKey + 1) != $length)
+        {
+            $length = count($students);
+            for($i = $lastKey; $i < $length; $i++)
+            {
+                unset($students[$i]);
+            }
+        }
     }
 }

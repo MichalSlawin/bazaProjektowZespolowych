@@ -15,3 +15,7 @@
 .activated {
   background-color: #03A9F4;
 }
+
+.logo {
+  background-image: url("/assets/logo.png");
+}
