@@ -28,91 +28,62 @@ import {forEach} from "@angular/router/src/utils/collection";
 export class WorkerTableComponent implements OnInit {
 
     dataSource;
-    columnsToDisplay = ["nazwa", "mentoring", "status", "technologie"];
+    columnsToDisplay;
     expandedElement: Project;
 
     filteredValues = {
         name: "",
         description: "",
         indeksNr: "",
-        year: "",
-        // technology: "",
+        status: "",
         mentoring: ""
     };
 
-    year;
     status;
-    // formControlTechnology = new FormControl();
     formControlNameDescription = new FormControl();
     formControlIndeksNr = new FormControl();
     formControlMentoring = new FormControl();
 
-    allYears;
     allStatuses;
-    // allTechnologies;
-    // filteredOptionsTechnology: Observable<string[]>;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private project: ProjectService) {}
 
     ngOnInit() {
-        this.project.getAcademicYears().subscribe((data) => {
-            this.allYears = data;
-            this.year = data[0]['id'];
-            this.getProjectList(this.year);
+        this.project.getStatuses().subscribe((data) => {
+            this.allStatuses = data;
+            this.status = data[0]['id'];
+            this.filteredValues.status = data[0]['id'];
+            this.getProjectList();
         });
-
-        // this.project.getStatuses().subscribe((data) => {
-        //     this.allStatuses = data;
-        // });
-        // this.project.getLanguages().subscribe((data) => {
-        //     this.allTechnologies = data;
-        // })
     }
 
-    getProjectList(year) {
-        this.project.getList(year).subscribe((data) => {
+    getProjectList() {
+        this.project.getWorker().subscribe((data) => {
             this.dataSource = new MatTableDataSource(data['data']);
-            // this.columnsToDisplay = data['columns'];
-
+            this.columnsToDisplay = data['columns'];
             this.dataSource.paginator = this.paginator;
             this.dataSource.filterPredicate = this.customFilterPredicate();
-
             this.dataSource.filter = JSON.stringify(this.filteredValues);
-
-            // this.filteredOptionsTechnology = this.formControlTechnology.valueChanges.pipe(
-            //     startWith(''),
-            //     map(value => this._filterTechnology(value))
-            // );
-
         });
-    }
-
-    private changeYear() {
-        this.getProjectList(this.year);
-    }
-
-    private changeStatus() {
-
     }
 
     private customFilterPredicate() {
         const myFilterPredicate = (data, filter: string): boolean => {
             let searchString = JSON.parse(filter);
+
             return (data.nazwa.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 ||
                 data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1)
-                // && data.technologie.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
+                && data.students.map(student => student.index_no)
+                    .toString().trim().toLowerCase().indexOf(searchString.indeksNr.toLowerCase()) !== -1
+                && data.status['id']
+                    .toString().trim().toLowerCase().indexOf(searchString.status) !== -1
                 && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1;
         };
         return myFilterPredicate;
     }
 
-    // private _filterTechnology(value: string): string[] {
-    //     const filterValue = value.toLowerCase();
-    //
-    //     return this.allTechnologies.filter(option => option.toLowerCase().includes(filterValue));
-    // }
 
     applyFilterNameDescription(filterValue: string) {
         this.filteredValues['name'] = filterValue.trim().toLowerCase();
@@ -122,13 +93,8 @@ export class WorkerTableComponent implements OnInit {
 
     applyFilterIndeksNr(filterValue: string) {
         this.filteredValues['indeksNr'] = filterValue.trim().toLowerCase();
-        // this.dataSource.filter = JSON.stringify(this.filteredValues);
+        this.dataSource.filter = JSON.stringify(this.filteredValues);
     }
-
-    // applyFilterTechnology(filterValue: string) {
-    //     this.filteredValues['technology'] = filterValue.trim().toLowerCase();
-    //     this.dataSource.filter = JSON.stringify(this.filteredValues);
-    // }
 
     applyFilterMentoring(isChecked) {
         if(isChecked === false) {
@@ -137,6 +103,11 @@ export class WorkerTableComponent implements OnInit {
         else {
             this.filteredValues['mentoring'] = "1";
         }
+        this.dataSource.filter = JSON.stringify(this.filteredValues);
+    }
+
+    applyFilterStatus(filterValue: string) {
+        this.filteredValues['status'] = filterValue;
         this.dataSource.filter = JSON.stringify(this.filteredValues);
     }
 
@@ -150,15 +121,8 @@ export class WorkerTableComponent implements OnInit {
     clearIndeksNr() {
         this.filteredValues.indeksNr = "";
         this.formControlIndeksNr.setValue("");
-        // this.dataSource.filter = JSON.stringify(this.filteredValues);
+        this.dataSource.filter = JSON.stringify(this.filteredValues);
     }
-
-    // clearTechnology() {
-    //     this.filteredValues.technology = "";
-    //     this.formControlTechnology.setValue("");
-    //     this.dataSource.filter = JSON.stringify(this.filteredValues);
-    // }
-
 }
 
 

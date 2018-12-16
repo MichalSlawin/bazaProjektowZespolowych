@@ -1,10 +1,3 @@
-<!--
-  TODO: tabela z projektami przypisanymi do pracownika
-  TODO: wyswietlanie: nazwa, mentoring, status, technologie
-  TODO: po rozwinieciu: opis i uczestnicy, przycisk przejdz do projektu
-  TODO: filtrowanie: po nazwie, nr indeksu, mentoring, status
--->
-
 <mat-form-field class="nazwa-opis">
     <input matInput (keyup)="applyFilterNameDescription($event.target.value)" placeholder="Nazwa/opis"
            [formControl]="formControlNameDescription">
@@ -22,7 +15,7 @@
 </mat-form-field>
 
 <mat-form-field class="status">
-    <mat-select placeholder="Status" (selectionChange)="changeStatus()" [(ngModel)] = "status">
+    <mat-select placeholder="Status" (selectionChange)="applyFilterStatus(status)" [(ngModel)] = "status">
         <mat-option *ngFor="let status of allStatuses" [value]="status.id">
             {{status.name}}
         </mat-option>
@@ -40,18 +33,28 @@
     <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
         <th mat-header-cell *matHeaderCellDef> {{column | firstUpper}} </th>
         <td mat-cell *matCellDef="let element">
-          <span *ngIf="column === 'mentoring'; else other">
-              {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
+          <span *ngIf="column === 'mentoring'; else status">
+              <span *ngIf="element.company_name !== null; else mentoring">
+                        {{element.company_name}}
+                      </span>
+              <ng-template #mentoring>
+                        {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
+              </ng-template>
           </span>
+            <ng-template #status>
+                <span *ngIf="column === 'status'; else other">
+                    {{element['status']['name']}}
+                </span>
+            </ng-template>
             <ng-template #other>
                 <mat-chip-list *ngIf="column === 'technologie'; else last">
                     <mat-chip *ngFor="let language of element[column]">
                         {{language}}
                     </mat-chip>
                 </mat-chip-list>
-                <ng-template #last>
-                    {{element[column]}}
-                </ng-template>
+            <ng-template #last>
+                {{element[column]}}
+            </ng-template>
             </ng-template>
         </td>
     </ng-container>
@@ -59,11 +62,21 @@
     <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="expandedDetail">
         <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-            <div class="example-element-detail"
-                 [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
                 <div class="example-element-description with-newlines">{{element.description}}<br /><br />
-                    <p class="contestants">Uczestnicy: {{element.contestants}}</p>
-                    <button mat-raised-button color="primary" class="toProjectButton">Przejdź do projektu</button>
+                    <p class="contestants">Uczestnicy:</p>
+                    <mat-list>
+                        <mat-list-item *ngFor="let student of element?.students">
+                            <mat-icon mat-list-icon>fiber_manual_record</mat-icon>
+                            <span *ngIf="student.index_no; else field">
+                                {{student.index_no}} - {{student.username}}
+                            </span>
+                            <ng-template #field>
+                                {{student.field === 'informatykal3dz-3apli' ? 'Aplikacje bazodanowe' : 'Tester aplikacji'}}
+                            </ng-template>
+                        </mat-list-item>
+                    </mat-list>
+                    <button color="primary" mat-raised-button [routerLink]="'/projekt/' + element.id">Szczegóły</button>
                 </div>
             </div>
         </td>

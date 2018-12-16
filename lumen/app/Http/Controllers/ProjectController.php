@@ -84,6 +84,33 @@ class ProjectController extends Controller
 
     }
 
+    public function getWorker() {
+        $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
+        $year = $academicYear->id;
+
+        $user = Auth::user();
+        $columns = ["nazwa", "mentoring", "status", "technologie"];
+
+        if($user instanceof Worker)
+        {
+            $projects = Project::whereHas('worker', function ($query) use ($user) {
+                $query->where('worker_id', $user->id);
+            })->with(['languages', 'students', 'status'])->where('academic_year_id', $year)->
+            get(["name as nazwa", "project.description", "project.id", "mentoring as mentoring", "project.company_name", "project.status_id"]);
+            foreach ($projects as $project)
+            {
+                $languageArray = [];
+                foreach ($project->languages as $language)
+                {
+                    $languageArray[] = $language->name;
+                }
+                $project->technologie = $languageArray;
+            }
+            return response()->json(["data" => $projects, "columns" => $columns],200);
+         }
+         return response()->json("Unauthorized", 401);
+    }
+
     public function getMine()
     {
         $user = Auth::user();

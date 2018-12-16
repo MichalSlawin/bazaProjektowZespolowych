@@ -36,6 +36,7 @@ $router->post('mail', 'MessageController@send');
 $router->get('project', 'ProjectController@get');
 $router->get('project/mine', 'ProjectController@getMine');
 $router->get('project/{id:[0-9]+}', 'ProjectController@getById');
+$router->get('project/worker', 'ProjectController@getWorker');
 
 $router->post('project', 'ProjectController@add');
 
@@ -52,6 +53,8 @@ $router->get('programing-language', 'ProgramingLanguageController@get');
 //AcademicYearController
 $router->get('academic-year', 'AcademicYearController@get');
 
+//StatusController
+$router->get('status', 'StatusController@get');
 
 //ProjectStudentController
 $router->post('project/{id:[0-9]+}/students', 'ProjectStudentController@add');

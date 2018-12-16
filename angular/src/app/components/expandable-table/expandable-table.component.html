@@ -78,7 +78,7 @@
                             </ng-template>
                         </mat-list-item>
                     </mat-list>
-                    <button color="primary" mat-raised-button [routerLink]="'/projekt/' + element.id">Szczegóły</button>
+                    <button *ngIf="element?.students[0]['index_no']" color="primary" mat-raised-button [routerLink]="'/projekt/' + element.id">Szczegóły</button>
                 </div>
               </div>
             </td>

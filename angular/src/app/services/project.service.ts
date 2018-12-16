@@ -17,6 +17,10 @@ export class ProjectService {
     return this.http.get(apiLink + "/academic-year");
   }
 
+  getStatuses() {
+    return this.http.get(apiLink + "/status");
+  }
+
   getById(id) {
     return this.http.get(apiLink + '/project/' + id);
   }
@@ -42,6 +46,10 @@ export class ProjectService {
 
   getMine() {
     return this.http.get(apiLink + '/project/mine');
+  }
+
+  getWorker() {
+    return this.http.get(apiLink + '/project/worker')
   }
 
   delete() {
