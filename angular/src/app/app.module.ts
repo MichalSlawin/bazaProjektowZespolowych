@@ -123,6 +123,6 @@ import { CreditsComponent } from './components/credits/credits.component';
       { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
       ],
   bootstrap: [AppComponent],
-    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent, SuccessDialogComponent, CreditsComponent]
+    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent, SuccessDialogComponent, CreditsComponent, ProjectManagementComponent]
 })
 export class AppModule { }

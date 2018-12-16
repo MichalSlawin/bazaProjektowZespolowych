@@ -5,6 +5,15 @@
   <mat-card>
     {{projectData?.name}}
   </mat-card>
+  <span *ngIf="projectData?.is_owner">
+    <mat-card>
+      <h4>Status</h4>
+    </mat-card>
+    <mat-card>
+      {{projectData?.status.name}}<br/><br/>
+      <button mat-raised-button color="primary" (click)="changeStatus()">Zmiana statusu</button>
+    </mat-card>
+  </span>
   <mat-card>
     <h4>Opis projektu</h4>
   </mat-card>

@@ -11,6 +11,7 @@
       <a mat-list-item routerLink="/nowy-projekt" *ngIf="roleName == 'student'" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>add</mat-icon> Utwórz projekt</a>
       <a mat-list-item routerLink="/moj-projekt" *ngIf="roleName == 'student'" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon> Mój projekt</a>
       <a mat-list-item routerLink="/projekty" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon> Projekty</a>
+      <a mat-list-item routerLink="/pracownik-projekty" *ngIf="roleName == 'worker'" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon>Projekty pracownika</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

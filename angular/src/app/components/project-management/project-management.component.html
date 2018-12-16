@@ -1,1 +1,30 @@
 <!--TODO: -->
+
+<link href="https://cdn.materialdesignicons.com/2.1.19/css/materialdesignicons.min.css" rel="stylesheet" />
+
+<mat-toolbar class="tytul" color="primary">
+    <mat-toolbar-row>
+        Prośba do opiekuna o zmianę statusu projektu
+    </mat-toolbar-row>
+</mat-toolbar>
+<div mat-dialog-content>
+    <form class="container">
+        <mat-form-field class="status">
+            <mat-select placeholder="Status" [(ngModel)] = "status" name="status">
+                <mat-option *ngFor="let status of allStatuses" [value]="status.id">
+                    {{status.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <ngx-wig [placeholder]="'Opcjonalny komentarz'" [formControl]="formControlComment"></ngx-wig>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="primary" (click)="send()">
+        Wyślij
+    </button>
+    <span class="fill-space"></span>
+    <button mat-raised-button color="warn" (click)="close()">
+        Anuluj
+    </button>
+</div>
