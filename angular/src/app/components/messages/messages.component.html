@@ -1,5 +1,5 @@
 <mat-card>
-  <button mat-raised-button color="primary" class="composeButton" *ngIf="projectOwner" (click)="compose()">Napisz</button>
+  <button mat-raised-button color="primary" class="composeButton" *ngIf="projectOwner || projectWorker" (click)="compose()">Napisz</button>
   <button mat-raised-button color="primary" class="composeButton" *ngIf="!projectOwner"></button>
 
   <mat-form-field class="title_filter">

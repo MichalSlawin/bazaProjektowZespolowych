@@ -17,6 +17,7 @@ export class MessagesComponent implements OnInit {
     @Input('projectMessages') messages;
     @Input('projectId') projectId;
     @Input('projectOwner') projectOwner;
+    @Input('projectWorker') projectWorker;
 
     @Output() messageEvent = new EventEmitter();
 
