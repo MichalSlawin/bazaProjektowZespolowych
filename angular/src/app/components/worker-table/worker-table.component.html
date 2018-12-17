@@ -16,6 +16,9 @@
 
 <mat-form-field class="status">
     <mat-select placeholder="Status" (selectionChange)="applyFilterStatus(status)" [(ngModel)] = "status">
+        <mat-option [value] = 0>
+            Wszystkie
+        </mat-option>
         <mat-option *ngFor="let status of allStatuses" [value]="status.id">
             {{status.name}}
         </mat-option>

@@ -4,6 +4,7 @@
       <ng-template matTabContent>
         <app-project-details (messageEvent)="refresh($event)" [projectData]="projectData"></app-project-details>
         <button *ngIf="projectData?.is_owner && projectData?.status_id == 1" mat-raised-button color="warn" (click)="delete()">Usuń</button>
+        <button *ngIf="projectData?.is_owner" mat-raised-button color="primary" [routerLink]="'/edytuj-projekt'">Edytuj</button>
       </ng-template>
     </mat-tab>
     <mat-tab label="Wiadomości">
