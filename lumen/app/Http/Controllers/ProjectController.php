@@ -99,6 +99,7 @@ class ProjectController extends Controller
             get(["name as nazwa", "project.description", "project.id", "mentoring as mentoring", "project.company_name", "project.status_id"]);
             foreach ($projects as $project)
             {
+                $this->acceptedStudents($project->students);
                 $languageArray = [];
                 foreach ($project->languages as $language)
                 {
@@ -152,7 +153,12 @@ class ProjectController extends Controller
         {
             if($project->worker_id != $user->id)
             {
+                $project->is_worker = false;
                 $project->makeHidden(['messages', 'history']);
+            }
+            else
+            {
+                $project->is_worker = true;
             }
             $project->is_owner = false;
         }

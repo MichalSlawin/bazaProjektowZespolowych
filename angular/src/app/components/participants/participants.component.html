@@ -1,5 +1,5 @@
 <mat-list>
-  <div *ngIf="status?.id == 1 && is_owner == false;">
+  <div *ngIf="status?.id == 1 && is_owner == false && userRole == 'student'">
     <button mat-raised-button color="accent" (click)="signIn()">Zgłoś się</button>
   </div>
   <div *ngIf="status?.id != 1 || is_owner == false; else editable">

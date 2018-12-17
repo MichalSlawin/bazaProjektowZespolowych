@@ -18,10 +18,13 @@ export class ParticipantsComponent implements OnInit {
 
   @Output() messageEvent = new EventEmitter();
 
+
+  userRole;
   maxAccepted = 4;
   constructor(private projectStudent: ProjectStudentsService, private dialog: MatDialog) { }
 
   ngOnInit() {
+      this.userRole = localStorage.getItem('role');
   }
 
     countStudents() {

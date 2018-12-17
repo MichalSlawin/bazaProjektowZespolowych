@@ -87,7 +87,7 @@ import {forEach} from "@angular/router/src/utils/collection";
             });
         }
 
-        private changeYear() {
+        changeYear() {
             this.getProjectList(this.year);
         }
 
