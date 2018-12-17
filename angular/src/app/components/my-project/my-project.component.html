@@ -16,6 +16,11 @@
         <app-history [projectHistory]="projectData?.history"></app-history>
       </ng-template>
     </mat-tab>
+    <mat-tab *ngIf="projectData?.is_owner" label="Zarządzanie">
+      <ng-template matTabContent>
+        <app-project-management [projectId]="projectData?.id" [projectStatus]="projectData?.status" [projectStudents]="projectData?.students"></app-project-management>
+      </ng-template>
+    </mat-tab>
   </mat-tab-group>
   <div *ngIf="!showProject">
     <h4>{{projectData?.body}}</h4>

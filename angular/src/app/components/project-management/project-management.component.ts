@@ -1,8 +1,5 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {CheckPasswordComponent} from '../check-password/check-password.component';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from '@angular/material';
-import {ProjectService} from '../../services/project.service';
-import {FormControl} from '@angular/forms';
+import {Component, Input, OnInit} from '@angular/core';
+import {StatusService} from "../../services/status.service";
 
 @Component({
   selector: 'app-project-management',
@@ -11,68 +8,34 @@ import {FormControl} from '@angular/forms';
 })
 export class ProjectManagementComponent implements OnInit {
 
-    formControlComment = new FormControl();
-    status;
+    @Input('projectStatus') status;
+    @Input('projectStudents') students;
+    @Input('projectId') id;
 
-    data = {
-        id: '',
-        status: '',
-        comment: ''
-    };
-    checkPasswordDialogRef: MatDialogRef<CheckPasswordComponent>;
+    selectedStatus;
+    options;
+    comment = '';
+    required = false;
 
-    allStatuses;
-
-  constructor(public dialogRef: MatDialogRef<ProjectManagementComponent>,
-              @Inject(MAT_DIALOG_DATA) public id: any,
-              public snackBar: MatSnackBar,
-              public dialog: MatDialog,
-              private project: ProjectService) { }
+  constructor(private statusService: StatusService) { }
 
   ngOnInit() {
-      this.project.getStatuses().subscribe((data) => {
-          this.allStatuses = data;
+      this.statusService.getProject(this.id).subscribe((data) => {
+          this.options = data;
+          if(this.options.length == 1) {
+              this.selectedStatus = this.options[0]['id'];
+              this.checkRequired();
+          }
       });
   }
 
-    openSnackBar(message: string) {
-        this.snackBar.open(message, 'Zamknij', {
-            duration: 2000,
-        });
+    checkRequired() {
+      this.required = this.selectedStatus == 4 || this.selectedStatus == 5;
     }
 
-    close() {
-        this.dialogRef.close();
-    }
-
-    send() {
-        this.data.id = this.id;
-        this.data.comment = this.formControlComment.value;
-        this.data.status = this.status;
-
-        if (this.data.status == null || this.data.status === '') {
-            this.openSnackBar('Wybierz status');
-        } else {
-            // this.checkPassword();
-            console.log(this.data);
-            this.dialogRef.close();
-        }
-    }
-
-    // checkPassword() {
-    //     this.checkPasswordDialogRef = this.dialog.open(CheckPasswordComponent, {
-    //         width: '600px',
-    //         data: this.data
-    //     });
-    //
-    //     this.checkPasswordDialogRef.afterClosed().subscribe(isPasswordCorrect => {
-    //         if (isPasswordCorrect) {
-    //             this.dialogRef.close();
-    //             this.openSnackBar('Wiadomość wysłana');
-    //         } else {
-    //             this.openSnackBar('Nieprawidłowe hasło');
-    //         }
-    //     });
-    // }
-
+  send() {
+      this.statusService.updateProject(this.id, this.selectedStatus, this.comment).subscribe((data) => {
+         window.location.reload();
+      });
+  }
 }

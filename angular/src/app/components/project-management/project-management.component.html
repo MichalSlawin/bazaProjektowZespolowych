@@ -1,30 +1,24 @@
-<!--TODO: -->
-
-<link href="https://cdn.materialdesignicons.com/2.1.19/css/materialdesignicons.min.css" rel="stylesheet" />
-
-<mat-toolbar class="tytul" color="primary">
-    <mat-toolbar-row>
-        Prośba do opiekuna o zmianę statusu projektu
-    </mat-toolbar-row>
-</mat-toolbar>
-<div mat-dialog-content>
-    <form class="container">
-        <mat-form-field class="status">
-            <mat-select placeholder="Status" [(ngModel)] = "status" name="status">
-                <mat-option *ngFor="let status of allStatuses" [value]="status.id">
-                    {{status.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <ngx-wig [placeholder]="'Opcjonalny komentarz'" [formControl]="formControlComment"></ngx-wig>
-    </form>
-</div>
-<div mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="send()">
-        Wyślij
-    </button>
-    <span class="fill-space"></span>
-    <button mat-raised-button color="warn" (click)="close()">
-        Anuluj
-    </button>
-</div>
+<form class="project-form" #myForm="ngForm" *ngIf="options?.length > 0; else noOption">
+    <mat-form-field>
+        <mat-select (selectionChange)="checkRequired()" placeholder="Wybierz opcję" name="status" [(ngModel)]="selectedStatus" required>
+            <mat-option *ngFor="let option of options" [value]="option.id">
+                {{option.value}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <textarea
+                style="overflow:hidden"
+                matInput name="comment"
+                placeholder="Komentarz"
+                [matTextareaAutosize]="true"
+                [(ngModel)]="comment"
+                [required]="required">
+      </textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="send()" [disabled]="!myForm.form.valid">Wyślij</button>
+</form>
+<ng-template #noOption>
+    <h4>Nie możesz nic obecnie zrobić</h4>
+    <p>Obecny stan: {{status?.name}}</p>
+</ng-template>

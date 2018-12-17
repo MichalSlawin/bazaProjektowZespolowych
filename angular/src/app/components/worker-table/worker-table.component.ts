@@ -8,6 +8,7 @@ import {map, startWith} from 'rxjs/internal/operators';
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {ProjectService} from "../../services/project.service";
 import {forEach} from "@angular/router/src/utils/collection";
+import {StatusService} from "../../services/status.service";
 
 /**
  * @title Table with expandable rows
@@ -48,10 +49,10 @@ export class WorkerTableComponent implements OnInit {
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    constructor(private project: ProjectService) {}
+    constructor(private project: ProjectService, private statusService: StatusService) {}
 
     ngOnInit() {
-        this.project.getStatuses().subscribe((data) => {
+        this.statusService.get().subscribe((data) => {
             this.allStatuses = data;
             this.status = data[0]['id'];
             this.filteredValues.status = data[0]['id'];

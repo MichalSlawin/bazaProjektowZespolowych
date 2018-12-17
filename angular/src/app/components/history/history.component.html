@@ -1,5 +1,5 @@
 <mgl-timeline [toggle]="false" [alternate]="true">
-  <mgl-timeline-entry *ngFor="let entry of history">
+  <mgl-timeline-entry *ngFor="let entry of history.slice().reverse()">
     <mgl-timeline-entry-header>
       <div>{{entry.subject}}</div>
     </mgl-timeline-entry-header>

@@ -55,6 +55,9 @@ $router->get('academic-year', 'AcademicYearController@get');
 
 //StatusController
 $router->get('status', 'StatusController@get');
+$router->get('project/{id:[0-9]+}/status', 'StatusController@getProject');
+
+$router->post('project/{id:[0-9]+}/status', 'StatusController@updateProject');
 
 //ProjectStudentController
 $router->post('project/{id:[0-9]+}/students', 'ProjectStudentController@add');
