@@ -54,8 +54,8 @@ export class WorkerTableComponent implements OnInit {
     ngOnInit() {
         this.statusService.get().subscribe((data) => {
             this.allStatuses = data;
-            this.status = data[0]['id'];
-            this.filteredValues.status = data[0]['id'];
+            this.status = 0;
+            this.filteredValues.status = '';
             this.getProjectList();
         });
     }
@@ -107,8 +107,12 @@ export class WorkerTableComponent implements OnInit {
         this.dataSource.filter = JSON.stringify(this.filteredValues);
     }
 
-    applyFilterStatus(filterValue: string) {
-        this.filteredValues['status'] = filterValue;
+    applyFilterStatus(filterValue) {
+        if (filterValue === 0) {
+            this.filteredValues['status'] = '';
+        } else {
+            this.filteredValues['status'] = filterValue;
+        }
         this.dataSource.filter = JSON.stringify(this.filteredValues);
     }
 

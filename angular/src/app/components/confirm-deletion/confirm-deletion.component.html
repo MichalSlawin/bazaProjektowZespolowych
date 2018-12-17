@@ -1,0 +1,14 @@
+<mat-toolbar class="tytul" color="primary">
+  <mat-toolbar-row>
+    Czy na pewno chcesz usunąć projekt?
+  </mat-toolbar-row>
+</mat-toolbar>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="confirm()">
+    Ok
+  </button>
+  <span class="fill-space"></span>
+  <button mat-raised-button color="warn" (click)="close()">
+    Anuluj
+  </button>
+</div>

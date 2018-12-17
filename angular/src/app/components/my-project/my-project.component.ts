@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {ProjectService} from "../../services/project.service";
+import {CheckPasswordComponent} from "../check-password/check-password.component";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from "@angular/material";
+import {ConfirmDeletionComponent} from "../confirm-deletion/confirm-deletion.component";
 
 @Component({
   selector: 'app-my-project',
@@ -11,7 +14,9 @@ export class MyProjectComponent implements OnInit {
   projectData;
   showProject = false;
 
-  constructor(private project: ProjectService) { }
+    confirmDeletionDialogRef: MatDialogRef<ConfirmDeletionComponent>;
+
+  constructor(private project: ProjectService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.getProjectData();
@@ -35,9 +40,16 @@ export class MyProjectComponent implements OnInit {
   }
 
   delete() {
-    this.project.delete().subscribe((data) => {
-      console.log(data);
-    })
+      this.confirmDeletionDialogRef = this.dialog.open(ConfirmDeletionComponent, {
+          width: '420px',
+      });
+      this.confirmDeletionDialogRef.afterClosed().subscribe(isConfirmed => {
+          if (isConfirmed) {
+              this.project.delete().subscribe((data) => {
+                  console.log(data);
+              });
+          }
+      });
   }
 
 }

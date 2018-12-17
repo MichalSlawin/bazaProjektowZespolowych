@@ -5,6 +5,7 @@ import {MyProjectComponent} from "./components/my-project/my-project.component";
 import {ExpandableTableComponent} from "./components/expandable-table/expandable-table.component";
 import {ProjectShowComponent} from "./components/project-show/project-show.component";
 import {WorkerTableComponent} from "./components/worker-table/worker-table.component";
+import {ProjectEditComponent} from "./components/project-edit/project-edit.component";
 
 
 const routes: Routes = [
@@ -22,6 +23,9 @@ const routes: Routes = [
     },
     {
         path: 'pracownik-projekty', component: WorkerTableComponent
+    },
+    {
+        path: 'edytuj-projekt', component: ProjectEditComponent
     },
     {
         path: '**',  redirectTo: 'projekty'
