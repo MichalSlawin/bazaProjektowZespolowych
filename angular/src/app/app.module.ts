@@ -57,6 +57,7 @@ import { ParticipantsComponent } from './components/participants/participants.co
 import { CreditsComponent } from './components/credits/credits.component';
 import { ProjectEditComponent } from './components/project-edit/project-edit.component';
 import { ConfirmDeletionComponent } from './components/confirm-deletion/confirm-deletion.component';
+import { UrlPipe } from './pipes/url.pipe';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { ConfirmDeletionComponent } from './components/confirm-deletion/confirm-
     ParticipantsComponent,
     CreditsComponent,
     ProjectEditComponent,
-    ConfirmDeletionComponent
+    ConfirmDeletionComponent,
+    UrlPipe
   ],
   imports: [
     BrowserModule,

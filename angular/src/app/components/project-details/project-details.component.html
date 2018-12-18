@@ -23,14 +23,14 @@
     <h4>Link do repozytorium</h4>
   </mat-card>
   <mat-card>
-    <a [href]="'//'+projectData?.link" target="_blank">{{projectData?.link}}</a>
+    <a [href]="projectData?.link | url" target="_blank">{{projectData?.link}}</a>
   </mat-card>
   <div *ngIf="projectData?.release_link !== null">
     <mat-card>
       <h4>Link do aplikacji</h4>
     </mat-card>
     <mat-card>
-      <a [href]="'//'+projectData?.release_link" target="_blank">{{projectData?.release_link}}</a>
+      <a [href]="projectData?.release_link | url" target="_blank">{{projectData?.release_link}}</a>
     </mat-card>
   </div>
   <mat-card>
