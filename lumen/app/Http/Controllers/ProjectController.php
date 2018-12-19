@@ -274,6 +274,77 @@ class ProjectController extends Controller
         return response()->json("Unauthorized", 401);
     }
 
+    public function edit(Request $request)
+    {
+        $user = Auth::user();
+        if(!$user instanceof Student)
+        {
+            return response()->json("Unauthorized", 401);
+        }
+        try
+        {
+            $this->validate($request, [
+                'name' => 'required',
+                'description' => 'required',
+                'link' => 'required',
+                'mentoring' => 'required|boolean',
+                'worker' => 'required|exists:worker,id',
+                'languages' => 'required|array'
+            ]);
+        }
+        catch (ValidationException $e)
+        {
+            return response()->json($e->response->original, $e->status);
+        }
+        $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
+        $workerCheck = Worker::whereHas('academicYear', function ($query) use ($academicYear) {
+            $query->where('id', $academicYear->id);
+        })->take(1)->first();
+        if(empty($workerCheck))
+        {
+            return response()->json("Wrong worker", 400);
+        }
+        $project = Project::whereHas('academic_year', function ($query) use ($academicYear) {
+            $query->where('id', $academicYear->id);
+        })->where('student_id', $user->id)->first();
+        if(empty($project))
+        {
+            return response()->json("Nie masz projektu", 400);
+        }
+        try
+        {
+            $project->name = $request->get("name");
+            $project->description = $request->get("description");
+            $project->status_id = 5;
+            $project->worker_id = $request->get("worker");
+            $project->link = $request->get("link");
+            $project->mentoring = $request->get("mentoring");
+            $project->save();
+            $languages = $request->get('languages');
+            DB::delete("DELETE FROM project_language WHERE project_id = ?", [$project->id]);
+            foreach ($languages as $language)
+            {
+                $languageObject = ProgramingLanguage::whereRaw( 'LOWER(`name`) like ?', [$language])->take(1)->first();
+                if(empty($languageObject))
+                {
+                    $languageObject = new ProgramingLanguage();
+                    $languageObject->name = $language;
+                }
+                $project->languages()->save($languageObject);
+            }
+            $projectHistory = new ProjectHistory();
+            $projectHistory->subject = "Edytowano projekt";
+            $projectHistory->body = "Projekt został edytowany";
+            $projectHistory->project_id = $project->id;
+            $projectHistory->save();
+        }
+        catch (QueryException $e) {
+            return response()->json("Something went wrong", 500);
+        }
+
+        return response()->json("Success", 200);
+}
+
     public function delete()
     {
         $user = Auth::user();

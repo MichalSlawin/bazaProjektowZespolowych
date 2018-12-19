@@ -40,6 +40,8 @@ $router->get('project/worker', 'ProjectController@getWorker');
 
 $router->post('project', 'ProjectController@add');
 
+$router->put('project', 'ProjectController@edit');
+
 $router->delete('project', 'ProjectController@delete');
 
 //WorkerController

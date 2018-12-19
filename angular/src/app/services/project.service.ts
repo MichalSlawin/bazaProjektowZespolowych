@@ -34,6 +34,20 @@ export class ProjectService {
     return this.http.post(apiLink + '/project', uploadData);
   }
 
+  edit(data) {
+      const uploadData = new FormData();
+      uploadData.append("_method", "PUT");
+      uploadData.append('name', data['name']);
+      uploadData.append('description', data['description']);
+      uploadData.append('link', data['link']);
+      for(let language of data['languages']) {
+          uploadData.append('languages[]', language);
+      }
+      uploadData.append('mentoring', data['mentoring'] ? '1' : '0');
+      uploadData.append('worker', data['curator']);
+      return this.http.post(apiLink + '/project', uploadData);
+  }
+
   getList(year?: string) {
     let params = new HttpParams().set('rok', year);
 

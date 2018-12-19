@@ -29,15 +29,15 @@ export class MyProjectComponent implements OnInit {
   }
 
   getProjectData() {
-    this.project.getMine().subscribe((data) => {
-      this.projectData = data;
-      this.showProject = true;
-    }, error => {
-      this.projectData = {
-        body: 'Nie jesteś przypisany/a do żadnego projektu.'
-      };
-    });
-  }
+        this.project.getMine().subscribe((data) => {
+            this.projectData = data;
+            this.showProject = true;
+        }, error => {
+            this.projectData = {
+                body: 'Nie jesteś przypisany/a do żadnego projektu.'
+            };
+        });
+    }
 
   delete() {
       this.confirmDeletionDialogRef = this.dialog.open(ConfirmDeletionComponent, {
