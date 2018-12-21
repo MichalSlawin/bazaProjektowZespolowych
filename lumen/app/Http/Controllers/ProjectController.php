@@ -313,28 +313,89 @@ class ProjectController extends Controller
         }
         try
         {
-            $project->name = $request->get("name");
-            $project->description = $request->get("description");
+            $history = "Zmiany:\n";
+            $name = $request->get("name");
+            if($project->name != $name)
+            {
+                $history .= "- Nazwa z \"$project->name\" na \"$name\"\n";
+                $project->name = $name;
+            }
+            $description = $request->get("description");
+            if($project->description != $description)
+            {
+                $history .= "- Opis z \"$project->description\" na \"$description\"\n";
+                $project->description = $description;
+            }
+            $workerId = $request->get("worker");
+            if($project->worker_id != $workerId)
+            {
+                $projectWorkerObject = Worker::find($project->worker_id);
+                $projectWorkerName = $projectWorkerObject->username;
+                $workerObject = Worker::find($workerId);
+                $workerName = $workerObject->username;
+                $history .= "- Opiekun z \"$projectWorkerName\" na \"$workerName\"\n";
+                $project->worker_id = $workerId;
+            }
+            $link = $request->get("link");
+            if($project->link != $link)
+            {
+                $history .= "- Link z \"$project->link\" na \"$link\"\n";
+                $project->link = $link;
+            }
+            $mentoring = $request->get("mentoring");
+            if($project->mentoring != $mentoring)
+            {
+                $projectMentoringString = "";
+                $mentoringString = "";
+                if($project->mentoring == 1)
+                {
+                    $projectMentoringString = "Zainteresowanie";
+                    $mentoringString = "Brak zainteresowania";
+                }
+                if($project->mentoring == 0)
+                {
+                    $projectMentoringString = "Brak zainteresowania";
+                    $mentoringString = "Zainteresowanie";
+                }
+                $history .= "- Mentoring z \"$projectMentoringString\" na \"$mentoringString\"\n";
+                $project->mentoring = $mentoring;
+            }
             $project->status_id = 5;
-            $project->worker_id = $request->get("worker");
-            $project->link = $request->get("link");
-            $project->mentoring = $request->get("mentoring");
             $project->save();
             $languages = $request->get('languages');
-            DB::delete("DELETE FROM project_language WHERE project_id = ?", [$project->id]);
-            foreach ($languages as $language)
+            $projectLanguages = $project->languages()->get();
+            $projectLanguagesArray = array();
+            foreach($projectLanguages as $projectLanguage)
             {
-                $languageObject = ProgramingLanguage::whereRaw( 'LOWER(`name`) like ?', [$language])->take(1)->first();
-                if(empty($languageObject))
+                $projectLanguagesArray[] = $projectLanguage->name;
+            }
+            if($projectLanguagesArray != $languages)
+            {
+                $projectLanguagesArrayString = implode(",", $projectLanguagesArray);
+                $languagesString = implode(",", $languages);
+                $history .= "Technologie z \"$projectLanguagesArrayString\" na \"$languagesString\"\n";
+                DB::delete("DELETE FROM project_language WHERE project_id = ?", [$project->id]);
+                foreach ($languages as $language)
                 {
-                    $languageObject = new ProgramingLanguage();
-                    $languageObject->name = $language;
+                    $languageObject = ProgramingLanguage::whereRaw( 'LOWER(`name`) like ?', [$language])->take(1)->first();
+                    if(empty($languageObject))
+                    {
+                        $languageObject = new ProgramingLanguage();
+                        $languageObject->name = $language;
+                    }
+                    $project->languages()->save($languageObject);
                 }
-                $project->languages()->save($languageObject);
             }
             $projectHistory = new ProjectHistory();
             $projectHistory->subject = "Edytowano projekt";
-            $projectHistory->body = "Projekt został edytowany";
+            if($history == "Zmiany:\n")
+            {
+                $projectHistory->body = "Brak zmian.";
+            }
+            else
+            {
+                $projectHistory->body = "$history";
+            }
             $projectHistory->project_id = $project->id;
             $projectHistory->save();
         }

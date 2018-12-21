@@ -101,7 +101,7 @@ export class ProjectEditComponent implements OnInit {
         this.project.edit(this.projectData).subscribe((data) => {
             const dialogRef = this.dialog.open(SuccessDialogComponent, {
                 width: '600px',
-                data: 'Utworzono projekt'
+                data: 'Ukończono edycję projektu'
             });
             dialogRef.afterClosed().subscribe(() => {
                 location.href = "/moj-projekt";
