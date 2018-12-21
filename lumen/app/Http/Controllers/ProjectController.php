@@ -373,7 +373,7 @@ class ProjectController extends Controller
             {
                 $projectLanguagesArrayString = implode(",", $projectLanguagesArray);
                 $languagesString = implode(",", $languages);
-                $history .= "Technologie z \"$projectLanguagesArrayString\" na \"$languagesString\"\n";
+                $history .= "- Technologie z \"$projectLanguagesArrayString\" na \"$languagesString\"\n";
                 DB::delete("DELETE FROM project_language WHERE project_id = ?", [$project->id]);
                 foreach ($languages as $language)
                 {
