@@ -19,3 +19,8 @@
 .logo {
   background-image: url("/assets/logo.png");
 }
+
+.theme-text {
+  font-size: 15px;
+  padding: 0px 10px 0px 10px;
+}

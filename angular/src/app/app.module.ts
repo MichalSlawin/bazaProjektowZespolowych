@@ -26,7 +26,7 @@ import {
     MatCheckboxModule,
     MatTabsModule,
     MatChipsModule,
-    MatPaginatorModule, MatPaginatorIntl, MatSnackBarModule,
+    MatPaginatorModule, MatPaginatorIntl, MatSnackBarModule, MatSlideToggleModule,
 } from '@angular/material';
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -122,6 +122,7 @@ import { UrlPipe } from './pipes/url.pipe';
       MatPaginatorModule,
       HttpClientModule,
       NgxWigModule,
+      MatSlideToggleModule
   ],
   providers: [
       {provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()},

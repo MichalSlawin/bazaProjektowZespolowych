@@ -4,10 +4,20 @@
 @include mat-core();
 
 $primary: mat-palette($mat-light-blue);
-$accent: mat-palette($mat-green, A200, A100, A400);
+$accent: mat-palette($mat-green);
 $warn: mat-palette($mat-red);
-//$theme: mat-light-theme($primary, $accent, $warn);
-$theme: mat-dark-theme($primary, $accent, $warn);
+$light-theme: mat-light-theme($primary, $accent, $warn);
+$dark-theme: mat-dark-theme($primary, $accent, $warn);
 
-@include angular-material-theme($theme);
-@include mgl-timeline-theme($theme);
+@include angular-material-theme($dark-theme);
+@include mgl-timeline-theme($dark-theme);
+
+.light-theme {
+  @include angular-material-theme($light-theme);
+  @include mgl-timeline-theme($light-theme);
+}
+
+.dark-theme {
+  @include angular-material-theme($dark-theme);
+  @include mgl-timeline-theme($dark-theme);
+}
