@@ -25,21 +25,27 @@
       </button>
       <span>Projekty zespołowe</span>
       <span class="fill-space"></span>
-      <span *ngIf="!(isHandset$ | async)" class="theme-text">Ciemny</span>
-      <mat-slide-toggle [(ngModel)]="lightTheme" (change)="onSetTheme()"></mat-slide-toggle>
-      <span *ngIf="!(isHandset$ | async)" class="theme-text">Jasny</span>
-      <div *ngIf="!isLoggedIn">
-        <button type="button" mat-icon-button (click)="showLogin()">
-          <mat-icon>input</mat-icon>
-        </button>
-        <span class="span-button" *ngIf="!(isHandset$ | async)" (click)="showLogin()">Zaloguj</span>
-      </div>
-      <div *ngIf="isLoggedIn">
-        <button type="button" mat-icon-button (click)="logout()">
-          <mat-icon>power_settings_new</mat-icon>
-        </button>
-        <span class="span-button" *ngIf="!(isHandset$ | async)" (click)="logout()">Wyloguj</span>
-      </div>
+      <button mat-button [matMenuTriggerFor]="menu">
+        <mat-icon>account_circle</mat-icon>
+        {{username}}
+      </button>
+      <mat-menu #menu="matMenu" class="matMenu">
+        <span *ngIf="!(isHandset$ | async)" class="theme-text">Ciemny</span>
+        <mat-slide-toggle [(ngModel)]="lightTheme" (change)="onSetTheme()"></mat-slide-toggle>
+        <span *ngIf="!(isHandset$ | async)" class="theme-text">Jasny</span>
+        <div *ngIf="!isLoggedIn">
+          <button type="button" mat-icon-button (click)="showLogin()">
+            <mat-icon>input</mat-icon>
+          </button>
+          <span class="span-button" *ngIf="!(isHandset$ | async)" (click)="showLogin()">Zaloguj</span>
+        </div>
+        <div *ngIf="isLoggedIn">
+          <button type="button" mat-icon-button (click)="logout()">
+            <mat-icon>power_settings_new</mat-icon>
+          </button>
+          <span class="span-button" *ngIf="!(isHandset$ | async)" (click)="logout()">Wyloguj</span>
+        </div>
+      </mat-menu>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

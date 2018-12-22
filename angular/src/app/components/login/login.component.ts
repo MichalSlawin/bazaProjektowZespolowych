@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
            this.loader = false;
            localStorage.setItem("token", data['token']);
            localStorage.setItem("role", data['role']);
+           localStorage.setItem("username", this.username);
            this.close(true);
         }, error => {
             this.loader = false;

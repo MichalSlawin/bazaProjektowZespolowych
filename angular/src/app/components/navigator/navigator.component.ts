@@ -16,6 +16,7 @@ export class NavigatorComponent implements OnInit{
     isLoggedIn = false;
     roleName = '';
     lightTheme = false;
+    username = '';
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -50,6 +51,7 @@ export class NavigatorComponent implements OnInit{
       if(localStorage.getItem('token') && localStorage.getItem('role')) {
           this.roleName = localStorage.getItem('role');
           this.isLoggedIn = true;
+          this.username = localStorage.getItem('username');
       }
         const theme = localStorage.getItem('theme') === null ? 'dark-theme' : localStorage.getItem('theme');
         if(theme === 'dark-theme') {
