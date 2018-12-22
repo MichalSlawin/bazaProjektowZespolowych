@@ -68,3 +68,5 @@ $router->put('project/mine/students/{id:[0-9]+}', 'ProjectStudentController@acce
 
 $router->delete('project/mine/students/{id:[0-9]+}', 'ProjectStudentController@delete');
 
+$router->delete('project/{projectId:[0-9]+}/students/{studentId:[0-9]+}', 'ProjectStudentController@deleteByWorker');
+

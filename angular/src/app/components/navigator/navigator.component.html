@@ -28,6 +28,7 @@
       <button mat-button [matMenuTriggerFor]="menu">
         <mat-icon>account_circle</mat-icon>
         {{username}}
+        <!--<span *ngIf="username == ''">Nie Zalogowano</span>-->
       </button>
       <mat-menu #menu="matMenu" class="matMenu">
         <span *ngIf="!(isHandset$ | async)" class="theme-text">Ciemny</span>

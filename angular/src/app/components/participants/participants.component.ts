@@ -3,6 +3,7 @@ import {MatDialog} from "@angular/material";
 import {ErrorDialogComponent} from "../error-dialog/error-dialog.component";
 import {ProjectStudentsService} from "../../services/project-students.service";
 import {SuccessDialogComponent} from "../success-dialog/success-dialog.component";
+import {isUndefined} from "util";
 
 @Component({
   selector: 'app-participants',
@@ -15,6 +16,7 @@ export class ParticipantsComponent implements OnInit {
   @Input('students') students;
   @Input('status') status;
   @Input('is_owner') is_owner;
+  @Input('is_worker') is_worker;
 
   @Output() messageEvent = new EventEmitter();
 
@@ -58,6 +60,16 @@ export class ParticipantsComponent implements OnInit {
         this.projectStudent.throwOut(id).subscribe((data) => {
             this.refreshParticipants();
         });
+    }
+
+    throwOutByWorker(id) {
+        this.projectStudent.throwOutByWorker(this.project_id, id).subscribe((data) => {
+           this.refreshParticipants();
+        });
+    }
+
+    isUndefined(arg) {
+      return isUndefined(arg);
     }
 
     signIn() {

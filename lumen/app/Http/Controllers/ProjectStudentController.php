@@ -7,6 +7,7 @@ use App\AcademicYear;
 use App\Project;
 use App\ProjectStudent;
 use App\Student;
+use App\Worker;
 use Illuminate\Support\Facades\Auth;
 
 class ProjectStudentController extends Controller
@@ -74,6 +75,38 @@ class ProjectStudentController extends Controller
                 return response()->json("Nie masz projektu", 404);
             }
             $projectStudent = ProjectStudent::where('project_id', $project->id)->where('student_id', $id)->first();
+            if(empty($projectStudent))
+            {
+                return response()->json("Nie ma takiej osoby", 400);
+            }
+            $projectStudent->accepted = 0;
+            $projectStudent->save();
+            return response()->json("OK", 200);
+        }
+        return response()->json("Unauthorized", 401);
+    }
+
+    public function deleteByWorker($projectId, $studentId)
+    {
+        $user = Auth::user();
+        if($user instanceof Worker)
+        {
+            $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
+            $project = Project::with(['students'])
+                ->where('id', $projectId)
+                ->where('academic_year_id', $academicYear->id)
+                ->orderBy('id', 'desc')
+                ->take(1)
+                ->first();
+            if(empty($project))
+            {
+                return response()->json("Nie masz projektu", 404);
+            }
+            if($project->student_id == $studentId)
+            {
+                return response()->json("Nie można wykonać takiej operacji", 400);
+            }
+            $projectStudent = ProjectStudent::where('project_id', $project->id)->where('student_id', $studentId)->first();
             if(empty($projectStudent))
             {
                 return response()->json("Nie ma takiej osoby", 400);

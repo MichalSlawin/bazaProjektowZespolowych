@@ -269,7 +269,7 @@ class ProjectController extends Controller
                 }
                 return response()->json("Success", 200);
             }
-            return response()->json("You already belong to project", 401);
+            return response()->json("Należysz już do projektu", 400);
         }
         return response()->json("Unauthorized", 401);
     }

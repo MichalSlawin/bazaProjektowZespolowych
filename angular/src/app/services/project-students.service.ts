@@ -24,4 +24,10 @@ export class ProjectStudentsService {
         uploadData.append("_method", "DELETE");
         return this.http.post(apiLink + '/project/mine/students/' + id, uploadData);
     }
+
+    throwOutByWorker(projectId, studentId) {
+        const uploadData = new FormData();
+        uploadData.append("_method", "DELETE");
+        return this.http.post(apiLink + '/project/' + projectId + '/students/' + studentId, uploadData);
+    }
 }
