@@ -12,6 +12,7 @@ use App\ProjectHistory;
 use App\ProjectStudent;
 use App\Student;
 use App\Worker;
+use http\Env\Response;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -360,7 +361,6 @@ class ProjectController extends Controller
                 $history .= "- Mentoring z \"$projectMentoringString\" na \"$mentoringString\"\n";
                 $project->mentoring = $mentoring;
             }
-            $project->status_id = 5;
             $project->save();
             $languages = $request->get('languages');
             $projectLanguages = $project->languages()->get();
@@ -404,7 +404,32 @@ class ProjectController extends Controller
         }
 
         return response()->json("Success", 200);
-}
+    }
+
+    public function requestEdition()
+    {
+        $user = Auth::user();
+        if(!$user instanceof Student) {
+            return response()->json("Unauthorized", 401);
+        }
+        $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
+        $project = Project::whereHas('academic_year', function ($query) use ($academicYear) {
+            $query->where('id', $academicYear->id);
+        })->where('student_id', $user->id)->first();
+        if(empty($project))
+        {
+            return response()->json("Nie masz projektu", 400);
+        }
+        try
+        {
+            $project->status_id = 5;
+            $project->save();
+        }
+        catch (QueryException $e) {
+            return response()->json("Something went wrong", 500);
+        }
+        return response()->json("Success");
+    }
 
     public function delete()
     {

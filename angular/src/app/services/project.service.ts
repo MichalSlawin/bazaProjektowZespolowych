@@ -68,5 +68,11 @@ export class ProjectService {
     return this.http.post(apiLink + '/project', uploadData);
   }
 
+  requestEdition() {
+      const uploadData = new FormData();
+      uploadData.append("_method", "PUT");
+      return this.http.post(apiLink + '/project/requestEdition', uploadData);
+  }
+
 
 }

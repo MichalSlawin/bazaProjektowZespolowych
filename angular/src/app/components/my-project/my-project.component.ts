@@ -1,6 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ProjectService} from "../../services/project.service";
-import {CheckPasswordComponent} from "../check-password/check-password.component";
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from "@angular/material";
 import {ConfirmDeletionComponent} from "../confirm-deletion/confirm-deletion.component";
 
@@ -42,6 +41,7 @@ export class MyProjectComponent implements OnInit {
   delete() {
       this.confirmDeletionDialogRef = this.dialog.open(ConfirmDeletionComponent, {
           width: '420px',
+          data: 'Czy na pewno chcesz usunąć projekt?',
       });
       this.confirmDeletionDialogRef.afterClosed().subscribe(isConfirmed => {
           if (isConfirmed) {
@@ -49,6 +49,13 @@ export class MyProjectComponent implements OnInit {
                   console.log(data);
               });
           }
+      });
+  }
+
+  requestEdition() {
+      this.project.requestEdition().subscribe((data) => {
+          console.log(data);
+          this.refresh(1);
       });
   }
 

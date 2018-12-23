@@ -9,7 +9,7 @@ import {MessageService} from "../../services/message.service";
 })
 export class ConfirmDeletionComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<ConfirmDeletionComponent>,) { }
+  constructor(public dialogRef: MatDialogRef<ConfirmDeletionComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit() {
   }

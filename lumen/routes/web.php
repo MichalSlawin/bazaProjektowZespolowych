@@ -41,6 +41,7 @@ $router->get('project/worker', 'ProjectController@getWorker');
 $router->post('project', 'ProjectController@add');
 
 $router->put('project', 'ProjectController@edit');
+$router->put('project/requestEdition', 'ProjectController@requestEdition');
 
 $router->delete('project', 'ProjectController@delete');
 
@@ -65,6 +66,9 @@ $router->post('project/{id:[0-9]+}/status', 'StatusController@updateProject');
 $router->post('project/{id:[0-9]+}/students', 'ProjectStudentController@add');
 
 $router->put('project/mine/students/{id:[0-9]+}', 'ProjectStudentController@accept');
+
+$router->put('project/{projectId:[0-9]+}/students/{studentId:[0-9]+}', 'ProjectStudentController@restore');
+
 
 $router->delete('project/mine/students/{id:[0-9]+}', 'ProjectStudentController@delete');
 

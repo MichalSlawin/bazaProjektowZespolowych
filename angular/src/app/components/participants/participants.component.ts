@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatDialog} from "@angular/material";
+import {MatDialog, MatDialogRef} from "@angular/material";
 import {ErrorDialogComponent} from "../error-dialog/error-dialog.component";
 import {ProjectStudentsService} from "../../services/project-students.service";
 import {SuccessDialogComponent} from "../success-dialog/success-dialog.component";
 import {isUndefined} from "util";
+import {ConfirmDeletionComponent} from "../confirm-deletion/confirm-deletion.component";
 
 @Component({
   selector: 'app-participants',
@@ -23,6 +24,7 @@ export class ParticipantsComponent implements OnInit {
 
   userRole;
   maxAccepted = 4;
+  confirmDeletionDialogRef: MatDialogRef<ConfirmDeletionComponent>;
   constructor(private projectStudent: ProjectStudentsService, private dialog: MatDialog) { }
 
   ngOnInit() {
@@ -63,8 +65,22 @@ export class ParticipantsComponent implements OnInit {
     }
 
     throwOutByWorker(id) {
-        this.projectStudent.throwOutByWorker(this.project_id, id).subscribe((data) => {
-           this.refreshParticipants();
+        this.confirmDeletionDialogRef = this.dialog.open(ConfirmDeletionComponent, {
+            width: '450px',
+            data: 'Czy na pewno chcesz wyrzucić studenta?',
+        });
+        this.confirmDeletionDialogRef.afterClosed().subscribe(isConfirmed => {
+            if (isConfirmed) {
+                this.projectStudent.throwOutByWorker(this.project_id, id).subscribe((data) => {
+                    this.refreshParticipants();
+                });
+            }
+        });
+    }
+
+    restore(id) {
+        this.projectStudent.restore(this.project_id, id).subscribe((data) => {
+            this.refreshParticipants();
         });
     }
 

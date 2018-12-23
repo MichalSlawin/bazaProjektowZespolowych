@@ -1,3 +1,4 @@
+<!--TODO: naprawic mozliwosc usuwania/ akceptowania studentow w zaleznosci od statusu -->
 <mat-list>
   <div *ngIf="status?.id == 1 && is_owner == false && userRole == 'student'">
     <button mat-raised-button color="accent" (click)="signIn()">Zgłoś się</button>
@@ -10,7 +11,10 @@
   </div>
   <div *ngIf="is_worker == true">
     <mat-list-item *ngFor="let student of students">
-      <button mat-raised-button color="warn" (click)="throwOutByWorker(student.id)" *ngIf="student.pivot.accepted == 1">Wyrzuć</button>
+      <button mat-raised-button color="warn" (click)="throwOutByWorker(student.id)" *ngIf="student.pivot.accepted == 1; else thrownOut">Wyrzuć</button>
+      <ng-template #thrownOut>
+        <button mat-raised-button color="primary" (click)="restore(student.id)">Przywróć</button>
+      </ng-template>
       <span style="margin-left: 20px;">{{student.index_no}} - {{student.username}}</span>
     </mat-list-item>
   </div>

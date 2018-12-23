@@ -30,4 +30,10 @@ export class ProjectStudentsService {
         uploadData.append("_method", "DELETE");
         return this.http.post(apiLink + '/project/' + projectId + '/students/' + studentId, uploadData);
     }
+
+    restore(projectId, studentId) {
+        const uploadData = new FormData();
+        uploadData.append("_method", "PUT");
+        return this.http.post(apiLink + '/project/' + projectId + '/students/' + studentId, uploadData);
+    }
 }
