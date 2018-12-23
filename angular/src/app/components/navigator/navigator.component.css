@@ -24,3 +24,11 @@
   font-size: 15px;
   padding: 0px 10px 0px 10px;
 }
+
+.mat-menu-item {
+  color: white!important;
+}
+
+.mat-menu-item .mat-icon {
+  color: white!important;
+}

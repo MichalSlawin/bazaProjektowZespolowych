@@ -27,24 +27,24 @@
       <span class="fill-space"></span>
       <button mat-button [matMenuTriggerFor]="menu">
         <mat-icon>account_circle</mat-icon>
-        {{username}}
-        <!--<span *ngIf="username == ''">Nie Zalogowano</span>-->
+        <span *ngIf="!(isHandset$ | async)">{{username === '' ? 'Niezalogowany' : username}}</span>
       </button>
       <mat-menu #menu="matMenu" class="matMenu">
-        <span *ngIf="!(isHandset$ | async)" class="theme-text">Ciemny</span>
-        <mat-slide-toggle [(ngModel)]="lightTheme" (change)="onSetTheme()"></mat-slide-toggle>
-        <span *ngIf="!(isHandset$ | async)" class="theme-text">Jasny</span>
-        <div *ngIf="!isLoggedIn">
-          <button type="button" mat-icon-button (click)="showLogin()">
-            <mat-icon>input</mat-icon>
-          </button>
-          <span class="span-button" *ngIf="!(isHandset$ | async)" (click)="showLogin()">Zaloguj</span>
+        <div *ngIf="(isHandset$ | async)" (click)="$event.stopPropagation();" mat-menu-item>
+          <span>{{username === '' ? 'Niezalogowany' : username}}</span>
         </div>
-        <div *ngIf="isLoggedIn">
-          <button type="button" mat-icon-button (click)="logout()">
-            <mat-icon>power_settings_new</mat-icon>
-          </button>
-          <span class="span-button" *ngIf="!(isHandset$ | async)" (click)="logout()">Wyloguj</span>
+        <div mat-menu-item (click)="$event.stopPropagation();">
+          <span class="theme-text">Ciemny</span>
+          <mat-slide-toggle [(ngModel)]="lightTheme" (change)="onSetTheme()"></mat-slide-toggle>
+          <span class="theme-text">Jasny</span>
+        </div>
+        <div (click)="$event.stopPropagation();showLogin()" *ngIf="!isLoggedIn" mat-menu-item>
+          <mat-icon>input</mat-icon>
+          <span class="span-button">Zaloguj</span>
+        </div>
+        <div (click)="$event.stopPropagation();logout()" *ngIf="isLoggedIn" mat-menu-item>
+          <mat-icon>power_settings_new</mat-icon>
+          <span class="span-button">Wyloguj</span>
         </div>
       </mat-menu>
     </mat-toolbar>
