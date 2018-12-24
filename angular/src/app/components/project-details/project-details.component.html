@@ -5,7 +5,7 @@
   <mat-card>
     {{projectData?.name}}
   </mat-card>
-  <span *ngIf="projectData?.is_owner">
+  <span *ngIf="projectData?.is_owner || projectData?.is_worker">
     <mat-card>
       <h4>Status</h4>
     </mat-card>

@@ -130,6 +130,10 @@ class ProjectController extends Controller
             {
                 $project->is_owner = true;
                 $project->messages = Message::where('project_id', $project->id)->orderBy('created_at', 'desc')->get();
+                if($project->status_id == 2 || $project->status_id == 3 || $project->status_id == 5)
+                {
+                    $this->acceptedStudents($project->students);
+                }
             }
             else
             {
@@ -162,6 +166,7 @@ class ProjectController extends Controller
                 $project->is_worker = true;
             }
             $project->is_owner = false;
+            $this->acceptedStudents($project->students);
         }
         else
         {

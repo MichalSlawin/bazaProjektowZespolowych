@@ -1,24 +1,23 @@
-<!--TODO: naprawic mozliwosc usuwania/ akceptowania studentow w zaleznosci od statusu -->
 <mat-list>
   <div *ngIf="status?.id == 1 && is_owner == false && userRole == 'student'">
     <button mat-raised-button color="accent" (click)="signIn()">Zgłoś się</button>
   </div>
-  <div *ngIf="(status?.id != 1 || is_owner == false) && (is_worker == false || isUndefined(is_worker))">
+  <div *ngIf="((status?.id != 1 && status?.id != 4 && status?.id != 6) || is_owner == false)">
     <mat-list-item *ngFor="let student of students">
       <mat-icon mat-list-icon>fiber_manual_record</mat-icon>
       {{student.index_no}} - {{student.username}}
     </mat-list-item>
   </div>
-  <div *ngIf="is_worker == true">
-    <mat-list-item *ngFor="let student of students">
-      <button mat-raised-button color="warn" (click)="throwOutByWorker(student.id)" *ngIf="student.pivot.accepted == 1; else thrownOut">Wyrzuć</button>
-      <ng-template #thrownOut>
-        <button mat-raised-button color="primary" (click)="restore(student.id)">Przywróć</button>
-      </ng-template>
-      <span style="margin-left: 20px;">{{student.index_no}} - {{student.username}}</span>
-    </mat-list-item>
-  </div>
-  <div *ngIf="is_owner == true && status?.id == 1">
+  <!--<div *ngIf="is_worker == true")>-->
+    <!--<mat-list-item *ngFor="let student of students">-->
+      <!--<button mat-raised-button color="warn" (click)="throwOutByWorker(student.id)" *ngIf="student.pivot.accepted == 1; else thrownOut">Wyrzuć</button>-->
+      <!--<ng-template #thrownOut>-->
+        <!--<button mat-raised-button color="primary" (click)="restore(student.id)">Przywróć</button>-->
+      <!--</ng-template>-->
+      <!--<span style="margin-left: 20px;">{{student.index_no}} - {{student.username}}</span>-->
+    <!--</mat-list-item>-->
+  <!--</div>-->
+  <div *ngIf="is_owner == true && (status?.id == 1 || status?.id == 4 || status?.id == 6)">
     Maksymalna ilość: {{maxAccepted}}
     <mat-list-item *ngFor="let student of students">
       <button mat-raised-button color="primary" (click)="accept(student.id)" *ngIf="student.pivot.accepted == 0; else accepted">Zaakceptuj</button>

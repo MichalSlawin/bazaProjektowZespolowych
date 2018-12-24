@@ -66,7 +66,10 @@ class ProjectStudentController extends Controller
             $project = Project::with(['students'])
                 ->where('student_id', $user->id)
                 ->where('academic_year_id', $academicYear->id)
-                ->where('status_id', 1)
+                ->where(function($query)
+                {
+                    $query->where('status_id', 1)->orWhere('status_id', 4)->orWhere('status_id', 6);
+                })
                 ->orderBy('id', 'desc')
                 ->take(1)
                 ->first();
@@ -163,7 +166,10 @@ class ProjectStudentController extends Controller
             $project = Project::with(['students'])
                 ->where('student_id', $user->id)
                 ->where('academic_year_id', $academicYear->id)
-                ->where('status_id', 1)
+                ->where(function($query)
+                {
+                    $query->where('status_id', 1)->orWhere('status_id', 4)->orWhere('status_id', 6);
+                })
                 ->orderBy('id', 'desc')
                 ->take(1)
                 ->first();
