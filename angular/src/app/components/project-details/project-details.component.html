@@ -70,6 +70,6 @@
     <h4>Uczestnicy</h4>
   </mat-card>
   <mat-card>
-    <app-participants (messageEvent)="refreshData()" [project_id] = "projectData?.id" [status]="projectData?.status" [students]="projectData?.students" [is_owner]="projectData?.is_owner" [is_worker]="projectData?.is_worker"></app-participants>
+    <app-participants (messageEvent)="refreshData()" [project_id] = "projectData?.id" [status]="projectData?.status" [students]="projectData?.students" [is_owner]="projectData?.is_owner" [is_worker]="projectData?.is_worker" [does_belong]="projectData?.does_belong"></app-participants>
   </mat-card>
 </mat-list>

@@ -140,6 +140,10 @@ class ProjectController extends Controller
                 $project->is_owner = false;
                 $project->messages = Message::where('project_id', $project->id)->where('is_public', 1)->orderBy('created_at', 'desc')->get();
                 $this->acceptedStudents($project->students);
+                $projectCheck = DB::select("SELECT COUNT(ps.id) as 'CID' FROM project p
+                                        JOIN project_student ps ON ps.project_id = p.id
+                                        WHERE ps.student_id = ? AND p.id = ? and ps.accepted = ?", [$user->id, $project->id, 1]);
+                $project->does_belong = $projectCheck[0]->CID;
             }
             return response()->json($project, 200);
         }
@@ -173,6 +177,7 @@ class ProjectController extends Controller
             $projectCheck = DB::select("SELECT COUNT(ps.id) as 'CID' FROM project p
                                         JOIN project_student ps ON ps.project_id = p.id
                                         WHERE ps.student_id = ? AND p.id = ? and ps.accepted = ?", [$user->id, $id, 1]);
+            $project->does_belong = $projectCheck[0]->CID;
             if($projectCheck[0]->CID != 1)
             {
                 $project->makeHidden(['messages', 'history']);

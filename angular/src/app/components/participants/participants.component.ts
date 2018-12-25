@@ -18,6 +18,7 @@ export class ParticipantsComponent implements OnInit {
   @Input('status') status;
   @Input('is_owner') is_owner;
   @Input('is_worker') is_worker;
+  @Input('does_belong') does_belong;
 
   @Output() messageEvent = new EventEmitter();
 
@@ -54,7 +55,7 @@ export class ParticipantsComponent implements OnInit {
            this.dialog.open(ErrorDialogComponent, {
                width: '600px',
                data: 'Do projektu jest już zapisana maksymalna ilość osób'
-           })
+           });
       }
     }
 
@@ -97,7 +98,19 @@ export class ParticipantsComponent implements OnInit {
           dialogRef.afterClosed().subscribe((data) => {
               this.refreshParticipants();
           });
-      })
+      });
+    }
+
+    signOut() {
+        this.projectStudent.signOut(this.project_id).subscribe((data) => {
+            const dialogRef = this.dialog.open(SuccessDialogComponent, {
+                width: '600px',
+                data: 'Wypisano z projektu'
+            });
+            dialogRef.afterClosed().subscribe((data) => {
+                location.href = ("/projekty");
+            });
+        });
     }
 
 }

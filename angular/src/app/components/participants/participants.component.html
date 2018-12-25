@@ -1,5 +1,5 @@
 <mat-list>
-  <div *ngIf="status?.id == 1 && is_owner == false && userRole == 'student'">
+  <div *ngIf="status?.id == 1 && is_owner == false && userRole == 'student' && does_belong == 0">
     <button mat-raised-button color="accent" (click)="signIn()">Zgłoś się</button>
   </div>
   <div *ngIf="((status?.id != 1 && status?.id != 4 && status?.id != 6) || is_owner == false)">
@@ -26,5 +26,8 @@
       </ng-template>
       <span style="margin-left: 20px;">{{student.index_no}} - {{student.username}}</span>
     </mat-list-item>
+  </div>
+  <div *ngIf="status?.id == 1 && is_owner == false && userRole == 'student' && does_belong == 1">
+    <button mat-raised-button color="warn" (click)="signOut()">Wypisz się</button>
   </div>
 </mat-list>

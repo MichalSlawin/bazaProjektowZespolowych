@@ -9,6 +9,7 @@ use App\ProjectStudent;
 use App\Student;
 use App\Worker;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class ProjectStudentController extends Controller
 {
@@ -84,6 +85,23 @@ class ProjectStudentController extends Controller
             }
             $projectStudent->accepted = 0;
             $projectStudent->save();
+            return response()->json("OK", 200);
+        }
+        return response()->json("Unauthorized", 401);
+    }
+
+    public function selfDelete(Request $request)
+    {
+        $user = Auth::user();
+
+        $projectId = $request->get("projectId");
+        $projectStudent = ProjectStudent::where('project_id', $projectId)->where('student_id', $user->id)->first();
+
+        if($user instanceof Student)
+        {
+            $projectStudent->delete();
+//            $projectStudent->accepted = 0;
+//            $projectStudent->save();
             return response()->json("OK", 200);
         }
         return response()->json("Unauthorized", 401);
