@@ -3,9 +3,7 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-
-class ProgramingLanguage extends Model
+class ProgramingLanguage extends CustomModel
 {
     public $timestamps = false;
     public $table = 'programing_language';

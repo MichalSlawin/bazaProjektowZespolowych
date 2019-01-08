@@ -3,9 +3,7 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-
-class Status extends Model
+class Status extends CustomModel
 {
     public $timestamps = false;
     public $table = 'status';

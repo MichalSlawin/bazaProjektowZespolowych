@@ -3,10 +3,8 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
-class ProjectHistory extends Model
+class ProjectHistory extends CustomModel
 {
     public $table = 'project_history';
     protected $hidden = ['updated_at'];
@@ -14,10 +12,5 @@ class ProjectHistory extends Model
     public function project()
     {
         return $this->belongsTo("App\Project", "project_id", "id");
-    }
-
-    public function getCreatedAtAttribute($value)
-    {
-        return Carbon::parse($value, 'UTC')->timezone('Europe/Warsaw')->toDateTimeString();
     }
 }

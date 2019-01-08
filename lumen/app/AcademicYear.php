@@ -3,9 +3,7 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-
-class AcademicYear extends Model
+class AcademicYear extends CustomModel
 {
     public $timestamps = false;
     protected $hidden = ['pivot'];

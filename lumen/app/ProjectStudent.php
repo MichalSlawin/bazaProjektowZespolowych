@@ -3,9 +3,7 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-
-class ProjectStudent extends Model
+class ProjectStudent extends CustomModel
 {
     public $table = 'project_student';
 
