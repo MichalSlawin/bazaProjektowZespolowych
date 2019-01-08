@@ -7,4 +7,5 @@ export class Project {
     description: string;
     contestants: string;
     year: number;
+    featured: boolean;
 }

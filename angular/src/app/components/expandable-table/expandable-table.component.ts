@@ -36,13 +36,15 @@ import {forEach} from "@angular/router/src/utils/collection";
         description: "",
         year: "",
         technology: "",
-        mentoring: ""
+        mentoring: "",
+        featured: ""
     };
 
     year;
     formControlTechnology = new FormControl();
     formControlNameDescription = new FormControl();
     formControlMentoring = new FormControl();
+    formControlFeatured = new FormControl();
 
     allYears;
     allTechnologies;
@@ -97,7 +99,8 @@ import {forEach} from "@angular/router/src/utils/collection";
                 return (data.nazwa.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 ||
                     data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1)
                     && data.technologie.toString().trim().toLowerCase().indexOf(searchString.technology.toLowerCase()) !== -1
-                    && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1;
+                    && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1
+                    && data.featured.toString().trim().toLowerCase().indexOf(searchString.featured.toLowerCase()) !== -1;
             };
             return myFilterPredicate;
         }
@@ -125,6 +128,16 @@ import {forEach} from "@angular/router/src/utils/collection";
             }
             else {
                 this.filteredValues['mentoring'] = "1";
+            }
+            this.dataSource.filter = JSON.stringify(this.filteredValues);
+        }
+
+        applyFilterFeatured(isChecked) {
+            if(isChecked === false) {
+                this.filteredValues['featured'] = "";
+            }
+            else {
+                this.filteredValues['featured'] = "1";
             }
             this.dataSource.filter = JSON.stringify(this.filteredValues);
         }

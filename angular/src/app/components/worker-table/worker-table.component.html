@@ -30,20 +30,36 @@
     Mentoring
 </mat-checkbox>
 
+<mat-checkbox class="featured" name="featured" (change)="applyFilterFeatured($event.checked)"
+              [formControl]="formControlFeatured">
+    Wyróżnione
+</mat-checkbox>
+
 <table mat-table
        [dataSource]="dataSource" multiTemplateDataRows
        class="mat-elevation-z8">
     <ng-container matColumnDef="{{column}}" *ngFor="let column of columnsToDisplay">
-        <th mat-header-cell *matHeaderCellDef> {{column | firstUpper}} </th>
+        <th mat-header-cell *matHeaderCellDef>
+            <span *ngIf="column !== 'featured'">
+                {{column | firstUpper}}
+            </span>
+        </th>
         <td mat-cell *matCellDef="let element">
-          <span *ngIf="column === 'mentoring'; else status">
-              <span *ngIf="element.company_name !== null; else mentoring">
-                        {{element.company_name}}
+            <span *ngIf="column === 'featured'; else isMentoring">
+                      <span *ngIf="element[column] === 1">
+                          <mat-icon>stars</mat-icon>
                       </span>
-              <ng-template #mentoring>
-                        {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
-              </ng-template>
-          </span>
+            </span>
+            <ng-template #isMentoring>
+              <span *ngIf="column === 'mentoring'; else status">
+                  <span *ngIf="element.company_name !== null; else mentoring">
+                      {{element.company_name}}
+                  </span>
+                  <ng-template #mentoring>
+                            {{element[column] ? 'Zainteresowany' : 'Niezainteresowany'}}
+                  </ng-template>
+              </span>
+            </ng-template>
             <ng-template #status>
                 <span *ngIf="column === 'status'; else other">
                     {{element['status']['name']}}

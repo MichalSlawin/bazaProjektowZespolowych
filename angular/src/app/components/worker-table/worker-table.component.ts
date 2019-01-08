@@ -37,13 +37,15 @@ export class WorkerTableComponent implements OnInit {
         description: "",
         indeksNr: "",
         status: "",
-        mentoring: ""
+        mentoring: "",
+        featured: ""
     };
 
     status;
     formControlNameDescription = new FormControl();
     formControlIndeksNr = new FormControl();
     formControlMentoring = new FormControl();
+    formControlFeatured = new FormControl();
 
     allStatuses;
 
@@ -80,7 +82,9 @@ export class WorkerTableComponent implements OnInit {
                     .toString().trim().toLowerCase().indexOf(searchString.indeksNr.toLowerCase()) !== -1
                 && data.status['id']
                     .toString().trim().toLowerCase().indexOf(searchString.status) !== -1
-                && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1;
+                && data.mentoring.toString().trim().toLowerCase().indexOf(searchString.mentoring.toLowerCase()) !== -1
+                && data.featured.toString().trim().toLowerCase().indexOf(searchString.featured.toLowerCase()) !== -1;
+
         };
         return myFilterPredicate;
     }
@@ -103,6 +107,16 @@ export class WorkerTableComponent implements OnInit {
         }
         else {
             this.filteredValues['mentoring'] = "1";
+        }
+        this.dataSource.filter = JSON.stringify(this.filteredValues);
+    }
+
+    applyFilterFeatured(isChecked) {
+        if(isChecked === false) {
+            this.filteredValues['featured'] = "";
+        }
+        else {
+            this.filteredValues['featured'] = "1";
         }
         this.dataSource.filter = JSON.stringify(this.filteredValues);
     }

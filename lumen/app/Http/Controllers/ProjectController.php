@@ -39,12 +39,12 @@ class ProjectController extends Controller
         }
 
         $user = Auth::user();
-        $columns = ["nazwa", "mentoring" , "opiekun", "technologie"];
+        $columns = ["featured", "nazwa", "mentoring" , "opiekun", "technologie"];
 
         if($user instanceof Student || $user instanceof Worker)
         {
             //Wszystkie projekty
-            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
+            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name", "featured as featured"]);
             foreach ($projects as $project)
             {
                 $this->acceptedStudents($project->students);
@@ -63,7 +63,7 @@ class ProjectController extends Controller
         else
         {
             //Tylko aktywne
-            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->where('status_id', 3)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name"]);
+            $projects = Project::with(['languages', 'students', 'worker', 'academic_year'])->where('academic_year_id', $year)->where('status_id', 3)->get(["name as nazwa", "project.description", "project.id", "project.worker_id", "mentoring as mentoring", "project.academic_year_id", "project.company_name", "featured as featured"]);
             foreach ($projects as $project)
             {
                 $this->acceptedStudents($project->students);
@@ -90,14 +90,14 @@ class ProjectController extends Controller
         $year = $academicYear->id;
 
         $user = Auth::user();
-        $columns = ["nazwa", "mentoring", "status", "technologie"];
+        $columns = ["featured", "nazwa", "mentoring", "status", "technologie"];
 
         if($user instanceof Worker)
         {
             $projects = Project::whereHas('worker', function ($query) use ($user) {
                 $query->where('worker_id', $user->id);
             })->with(['languages', 'students', 'status'])->where('academic_year_id', $year)->
-            get(["name as nazwa", "project.description", "project.id", "mentoring as mentoring", "project.company_name", "project.status_id"]);
+            get(["name as nazwa", "project.description", "project.id", "mentoring as mentoring", "project.company_name", "project.status_id", "featured as featured"]);
             foreach ($projects as $project)
             {
                 $this->acceptedStudents($project->students);
