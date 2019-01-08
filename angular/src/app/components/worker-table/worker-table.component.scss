@@ -54,16 +54,21 @@ tr.example-element-row:not(.example-expanded-row):active {
   left: 2%;
 }
 
-.mat-form-field.nr-indeksu {
+.mat-form-field.rok {
   left: 4%;
 }
 
-.mat-form-field.status {
+
+.mat-form-field.nr-indeksu {
   left: 6%;
 }
 
+.mat-form-field.status {
+  left: 8%;
+}
+
 .mentoring {
-  margin-left: 8%;
+  margin-left: 10%;
 }
 
 .featured {

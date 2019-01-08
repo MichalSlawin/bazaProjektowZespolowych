@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Project} from '../../project';
 import {MatPaginator, MatTableDataSource} from '@angular/material';
@@ -35,6 +35,7 @@ export class WorkerTableComponent implements OnInit {
     filteredValues = {
         name: "",
         description: "",
+        year: "",
         indeksNr: "",
         status: "",
         mentoring: "",
@@ -42,34 +43,46 @@ export class WorkerTableComponent implements OnInit {
     };
 
     status;
+    year;
     formControlNameDescription = new FormControl();
     formControlIndeksNr = new FormControl();
     formControlMentoring = new FormControl();
     formControlFeatured = new FormControl();
 
+    allYears;
     allStatuses;
+    currentYear;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private project: ProjectService, private statusService: StatusService) {}
 
     ngOnInit() {
+        this.project.getAcademicYears().subscribe((data) => {
+            this.allYears = data;
+            this.year = data[0]['id'];
+            this.getProjectList(this.year);
+        });
         this.statusService.get().subscribe((data) => {
             this.allStatuses = data;
             this.status = 0;
             this.filteredValues.status = '';
-            this.getProjectList();
         });
     }
 
-    getProjectList() {
-        this.project.getWorker().subscribe((data) => {
+    getProjectList(year) {
+        this.project.getWorker(year).subscribe((data) => {
             this.dataSource = new MatTableDataSource(data['data']);
             this.columnsToDisplay = data['columns'];
             this.dataSource.paginator = this.paginator;
             this.dataSource.filterPredicate = this.customFilterPredicate();
             this.dataSource.filter = JSON.stringify(this.filteredValues);
+            this.currentYear = data['currentYear'];
         });
+    }
+
+    changeYear() {
+        this.getProjectList(this.year);
     }
 
     private customFilterPredicate() {
@@ -141,6 +154,18 @@ export class WorkerTableComponent implements OnInit {
         this.filteredValues.indeksNr = "";
         this.formControlIndeksNr.setValue("");
         this.dataSource.filter = JSON.stringify(this.filteredValues);
+    }
+
+    feature(id) {
+        this.project.feature(id).subscribe((data) => {
+            console.log('success');
+        });
+    }
+
+    cancelFeature(id) {
+        this.project.cancelFeature(id).subscribe((data) => {
+            console.log('success');
+        });
     }
 }
 

@@ -6,6 +6,14 @@
     </button>
 </mat-form-field>
 
+<mat-form-field class="rok">
+    <mat-select placeholder="Rok" (selectionChange)="changeYear()" [(ngModel)] = "year">
+        <mat-option *ngFor="let year of allYears" [value]="year.id">
+            {{year.name}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+
 <mat-form-field class="nr-indeksu">
     <input matInput (keyup)="applyFilterIndeksNr($event.target.value)" placeholder="Nr indeksu"
            [formControl]="formControlIndeksNr">
@@ -46,9 +54,19 @@
         </th>
         <td mat-cell *matCellDef="let element">
             <span *ngIf="column === 'featured'; else isMentoring">
-                      <span *ngIf="element[column] === 1">
-                          <mat-icon>stars</mat-icon>
-                      </span>
+                <span *ngIf="currentYear === true; else notCurrent">
+                    <span *ngIf="element[column] === 0">
+                        <button color="primary" mat-raised-button (click)="feature(element.id)">Wyróżnij</button>
+                    </span>
+                    <span *ngIf="element[column] === 1">
+                        <button color="warn" mat-raised-button (click)="cancelFeature(element.id)">Anuluj wyróżnienie</button>
+                    </span>
+                </span>
+                <ng-template #notCurrent>
+                    <span *ngIf="element[column] === 1">
+                        <mat-icon>stars</mat-icon>
+                    </span>
+                </ng-template>
             </span>
             <ng-template #isMentoring>
               <span *ngIf="column === 'mentoring'; else status">

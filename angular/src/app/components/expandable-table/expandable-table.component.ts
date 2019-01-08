@@ -70,7 +70,7 @@ import {forEach} from "@angular/router/src/utils/collection";
         }
 
         getProjectList(year) {
-        this.loaded = false;
+            this.loaded = false;
             this.project.getList(year).subscribe((data) => {
                 this.loaded = true;
                 this.dataSource = new MatTableDataSource(data['data']);

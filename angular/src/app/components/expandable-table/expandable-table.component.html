@@ -72,7 +72,7 @@
                           </mat-chip>
                       </mat-chip-list>
                       <ng-template #last>
-                          {{element[column]}}
+                          {{element[column]}}<span *ngIf="column === 'opiekun'">@inf.ug.edu.pl</span>
                       </ng-template>
                   </ng-template>
               </td>

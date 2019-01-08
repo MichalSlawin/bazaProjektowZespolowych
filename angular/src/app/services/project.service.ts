@@ -58,8 +58,9 @@ export class ProjectService {
     return this.http.get(apiLink + '/project/mine');
   }
 
-  getWorker() {
-    return this.http.get(apiLink + '/project/worker')
+  getWorker(year?: string) {
+      let params = new HttpParams().set('rok', year);
+    return this.http.get(apiLink + '/project/worker', { params: params })
   }
 
   delete() {
@@ -74,5 +75,18 @@ export class ProjectService {
       return this.http.post(apiLink + '/project/requestEdition', uploadData);
   }
 
+  feature(id) {
+      const uploadData = new FormData();
+      uploadData.append("_method", "PUT");
+      uploadData.append("id", id);
+      return this.http.post(apiLink + '/project/feature', uploadData);
+  }
+
+  cancelFeature(id) {
+      const uploadData = new FormData();
+      uploadData.append("_method", "PUT");
+      uploadData.append("id", id);
+      return this.http.post(apiLink + '/project/cancelFeature', uploadData);
+  }
 
 }

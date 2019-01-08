@@ -85,9 +85,21 @@ class ProjectController extends Controller
 
     }
 
-    public function getWorker() {
+    public function getWorker(Request $request) {
+        $currentYear = true;
         $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
-        $year = $academicYear->id;
+        if($request->input("rok"))
+        {
+            $year = $request->input("rok");
+            if($year != $academicYear->id)
+            {
+                $currentYear = false;
+            }
+        }
+        else
+        {
+            $year = $academicYear->id;
+        }
 
         $user = Auth::user();
         $columns = ["featured", "nazwa", "mentoring", "status", "technologie"];
@@ -108,7 +120,7 @@ class ProjectController extends Controller
                 }
                 $project->technologie = $languageArray;
             }
-            return response()->json(["data" => $projects, "columns" => $columns],200);
+            return response()->json(["data" => $projects, "columns" => $columns, "currentYear" => $currentYear],200);
          }
          return response()->json("Unauthorized", 401);
     }
@@ -431,13 +443,13 @@ class ProjectController extends Controller
             return response()->json("Nie masz projektu", 400);
         }
         try
-        {
-            $project->status_id = 5;
-            $project->save();
-        }
-        catch (QueryException $e) {
-            return response()->json("Something went wrong", 500);
-        }
+    {
+        $project->status_id = 5;
+        $project->save();
+    }
+    catch (QueryException $e) {
+        return response()->json("Something went wrong", 500);
+    }
         return response()->json("Success");
     }
 
@@ -465,6 +477,52 @@ class ProjectController extends Controller
             return response()->json("Deleted", 200);
         }
         return response()->json("Nie można usunąć tego projektu", 400);
+    }
+
+    public function feature(Request $request)
+    {
+        $id = $request->get("id");
+        $user = Auth::user();
+        if(!$user instanceof Worker) {
+            return response()->json("Unauthorized", 401);
+        }
+        $project = Project::find($id);
+        if(empty($project))
+        {
+            return response()->json("Projekt nie istnieje", 400);
+        }
+        try
+        {
+            $project->featured = 1;
+            $project->save();
+        }
+        catch (QueryException $e) {
+            return response()->json("Something went wrong", 500);
+        }
+        return response()->json("Success", 200);
+    }
+
+    public function cancelFeature(Request $request)
+    {
+        $id = $request->get("id");
+        $user = Auth::user();
+        if(!$user instanceof Worker) {
+            return response()->json("Unauthorized", 401);
+        }
+        $project = Project::find($id);
+        if(empty($project))
+        {
+            return response()->json("Projekt nie istnieje", 400);
+        }
+        try
+        {
+            $project->featured = 0;
+            $project->save();
+        }
+        catch (QueryException $e) {
+            return response()->json("Something went wrong", 500);
+        }
+        return response()->json("Success", 200);
     }
 
 
