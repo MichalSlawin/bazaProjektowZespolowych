@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use phpDocumentor\Reflection\Types\Null_;
 
 class ProjectController extends Controller
 {
@@ -517,6 +518,53 @@ class ProjectController extends Controller
         try
         {
             $project->featured = 0;
+            $project->save();
+        }
+        catch (QueryException $e) {
+            return response()->json("Something went wrong", 500);
+        }
+        return response()->json("Success", 200);
+    }
+
+    public function setCompany(Request $request)
+    {
+        $company = $request->get("company");
+        $id = $request->get("id");
+        $user = Auth::user();
+        if(!$user instanceof Worker) {
+            return response()->json("Unauthorized", 401);
+        }
+        $project = Project::find($id);
+        if(empty($project))
+        {
+            return response()->json("Projekt nie istnieje", 400);
+        }
+        try
+        {
+            $project->company_name = $company;
+            $project->save();
+        }
+        catch (QueryException $e) {
+            return response()->json("Something went wrong", 500);
+        }
+        return response()->json("Success", 200);
+    }
+
+    public function deleteCompany(Request $request)
+    {
+        $id = $request->get("id");
+        $user = Auth::user();
+        if(!$user instanceof Worker) {
+            return response()->json("Unauthorized", 401);
+        }
+        $project = Project::find($id);
+        if(empty($project))
+        {
+            return response()->json("Projekt nie istnieje", 400);
+        }
+        try
+        {
+            $project->company_name = Null;
             $project->save();
         }
         catch (QueryException $e) {

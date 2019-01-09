@@ -46,6 +46,9 @@ $router->put('project/requestEdition', 'ProjectController@requestEdition');
 $router->put('project/feature', 'ProjectController@feature');
 $router->put('project/cancelFeature', 'ProjectController@cancelFeature');
 
+$router->put('project/setCompany', 'ProjectController@setCompany');
+$router->put('project/deleteCompany', 'ProjectController@deleteCompany');
+
 $router->delete('project', 'ProjectController@delete');
 
 //WorkerController

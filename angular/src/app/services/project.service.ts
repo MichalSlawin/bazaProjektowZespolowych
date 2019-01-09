@@ -89,4 +89,19 @@ export class ProjectService {
       return this.http.post(apiLink + '/project/cancelFeature', uploadData);
   }
 
+  setCompany(company, id) {
+      const uploadData = new FormData();
+      uploadData.append("_method", "PUT");
+      uploadData.append("company", company);
+      uploadData.append("id", id);
+      return this.http.post(apiLink + '/project/setCompany', uploadData);
+  }
+
+  deleteCompany(id) {
+      const uploadData = new FormData();
+      uploadData.append("_method", "PUT");
+      uploadData.append("id", id);
+      return this.http.post(apiLink + '/project/deleteCompany', uploadData);
+  }
+
 }

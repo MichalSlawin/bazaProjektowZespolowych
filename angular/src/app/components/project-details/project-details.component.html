@@ -53,6 +53,25 @@
     <ng-template #mentoring>
       {{projectData?.mentoring ? 'Zainteresowanie' : 'Brak zainteresowania'}}
     </ng-template>
+    <span *ngIf="projectData?.is_worker && (projectData?.mentoring || projectData?.company_name !== null)">
+        <form class="company-form" #myForm="ngForm">
+          <mat-form-field>
+            <input matInput
+                   name="company"
+                   placeholder="Nazwa firmy (mentora)"
+                   [(ngModel)]="company"
+                   required>
+          </mat-form-field>
+          <button class="set-company-button" mat-raised-button color="primary" (click)="setCompany()" [disabled]="!myForm.form.valid">
+            Zapisz
+          </button>
+          <span *ngIf="projectData?.company_name !== null">
+            <button class="delete-company-button" mat-raised-button color="warn" (click)="deleteCompany()">
+              Usuń
+            </button>
+          </span>
+        </form>
+      </span>
   </mat-card>
   <mat-card>
     <h4>Rok akademicki</h4>
