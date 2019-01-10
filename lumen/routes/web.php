@@ -58,6 +58,9 @@ $router->post('worker/current', 'WorkerController@updateCurrent');
 
 //ProgramingLanguageController
 $router->get('programing-language', 'ProgramingLanguageController@get');
+$router->get('programing-language/counted', 'ProgramingLanguageController@getCounted');
+
+$router->delete('programing-language/delete', 'ProgramingLanguageController@delete');
 
 //AcademicYearController
 $router->get('academic-year', 'AcademicYearController@get');

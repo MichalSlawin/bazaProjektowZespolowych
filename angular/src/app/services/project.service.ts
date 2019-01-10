@@ -13,6 +13,10 @@ export class ProjectService {
     return this.http.get(apiLink + "/programing-language");
   }
 
+  getCountedLanguages() {
+      return this.http.get(apiLink + "/programing-language/counted");
+  }
+
   getAcademicYears() {
     return this.http.get(apiLink + "/academic-year");
   }
@@ -102,6 +106,13 @@ export class ProjectService {
       uploadData.append("_method", "PUT");
       uploadData.append("id", id);
       return this.http.post(apiLink + '/project/deleteCompany', uploadData);
+  }
+
+  deleteTechnology(name) {
+      const uploadData = new FormData();
+      uploadData.append("_method", "DELETE");
+      uploadData.append("name", name);
+      return this.http.post(apiLink + "/programing-language/delete", uploadData);
   }
 
 }

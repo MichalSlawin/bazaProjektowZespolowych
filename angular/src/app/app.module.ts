@@ -26,7 +26,7 @@ import {
     MatCheckboxModule,
     MatTabsModule,
     MatChipsModule,
-    MatPaginatorModule, MatPaginatorIntl, MatSnackBarModule, MatSlideToggleModule, MatMenuModule,
+    MatPaginatorModule, MatPaginatorIntl, MatSnackBarModule, MatSlideToggleModule, MatMenuModule, MatSortModule,
 } from '@angular/material';
 import { LoginComponent } from './components/login/login.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -58,6 +58,7 @@ import { CreditsComponent } from './components/credits/credits.component';
 import { ProjectEditComponent } from './components/project-edit/project-edit.component';
 import { ConfirmDeletionComponent } from './components/confirm-deletion/confirm-deletion.component';
 import { UrlPipe } from './pipes/url.pipe';
+import { TechnologiesComponent } from './components/technologies/technologies.component';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { UrlPipe } from './pipes/url.pipe';
     CreditsComponent,
     ProjectEditComponent,
     ConfirmDeletionComponent,
-    UrlPipe
+    UrlPipe,
+    TechnologiesComponent
   ],
   imports: [
     BrowserModule,
@@ -123,7 +125,8 @@ import { UrlPipe } from './pipes/url.pipe';
       HttpClientModule,
       NgxWigModule,
       MatSlideToggleModule,
-      MatMenuModule
+      MatMenuModule,
+      MatSortModule
   ],
   providers: [
       {provide: MatPaginatorIntl, useValue: PolishPaginatorIntl()},
@@ -131,6 +134,6 @@ import { UrlPipe } from './pipes/url.pipe';
       { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
       ],
   bootstrap: [AppComponent],
-    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent, SuccessDialogComponent, CreditsComponent, ProjectManagementComponent, ConfirmDeletionComponent]
+    entryComponents: [LoginComponent, NewMessageComponent, CheckPasswordComponent, ErrorDialogComponent, SuccessDialogComponent, CreditsComponent, ProjectManagementComponent, ConfirmDeletionComponent, TechnologiesComponent]
 })
 export class AppModule { }
