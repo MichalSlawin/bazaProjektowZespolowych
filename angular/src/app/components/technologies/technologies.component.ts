@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ProjectService} from "../../services/project.service";
-import {MatSort, MatTableDataSource} from "@angular/material";
+import {MatDialog, MatDialogRef, MatSort, MatTableDataSource} from "@angular/material";
+import {ConfirmDeletionComponent} from "../confirm-deletion/confirm-deletion.component";
 
 @Component({
   selector: 'app-technologies',
@@ -14,11 +15,17 @@ export class TechnologiesComponent implements OnInit {
   dataSource;
   displayedColumns: string[] = ['name', 'count', 'action'];
 
+  confirmDeletionDialogRef: MatDialogRef<ConfirmDeletionComponent>;
+
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private project: ProjectService) { }
+  constructor(private project: ProjectService, public dialog: MatDialog) { }
 
   ngOnInit() {
+      this.refresh();
+  }
+
+  refresh() {
       this.project.getCountedLanguages().subscribe((data) => {
           this.allTechnologies = data;
           this.dataSource = new MatTableDataSource(data['languages']);
@@ -27,8 +34,16 @@ export class TechnologiesComponent implements OnInit {
   }
 
   delete(name) {
-      this.project.deleteTechnology(name).subscribe((data) => {
-          window.location.reload();
+      this.confirmDeletionDialogRef = this.dialog.open(ConfirmDeletionComponent, {
+          width: '420px',
+          data: 'Czy na pewno chcesz usunąć język?',
+      });
+      this.confirmDeletionDialogRef.afterClosed().subscribe(isConfirmed => {
+          if (isConfirmed) {
+              this.project.deleteTechnology(name).subscribe((data) => {
+                  this.refresh();
+              });
+          }
       });
   }
 
