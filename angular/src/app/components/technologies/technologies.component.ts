@@ -17,6 +17,8 @@ export class TechnologiesComponent implements OnInit {
 
   confirmDeletionDialogRef: MatDialogRef<ConfirmDeletionComponent>;
 
+  loaded = false;
+
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private project: ProjectService, public dialog: MatDialog) { }
@@ -26,7 +28,9 @@ export class TechnologiesComponent implements OnInit {
   }
 
   refresh() {
+      this.loaded = false;
       this.project.getCountedLanguages().subscribe((data) => {
+          this.loaded = true;
           this.allTechnologies = data;
           this.dataSource = new MatTableDataSource(data['languages']);
           this.dataSource.sort = this.sort;

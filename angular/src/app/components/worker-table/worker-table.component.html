@@ -43,6 +43,8 @@
     Wyróżnione
 </mat-checkbox>
 
+<app-ui-loading *ngIf="!loaded"></app-ui-loading>
+<div [class]="loaded ? '' : 'loading'">
 <div class="table-responsive">
     <table mat-table
            [dataSource]="dataSource" multiTemplateDataRows
@@ -127,3 +129,4 @@
 </div>
 
 <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

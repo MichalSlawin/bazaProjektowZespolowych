@@ -53,6 +53,8 @@ export class WorkerTableComponent implements OnInit {
     allStatuses;
     currentYear;
 
+    loaded = false;
+
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
     constructor(private project: ProjectService, private statusService: StatusService) {}
@@ -71,7 +73,9 @@ export class WorkerTableComponent implements OnInit {
     }
 
     getProjectList(year) {
+        this.loaded = false;
         this.project.getWorker(year).subscribe((data) => {
+            this.loaded = true;
             this.dataSource = new MatTableDataSource(data['data']);
             this.columnsToDisplay = data['columns'];
             this.dataSource.paginator = this.paginator;
@@ -87,7 +91,7 @@ export class WorkerTableComponent implements OnInit {
 
     private customFilterPredicate() {
         const myFilterPredicate = (data, filter: string): boolean => {
-            let searchString = JSON.parse(filter);
+            const searchString = JSON.parse(filter);
 
             return (data.nazwa.toString().trim().toLowerCase().indexOf(searchString.name.toLowerCase()) !== -1 ||
                 data.description.toString().trim().toLowerCase().indexOf(searchString.description.toLowerCase()) !== -1)
