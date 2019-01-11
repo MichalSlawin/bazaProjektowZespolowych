@@ -19,6 +19,7 @@ export class ProjectEditComponent implements OnInit {
         name: '',
         description: '',
         link: '',
+        release: '',
         languages: [],
         mentoring: false,
         curator: ''
@@ -57,6 +58,7 @@ export class ProjectEditComponent implements OnInit {
             this.projectData['name'] = data['name'];
             this.projectData['description'] = data['description'];
             this.projectData['link'] = data['link'];
+            this.projectData['release'] = data['release_link'];
             this.projectData['languages'] = data['languages'].map(language => language.name);
             this.projectData['mentoring'] = data['mentoring'];
             this.projectData['curator'] = data['worker'].id;
@@ -104,7 +106,7 @@ export class ProjectEditComponent implements OnInit {
                 data: 'Ukończono edycję projektu'
             });
             dialogRef.afterClosed().subscribe(() => {
-                location.href = "/moj-projekt";
+                location.href = '/moj-projekt';
             });
         });
     }

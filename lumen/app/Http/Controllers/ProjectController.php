@@ -363,8 +363,14 @@ class ProjectController extends Controller
             $link = $request->get("link");
             if($project->link != $link)
             {
-                $history .= "- Link z \"$project->link\" na \"$link\"\n";
+                $history .= "- Link do repozytorium z \"$project->link\" na \"$link\"\n";
                 $project->link = $link;
+            }
+            $release = $request->get("release");
+            if($project->release_link != $release)
+            {
+                $history .= "- Link do aplikacji z \"$project->release_link\" na \"$release\"\n";
+                $project->release_link = $release;
             }
             $mentoring = $request->get("mentoring");
             if($project->mentoring != $mentoring)
@@ -394,8 +400,8 @@ class ProjectController extends Controller
             }
             if($projectLanguagesArray != $languages)
             {
-                $projectLanguagesArrayString = implode(",", $projectLanguagesArray);
-                $languagesString = implode(",", $languages);
+                $projectLanguagesArrayString = implode(", ", $projectLanguagesArray);
+                $languagesString = implode(", ", $languages);
                 $history .= "- Technologie z \"$projectLanguagesArrayString\" na \"$languagesString\"\n";
                 DB::delete("DELETE FROM project_language WHERE project_id = ?", [$project->id]);
                 foreach ($languages as $language)

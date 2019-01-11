@@ -44,6 +44,7 @@ export class ProjectService {
       uploadData.append('name', data['name']);
       uploadData.append('description', data['description']);
       uploadData.append('link', data['link']);
+      uploadData.append('release', data['release']);
       for(let language of data['languages']) {
           uploadData.append('languages[]', language);
       }
