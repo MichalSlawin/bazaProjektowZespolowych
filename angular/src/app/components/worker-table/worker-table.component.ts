@@ -158,15 +158,16 @@ export class WorkerTableComponent implements OnInit {
 
     feature(id) {
         this.project.feature(id).subscribe((data) => {
-            console.log('success');
+            this.getProjectList(this.year);
         });
     }
 
     cancelFeature(id) {
         this.project.cancelFeature(id).subscribe((data) => {
-            console.log('success');
+            this.getProjectList(this.year);
         });
     }
+
 }
 
 
