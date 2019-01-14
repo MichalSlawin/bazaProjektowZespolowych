@@ -138,7 +138,7 @@ class MessageController extends Controller
                     }
                 }
             }
-            //$mail->send();
+            $mail->send();
             return response()->json("Sended", 200);
         }
         catch (Exception $e)

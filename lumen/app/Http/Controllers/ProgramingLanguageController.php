@@ -3,22 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\LanguageCount;
 use App\ProgramingLanguage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Worker;
 
-class LanguageCount
-{
-    public $name = '';
-    public $count = 0;
-
-    public function __construct($name, $count)
-    {
-        $this->name = $name;
-        $this->count = $count;
-    }
-}
 
 class ProgramingLanguageController extends Controller
 {

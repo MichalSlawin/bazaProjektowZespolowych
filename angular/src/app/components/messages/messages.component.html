@@ -11,9 +11,9 @@
 
   <mat-accordion displayMode="flat" multi class="mat-table">
     <section class="mat-elevation-z2 mat-header-row">
-      <span class="mat-header-cell" mat-sort-header="vesselName">Od</span>
-      <span class="mat-header-cell" mat-sort-header="vesselId">Data</span>
-      <span class="mat-header-cell" mat-sort-header="vesselStatus">Temat</span>
+      <span class="mat-header-cell">Od</span>
+      <span class="mat-header-cell">Data</span>
+      <span class="mat-header-cell">Temat</span>
     </section>
 
     <mat-expansion-panel *ngFor="let message of (messages | filterMessages:formControlSubjectFilter.value)">
