@@ -12,7 +12,7 @@
       <a mat-list-item routerLink="/moj-projekt" *ngIf="roleName == 'student'" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon> Mój projekt</a>
       <a mat-list-item routerLink="/projekty" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon> Projekty</a>
       <a mat-list-item routerLink="/pracownik-projekty" *ngIf="roleName == 'worker'" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>description</mat-icon>Projekty pracownika</a>
-      <a mat-list-item routerLink="/technologie" *ngIf="roleName == 'worker'" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>settings_applications</mat-icon>Technologie</a>
+      <a mat-list-item routerLink="/panel-administracyjny" *ngIf="roleName == 'worker'" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"><mat-icon>settings_applications</mat-icon>Administracja</a>
 
     </mat-nav-list>
   </mat-sidenav>

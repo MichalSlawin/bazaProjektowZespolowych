@@ -1,0 +1,23 @@
+<mat-card>
+    <app-ui-loading *ngIf="!loaded"></app-ui-loading>
+    <div [class]="loaded ? '' : 'loading'">
+        <mat-form-field>
+            <input matInput name="password" type="password" [(ngModel)]="password" label="Hasło" placeholder="Podaj hasło">
+        </mat-form-field>
+        <button mat-raised-button color="primary" [disabled]="password === ''" (click)="updateList()">Zaktualizuj</button>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let year of yearList; let first = first" [expanded]="first">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Lata {{year.name}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-list>
+                    <mat-list-item  *ngFor="let worker of year.workers">
+                        {{worker.username}}@inf.ug.edu.pl
+                    </mat-list-item>
+                </mat-list>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</mat-card>

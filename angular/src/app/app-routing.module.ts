@@ -6,7 +6,7 @@ import {ExpandableTableComponent} from "./components/expandable-table/expandable
 import {ProjectShowComponent} from "./components/project-show/project-show.component";
 import {WorkerTableComponent} from "./components/worker-table/worker-table.component";
 import {ProjectEditComponent} from "./components/project-edit/project-edit.component";
-import {TechnologiesComponent} from "./components/technologies/technologies.component";
+import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 
 
 const routes: Routes = [
@@ -29,7 +29,7 @@ const routes: Routes = [
         path: 'edytuj-projekt', component: ProjectEditComponent
     },
     {
-        path: 'technologie', component: TechnologiesComponent
+        path: 'panel-administracyjny', component: AdminPanelComponent
     },
     {
         path: '**',  redirectTo: 'projekty'

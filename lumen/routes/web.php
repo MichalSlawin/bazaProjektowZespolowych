@@ -64,6 +64,7 @@ $router->delete('programing-language/delete', 'ProgramingLanguageController@dele
 
 //AcademicYearController
 $router->get('academic-year', 'AcademicYearController@get');
+$router->get('academic-year/workers', 'AcademicYearController@getWithWorkers');
 
 //StatusController
 $router->get('status', 'StatusController@get');

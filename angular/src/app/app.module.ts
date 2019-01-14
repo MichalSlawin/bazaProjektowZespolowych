@@ -59,6 +59,8 @@ import { ProjectEditComponent } from './components/project-edit/project-edit.com
 import { ConfirmDeletionComponent } from './components/confirm-deletion/confirm-deletion.component';
 import { UrlPipe } from './pipes/url.pipe';
 import { TechnologiesComponent } from './components/technologies/technologies.component';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { WorkerListComponent } from './components/worker-list/worker-list.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,9 @@ import { TechnologiesComponent } from './components/technologies/technologies.co
     ProjectEditComponent,
     ConfirmDeletionComponent,
     UrlPipe,
-    TechnologiesComponent
+    TechnologiesComponent,
+    AdminPanelComponent,
+    WorkerListComponent
   ],
   imports: [
     BrowserModule,
