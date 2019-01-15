@@ -166,7 +166,7 @@ class ProjectController extends Controller
     public function getById($id)
     {
         $user = Auth::user();
-        $project = Project::with(['students', 'messages', 'history', 'worker', 'languages', 'status', 'academic_year'])->find($id);
+        $project = Project::with(['students', 'history', 'worker', 'languages', 'status', 'academic_year'])->find($id);
         if(empty($project))
         {
             return response()->json("Nie ma takiego projektu", 404);
@@ -193,15 +193,17 @@ class ProjectController extends Controller
             $project->does_belong = $projectCheck[0]->CID;
             if($projectCheck[0]->CID != 1)
             {
-                $project->makeHidden(['messages', 'history']);
+                $project->makeHidden(['history']);
             }
             if($project->student_id == $user->id)
             {
                 $project->is_owner = true;
+                $project->messages = Message::where('project_id', $project->id)->orderBy('created_at', 'desc')->get();
             }
             else
             {
                 $project->is_owner = false;
+                $project->messages = Message::where('project_id', $project->id)->where('is_public', 1)->orderBy('created_at', 'desc')->get();
                 $this->acceptedStudents($project->students);
             }
         }
