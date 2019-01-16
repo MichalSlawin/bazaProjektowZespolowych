@@ -17,10 +17,11 @@ export class StatusService {
         return this.http.get(apiLink + '/project/' + id + '/status');
     }
 
-    updateProject(id, status, comment) {
+    updateProject(id, status, comment, password) {
         const uploadData = new FormData();
         uploadData.append('status', status);
         uploadData.append('comment', comment);
+        uploadData.append('password', password);
       return this.http.post(apiLink + '/project/' + id + '/status', uploadData);
     }
 }

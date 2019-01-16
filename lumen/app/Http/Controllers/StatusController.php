@@ -90,6 +90,7 @@ class StatusController extends Controller
         {
             $this->validate($request, [
                 'status' => 'required|exists:status,id',
+                'password' => 'required',
                 'comment' => 'nullable'
             ]);
         }
@@ -141,21 +142,30 @@ class StatusController extends Controller
                 }
                 if($canChange)
                 {
-                    try
+                    $messageController = new MessageController();
+                    $sendMessage = $messageController->sendMessage($subject, $body, 0, $project->id, $request->get('password'));
+                    if($sendMessage["code"] == 200)
                     {
-                        $project->status_id = $request->get('status');
-                        $project->save();
-                        $projectHistory = new ProjectHistory();
-                        $projectHistory->project_id = $project->id;
-                        $projectHistory->body = $body;
-                        $projectHistory->subject = $subject;
-                        $projectHistory->save();
+                        try
+                        {
+                            $project->status_id = $request->get('status');
+                            $project->save();
+                            $projectHistory = new ProjectHistory();
+                            $projectHistory->project_id = $project->id;
+                            $projectHistory->body = $body;
+                            $projectHistory->subject = $subject;
+                            $projectHistory->save();
+                        }
+                        catch (QueryException $e)
+                        {
+                            return response()->json("Something went wrong", 500);
+                        }
+                        return response()->json("OK", 200);
                     }
-                    catch (QueryException $e)
+                    else
                     {
-                        return response()->json("Something went wrong", 500);
+                        return response()->json($sendMessage["msg"], $sendMessage["code"]);
                     }
-                    return response()->json("OK", 200);
                 }
                 return response()->json("Taka zmiana jest nie dozwolona", 400);
             }
@@ -223,21 +233,30 @@ class StatusController extends Controller
                 }
                 if($canChange)
                 {
-                    try
+                    $messageController = new MessageController();
+                    $sendMessage = $messageController->sendMessage($subject, $body, 0, $project->id, $request->get('password'));
+                    if($sendMessage["code"] == 200)
                     {
-                        $project->status_id = $request->get('status');
-                        $project->save();
-                        $projectHistory = new ProjectHistory();
-                        $projectHistory->project_id = $project->id;
-                        $projectHistory->body = $body;
-                        $projectHistory->subject = $subject;
-                        $projectHistory->save();
+                        try
+                        {
+                            $project->status_id = $request->get('status');
+                            $project->save();
+                            $projectHistory = new ProjectHistory();
+                            $projectHistory->project_id = $project->id;
+                            $projectHistory->body = $body;
+                            $projectHistory->subject = $subject;
+                            $projectHistory->save();
+                        }
+                        catch (QueryException $e)
+                        {
+                            return response()->json("Something went wrong", 500);
+                        }
+                        return response()->json("OK", 200);
                     }
-                    catch (QueryException $e)
+                    else
                     {
-                        return response()->json("Something went wrong", 500);
+                        return response()->json($sendMessage["msg"], $sendMessage["code"]);
                     }
-                    return response()->json("OK", 200);
                 }
                 return response()->json("Taka zmiana jest nie dozwolona", 400);
             }

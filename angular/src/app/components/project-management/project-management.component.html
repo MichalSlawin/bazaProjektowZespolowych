@@ -16,6 +16,15 @@
                 [required]="required">
       </textarea>
     </mat-form-field>
+    <mat-form-field>
+        <input
+                matInput
+                name="password"
+                placeholder="Hasło"
+                type="password"
+                [(ngModel)]="password"
+                required>
+    </mat-form-field>
     <button mat-raised-button color="primary" (click)="send()" [disabled]="!myForm.form.valid">Wyślij</button>
 </form>
 <ng-template #noOption>

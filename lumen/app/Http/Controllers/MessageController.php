@@ -22,28 +22,9 @@ class MessageController extends Controller
         $this->middleware('auth');
     }
 
-    public function send(Request $request)
+    public function sendMessage($subject, $body, $is_public, $project_id, $password, $saveMessage = false)
     {
-        try
-        {
-            $this->validate($request, [
-                'password' => 'required',
-                'subject' => 'required',
-                'body' => 'required',
-                'is_public' => 'required|boolean',
-                'project_id' => 'required|exists:project,id'
-            ]);
-        }
-        catch (ValidationException $e)
-        {
-            return response()->json($e->response->original, $e->status);
-        }
         $user = Auth::user();
-        $password = $request->get('password');
-        $subject = $request->get('subject');
-        $body = $request->get('body');
-        $is_public = $request->get('is_public');
-        $project_id = $request->get('project_id');
         $student_domain = "@sigma.ug.edu.pl";
         $worker_domain = "@inf.ug.edu.pl";
         if($user instanceof Student)
@@ -60,7 +41,7 @@ class MessageController extends Controller
         }
         if(empty($project))
         {
-            return response()->json("Unauthorized", 401);
+            return ["msg" => "Unauthorized", "code" => 401];
         }
         if($user instanceof Student)
         {
@@ -85,21 +66,25 @@ class MessageController extends Controller
         }
         else
         {
-            return response()->json($ldapResponseSender["msg"], $ldapResponseSender["code"]);
+            return $ldapResponseSender;
         }
 
-        try
+        if($saveMessage)
         {
-            $message = new Message();
-            $message->subject = $subject;
-            $message->body = $body;
-            $message->is_public = $is_public;
-            $message->project_id = $project_id;
-            $message->from_role = $from_role;
+            try
+            {
+                $message = new Message();
+                $message->subject = $subject;
+                $message->body = $body;
+                $message->is_public = $is_public;
+                $message->project_id = $project_id;
+                $message->from_role = $from_role;
             $message->save();
-        }
-        catch (QueryException $e) {
-            return response()->json("Something went wrong", 500);
+            }
+            catch (QueryException $e)
+            {
+                return ["msg" => "Something went wrong", "code" => 500];
+            }
         }
 
         $mail = new PHPMailer();
@@ -124,7 +109,9 @@ class MessageController extends Controller
             $mail->Username = $user->username;
             $mail->Password = $password;
             $mail->SetFrom($user->username.$domain, $senderDisplayName);
+            $subject = "(Projekty zespołowe) $subject";
             $mail->Subject = $subject;
+            $body .= "<br>Dotyczy projektu: <a href='http://".env("APP_URL")."/projekt/".$project_id."'>".env("APP_URL")."/projekt/".$project_id."</a>";
             $mail->Body = $body;
             $mail->AddAddress($to_email, $receiverDisplayName);
             if($is_public == 1)
@@ -139,11 +126,36 @@ class MessageController extends Controller
                 }
             }
             $mail->send();
-            return response()->json("Sended", 200);
+            return ["msg" => "Sended", "code" => 200];
         }
         catch (Exception $e)
         {
-            return $e;
+            return ["msg" => "Something went wrong", "code" => 500];
         }
+    }
+
+    public function send(Request $request)
+    {
+        try
+        {
+            $this->validate($request, [
+                'password' => 'required',
+                'subject' => 'required',
+                'body' => 'required',
+                'is_public' => 'required|boolean',
+                'project_id' => 'required|exists:project,id'
+            ]);
+        }
+        catch (ValidationException $e)
+        {
+            return response()->json($e->response->original, $e->status);
+        }
+        $password = $request->get('password');
+        $subject = $request->get('subject');
+        $body = $request->get('body');
+        $is_public = $request->get('is_public');
+        $project_id = $request->get('project_id');
+        $sendMail = $this->sendMessage($subject, $body, $is_public, $project_id, $password, true);
+        return response()->json($sendMail["msg"], $sendMail["code"]);
     }
 }

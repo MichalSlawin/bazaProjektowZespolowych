@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {StatusService} from "../../services/status.service";
+import {MatDialog} from "@angular/material";
+import {ErrorDialogComponent} from "../error-dialog/error-dialog.component";
 
 @Component({
   selector: 'app-project-management',
@@ -15,9 +17,11 @@ export class ProjectManagementComponent implements OnInit {
     selectedStatus;
     options;
     comment = '';
+    password = '';
     required = false;
 
-  constructor(private statusService: StatusService) { }
+  constructor(private statusService: StatusService,
+              private dialog: MatDialog) { }
 
   ngOnInit() {
       this.statusService.getProject(this.id).subscribe((data) => {
@@ -34,8 +38,14 @@ export class ProjectManagementComponent implements OnInit {
     }
 
   send() {
-      this.statusService.updateProject(this.id, this.selectedStatus, this.comment).subscribe((data) => {
+      this.statusService.updateProject(this.id, this.selectedStatus, this.comment ,this.password).subscribe((data) => {
          window.location.reload();
+      }, error1 => {
+          this.password = '';
+          this.dialog.open(ErrorDialogComponent, {
+              width: '600px',
+              data: 'Podano złe hasło'
+          });
       });
   }
 }
