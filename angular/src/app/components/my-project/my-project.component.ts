@@ -46,7 +46,7 @@ export class MyProjectComponent implements OnInit {
       this.confirmDeletionDialogRef.afterClosed().subscribe(isConfirmed => {
           if (isConfirmed) {
               this.project.delete().subscribe((data) => {
-                  console.log(data);
+                  location.href = "/";
               });
           }
       });
@@ -54,7 +54,6 @@ export class MyProjectComponent implements OnInit {
 
   requestEdition() {
       this.project.requestEdition().subscribe((data) => {
-          console.log(data);
           this.refresh(1);
       });
   }

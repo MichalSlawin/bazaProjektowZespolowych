@@ -231,6 +231,10 @@ class ProjectController extends Controller
             {
                 return response()->json($e->response->original, $e->status);
             }
+            if(strpos("x".$user->field,'informatykal3dz-3') === false)
+            {
+                return response()->json("Nie masz uprawnień do tworzenia projektów", 400);
+            }
             $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
             $workerCheck = Worker::whereHas('academicYear', function ($query) use ($academicYear) {
                 $query->where('id', $academicYear->id);

@@ -23,6 +23,10 @@ class ProjectStudentController extends Controller
         $user = Auth::user();
         if($user instanceof Student)
         {
+            if(strpos("x".$user->field,'informatykal3dz-3') === false)
+            {
+                return response()->json("Nie masz uprawnień by dołączyć do projektu", 400);
+            }
             $academicYear = AcademicYear::orderBy('id', 'desc')->take(1)->first();
             $projectTest = Project::whereHas('students', function ($query) use ($user) {
                 $query->where('student_id', $user->id);
@@ -100,8 +104,6 @@ class ProjectStudentController extends Controller
         if($user instanceof Student)
         {
             $projectStudent->delete();
-//            $projectStudent->accepted = 0;
-//            $projectStudent->save();
             return response()->json("OK", 200);
         }
         return response()->json("Unauthorized", 401);
