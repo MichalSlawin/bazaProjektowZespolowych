@@ -12,13 +12,11 @@ use App\ProjectHistory;
 use App\ProjectStudent;
 use App\Student;
 use App\Worker;
-use http\Env\Response;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-use phpDocumentor\Reflection\Types\Null_;
 
 class ProjectController extends Controller
 {
@@ -59,6 +57,11 @@ class ProjectController extends Controller
                 $project->opiekun = $project->worker->username;
 
                 $project->rok = $project->academic_year->name;
+
+                if($user instanceof Student)
+                {
+                    $project->students->makeHidden(['username']);
+                }
             }
         }
         else
@@ -158,6 +161,7 @@ class ProjectController extends Controller
                                         WHERE ps.student_id = ? AND p.id = ? and ps.accepted = ?", [$user->id, $project->id, 1]);
                 $project->does_belong = $projectCheck[0]->CID;
             }
+            $project->students->makeHidden(['username']);
             return response()->json($project, 200);
         }
         return response()->json("Unauthorized", 401);
@@ -206,6 +210,7 @@ class ProjectController extends Controller
                 $project->messages = Message::where('project_id', $project->id)->where('is_public', 1)->orderBy('created_at', 'desc')->get();
                 $this->acceptedStudents($project->students);
             }
+            $project->students->makeHidden(['username']);
         }
         return response()->json($project, 200);
     }
@@ -373,7 +378,7 @@ class ProjectController extends Controller
                 $project->link = $link;
             }
             $release = $request->get("release");
-            if($project->release_link != $release)
+            if($release != 'null' && $project->release_link != $release)
             {
                 $history .= "- Link do aplikacji z \"$project->release_link\" na \"$release\"\n";
                 $project->release_link = $release;

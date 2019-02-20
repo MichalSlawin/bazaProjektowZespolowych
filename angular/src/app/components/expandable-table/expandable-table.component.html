@@ -87,7 +87,7 @@
                         <mat-list-item *ngFor="let student of element?.students">
                             <mat-icon mat-list-icon>fiber_manual_record</mat-icon>
                             <span *ngIf="student.index_no; else field">
-                                {{student.index_no}} - {{student.username}}
+                                {{student.index_no}}<span *ngIf="student.username"> - {{student.username}}</span>
                             </span>
                             <ng-template #field>
                                 Specjalizacja: {{student.field === 'informatykal3dz-3apli' ? ' Aplikacje internetowe i bazy danych' : ' Tester programista'}}

@@ -10,7 +10,7 @@
       <h4>Status</h4>
     </mat-card>
     <mat-card>
-      {{projectData?.status.name}}<br/><br/>
+      {{projectData?.status.name}}
     </mat-card>
   </span>
   <mat-card>
@@ -25,7 +25,7 @@
   <mat-card>
     <a [href]="projectData?.link | url" target="_blank">{{projectData?.link}}</a>
   </mat-card>
-  <div *ngIf="projectData?.release_link !== null">
+  <div *ngIf="projectData?.release_link !== null && projectData?.release_link !== 'null'">
     <mat-card>
       <h4>Link do aplikacji</h4>
     </mat-card>
