@@ -8,8 +8,8 @@ export class TokenInterceptor implements HttpInterceptor {
         const currentToken = localStorage.getItem('token');
         if (currentToken) {
             request = request.clone({
-                setParams: {
-                    token: currentToken
+                setHeaders: {
+                    Authorization: currentToken
                 }
             });
         }
