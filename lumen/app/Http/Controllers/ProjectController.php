@@ -54,7 +54,7 @@ class ProjectController extends Controller
                 }
                 $project->technologie = $languageArray;
 
-                $project->opiekun = $project->worker->username;
+                $project->opiekun = $project->worker->first_name." ".$project->worker->last_name;
 
                 $project->rok = $project->academic_year->name;
 
@@ -78,7 +78,7 @@ class ProjectController extends Controller
                 }
                 $project->technologie = $languageArray;
 
-                $project->opiekun = $project->worker->username;
+                $project->opiekun = $project->worker->first_name." ".$project->worker->last_name;
 
                 $project->rok = $project->academic_year->name;
 
@@ -365,9 +365,9 @@ class ProjectController extends Controller
             if($project->worker_id != $workerId)
             {
                 $projectWorkerObject = Worker::find($project->worker_id);
-                $projectWorkerName = $projectWorkerObject->username;
+                $projectWorkerName = $projectWorkerObject->first_name." ".$projectWorkerObject->last_name;
                 $workerObject = Worker::find($workerId);
-                $workerName = $workerObject->username;
+                $workerName = $workerObject->first_name." ".$workerObject->last_name;
                 $history .= "- Opiekun z \"$projectWorkerName\" na \"$workerName\"\n";
                 $project->worker_id = $workerId;
             }

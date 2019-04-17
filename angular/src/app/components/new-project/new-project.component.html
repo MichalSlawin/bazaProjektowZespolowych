@@ -64,7 +64,7 @@
               name="curator"
               [(ngModel)]="projectData.curator">
         <mat-option *ngFor="let curator of curators" [value]="curator.id">
-          {{curator.username}}
+          {{curator.first_name}} {{curator.last_name}}
         </mat-option>
       </mat-select>
     </mat-form-field>

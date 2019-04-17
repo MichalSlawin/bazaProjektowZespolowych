@@ -58,6 +58,8 @@ class WorkerController extends Controller
                     $ldapResponseSender = $ldap->findUser($user->username, $request->get('password'), $filer);
                     if($ldapResponseSender["code"] == 200)
                     {
+                        $ldapResponseSender["data"]["first_name"] = $nameArray[count($nameArray) - 2];
+                        $ldapResponseSender["data"]["last_name"] = $nameArray[count($nameArray) - 1];
                         $workersData[] = $ldapResponseSender["data"];
                     }
                     else
@@ -75,6 +77,8 @@ class WorkerController extends Controller
             if(empty($workerObject))
             {
                 $workerObject = new Worker();
+                $workerObject->first_name = $worker["first_name"];
+                $workerObject->last_name = $worker["last_name"];
                 $workerObject->username = $worker["username"];
                 $workerObject->link = $worker["link"];
             }

@@ -74,7 +74,10 @@ class LoginController extends Controller
                 {
                     try
                     {
+                        $fullName = explode(" ", $userData["name"]);
                         $worker = new Worker();
+                        $worker->first_name = $fullName[0];
+                        $worker->last_name = $fullName[1];
                         $worker->username = $username;
                         $worker->link = $userData["link"];
                         $worker->save();

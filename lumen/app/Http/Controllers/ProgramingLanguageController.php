@@ -12,8 +12,19 @@ use App\Worker;
 
 class ProgramingLanguageController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['get']]);
+    }
+
     public function getCounted()
     {
+        $user = Auth::user();
+        if (!$user instanceof Worker)
+        {
+            return response()->json("Unauthorized", 401);
+        }
         $allLanguages = ProgramingLanguage::with(['projects'])->get();
         $languages = [];
 

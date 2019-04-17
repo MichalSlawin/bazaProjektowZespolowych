@@ -33,6 +33,7 @@ class LdapController extends Controller
             {
                 return ["msg" => "Unsupported type", "code" => 401];
             }
+            $response["name"] = $data["displayname"][0];
             $response["type"] = $data["employeetype"][0];
             return ["data" => $response, "code" => 200];
         }
