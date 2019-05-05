@@ -1,6 +1,7 @@
 <mat-card>
     <app-ui-loading *ngIf="!loaded"></app-ui-loading>
     <div [class]="loaded ? '' : 'loading'">
+        <button style="display:block;" mat-raised-button color="primary" (click)="addYear()">Dodaj nowy rok</button>
         <mat-form-field>
             <input matInput name="password" type="password" [(ngModel)]="password" label="Hasło" placeholder="Podaj hasło">
         </mat-form-field>

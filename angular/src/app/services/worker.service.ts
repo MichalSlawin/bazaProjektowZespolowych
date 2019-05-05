@@ -18,4 +18,8 @@ export class WorkerService {
     uploadData.append('password', data);
     return this.http.post(apiLink + '/worker/current', uploadData);
   }
+
+  addAcademicYear() {
+    return this.http.post(apiLink + '/academic-year', null);
+  }
 }

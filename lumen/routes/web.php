@@ -66,6 +66,8 @@ $router->delete('programing-language/delete', 'ProgramingLanguageController@dele
 $router->get('academic-year', 'AcademicYearController@get');
 $router->get('academic-year/workers', 'AcademicYearController@getWithWorkers');
 
+$router->post('academic-year', 'AcademicYearController@add');
+
 //StatusController
 $router->get('status', 'StatusController@get');
 $router->get('project/{id:[0-9]+}/status', 'StatusController@getProject');

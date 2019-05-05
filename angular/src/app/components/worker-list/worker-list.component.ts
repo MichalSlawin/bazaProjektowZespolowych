@@ -42,4 +42,10 @@ export class WorkerListComponent implements OnInit {
     });
   }
 
+  addYear() {
+    this.worker.addAcademicYear().subscribe((data) => {
+      this.getList();
+    });
+  }
+
 }
