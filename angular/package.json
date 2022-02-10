@@ -31,7 +31,7 @@
     "document-register-element": "^1.7.2",
     "ngx-scrollbar": "^2.2.0",
     "ngx-wig": "^1.6.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "rxjs": "^6.0.0",
     "zone.js": "^0.8.26"
   },
